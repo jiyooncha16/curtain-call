@@ -1,0 +1,6 @@
+package com.ssafy.curtaincall.controller;
+
+@Controller
+public class UserController {
+
+}

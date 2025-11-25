@@ -1,0 +1,5 @@
+package com.ssafy.curtaincall.service;
+
+public class UserServiceImpl {
+
+}
