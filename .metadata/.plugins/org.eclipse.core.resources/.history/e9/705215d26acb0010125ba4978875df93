@@ -1,0 +1,21 @@
+package com.ssafy.curtaincall.musical.dto;
+
+import java.time.LocalDate;
+import java.util.Date;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class Musical {
+
+	// Musical : 뮤지컬 정보 객체
+	
+	String musicalId;
+	String title;
+	LocalDate startDate;
+	LocalDate endDate;
+	String description;
+	String theater;
+
+}
+
