@@ -1,0 +1,5 @@
+package com.ssafy.curtaincall.musical.dto;
+
+public class SearchCondition {
+
+}

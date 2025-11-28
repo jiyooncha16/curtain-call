@@ -1,0 +1,18 @@
+package com.ssafy.curtaincall.musical.mapper;
+
+import java.util.List;
+
+import com.ssafy.curtaincall.musical.dto.Musical;
+import com.ssafy.curtaincall.musical.dto.MusicalLikes;
+
+public interface MusicalMapper {
+	
+	public List<Musical> selectAllMusical();
+	public List<Musical> selectMusicalByCondition();
+	public Musical selectMusical();
+	public boolean checkLike(MusicalLikes like); // 좋아요 찍혀있는지 확인
+	public void insertLike(MusicalLikes like); // 좋아요 등록
+	public void deleteLike(MusicalLikes like); // 좋아요 해제
+	
+	
+}

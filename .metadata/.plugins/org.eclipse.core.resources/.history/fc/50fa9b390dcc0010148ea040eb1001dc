@@ -1,0 +1,52 @@
+package com.ssafy.curtaincall.musical.dto;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
+public class SearchCondition {
+
+	/*
+	 * ** 클래스 설명, 필드 설명 주석 필수 ** 
+	 * toString : 위 어노테이션으로 대신함(@ToString)
+	 * 생성자 : 위 어노테이션으로 대신함(@AllArgsConstructor)
+	 * 게터, 세터 : 위 어노테이션으로 대신함(@Getter, @Setter)
+	 */
+
+	// SearchCondition : 뮤지컬 검색 조건
+	/*
+	 * 	세부내용
+	 *  - 필터링 : 해시태그별, 조건별
+	 *  - 순서 : 좋아요 desc, 랜덤
+	 */
+	//해시태그 필터
+	private List<String> hashtag;
+	
+	// 날짜 필터
+	private LocalDate startDate;   // 포함 이후 공연
+    private LocalDate endDate;     // 포함 이전 공연
+    
+    // 극장 필터
+    private String theater;
+    
+    // 정렬 조건 : 좋아요 순?
+    private String orderBy;
+    
+    // 조건 : 랜덤
+    private boolean random;
+    
+    
+    
+	
+
+}

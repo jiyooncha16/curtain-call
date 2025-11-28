@@ -1,0 +1,13 @@
+package com.ssafy.curtaincall.musical.mapper;
+
+import com.ssafy.curtaincall.musical.dto.MusicalLikes;
+
+public interface MusicalMapper {
+	
+	
+	public boolean checkLike(MusicalLikes like); // 좋아요 찍혀있는지 확인
+	public void insertLike(MusicalLikes like); // 좋아요 등록
+	public void deleteLike(MusicalLikes like); // 좋아요 해제
+	
+	
+}

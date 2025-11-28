@@ -1,0 +1,22 @@
+spring.application.name=CurtainCall
+spring.datasource.url=jdbc:mysql://localhost:3306/musical_db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+spring.datasource.username=ssafy
+spring.datasource.password=ssafy
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+
+# mapper.xml
+mybatis.mapper-locations=classpath:mapper/*.xml
+
+# dto alias
+mybatis.type-aliases-package=com.ssafy.curtaincall.*.dto.**
+
+# camelCase 
+mybatis.configuration.map-underscore-to-camel-case=true
+
+
+server.port=8080
+
+logging.level.com.ssafy.curtaincall=DEBUG
+logging.level.org.mybatis=DEBUG
+logging.level.jdbc.sqlonly=DEBUG

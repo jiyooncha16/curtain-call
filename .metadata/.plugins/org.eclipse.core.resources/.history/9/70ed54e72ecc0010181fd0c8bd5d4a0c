@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapper namespace="com.ssafy.musical.mapper.MusicalMapper">
+
+
+	<select id="selectAllMusical" resultType="com.ssafy.curtaincall.musical.Musical">
+		SELECT * FROM musical
+	</select>
+	
+	<select id="selectMusical" parameterType="int" resultType="com.ssafy.curtaincall.musical.Musical">
+		SELECT * FROM musical
+		WHERE musical_id = #{id}
+	</select>
+	
+	<!-- 동적쿼리 : 검색 -->
+	<select id="selectMusicalByCondition" parameterType="com.ssafy.curtaincall.musical.SearchCondition" resultType="com.ssafy.curtaincall.musical.Musical">
+        SELECT * FROM musical as m
+      	JOIN tag_connection as c
+      	ON m.musical_id = c.musical_id
+        JOIN hashtag as t
+        ON c.tag_id = t.tag_id
+      	
+        <where>
+            <if test="hashtag != null and hashtag.size() > 0">
+                AND tag_id IN
+                <foreach collection="hashtag" item="tag" open="(" separator="," close=")">
+                    #{tag}
+                </foreach>
+            </if>
+        </where>
+        <choose>
+            <when test="sortBy == 'random'">
+                ORDER BY RAND()
+            </when>
+            <otherwise>
+                ORDER BY ${sortBy} ${order}
+            </otherwise>
+        </choose>
+
+    </select>
+
+</mapper>
+
+	</select>
+
+</mapper>

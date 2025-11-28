@@ -1,0 +1,8 @@
+package com.ssafy.curtaincall.musical.mapper;
+
+import com.ssafy.curtaincall.musical.dto.MusicalLikes;
+
+public interface MusicalMapper {
+	public boolean checkLike(MusicalLikes like)
+	
+}

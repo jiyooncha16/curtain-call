@@ -5,15 +5,23 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.curtaincall.musical.dto.Musical;
+import com.ssafy.curtaincall.musical.dto.MusicalLikes;
+import com.ssafy.curtaincall.musical.dto.SearchCondition;
 import com.ssafy.curtaincall.musical.service.MusicalService;
 
 @RestController
-@RequestMapping("/musical")
+@RequestMapping("/musicals")
+@CrossOrigin("*")
 public class MusicalController {
 	
 	/*
@@ -42,34 +50,74 @@ public class MusicalController {
 	MusicalService service;
 	
 	// 1. 조회
-	/* 1-1. 전체 목록 조회
-	 *  파라미터 : 없음
-	 * 리턴 : List<Musical> 뮤지컬 전체 목록
+	/* 1-1. 전체 목록 조회 - 테스트 완료
+	 * 
+	 *  메서드 : GET
+	 *  엔드포인트 : /musicals
+	 *  파라미터
+	 *   - pathVariable(url) : 없음
+	 *   - RequestBody(json) : 없음
+	 *  리턴 : List<Musical> 뮤지컬 전체 목록
 	 */
 	@GetMapping("")
-	public ResponseEntity<Musical> getMusicalList() {
-		List<Musical> list = service.getMusicalList();
-		if (list == null || list.length == 0) return ResponseEntity.noContent();
+	public ResponseEntity<List<Musical>> getlist() {
+		List<Musical> list = service.getlist();
+		if (list == null || list.size() == 0) return ResponseEntity.noContent().build();
 		return ResponseEntity.ok(list);
 	}
 	
-	// 1-2. 상세 조회
+	/* 1-2. 상세 조회 - 테스트 완료
+	 * 
+	 *  메서드 : GET
+	 *  엔드포인트 : /musicals/{id}
+	 *  파라미터
+	 *   - pathVariable(url) : 없음
+	 *   - RequestBody(json) : 없음
+	 *  리턴 : List<Musical> 뮤지컬 전체 목록
+	 */
+	@GetMapping("/{id}")
+	public ResponseEntity<Musical> getMusical(@PathVariable int id) {
+		Musical musical = service.getMusical(id);
+		if (musical == null) return ResponseEntity.noContent().build();
+		else return ResponseEntity.ok(musical);
+	}
 	
-	// ** 동적쿼리 사용해서 합칠까?
-	// - 해시태그 별 필터링
-	// - 조건 별 필터링
-	// - 좋아요 순
-	// - 랜덤
-	
-	// 1-3. 조건별 검색
-	// 1-4. 추천 리스트 (해시태그 있으면 해시태그 순, 없으면 랜덤 5개)
-	// 1-5. 핫랭킹 작품 조회 (좋아요 순)
-	
-	// 공연중/개막 예정 작품은 프런트에서 구현 (훨씬 자연스러움)
+	/* 1-3. 필터링 조회 (검색)
+	 * 
+	 *  메서드 : GET
+	 *  엔드포인트 : /musicals/{id}
+	 *  파라미터
+	 *   - pathVariable(url) : 없음
+	 *   - RequestBody(json) : 없음
+	 *  리턴 : List<Musical> 뮤지컬 전체 목록
+	 *  
+	 *  세부내용
+	 *  - 필터링 : 해시태그별, 키워드별, 극장별, 날짜별
+	 *  - 순서 : 좋아요 랜덤
+	 *  - 페이징 : 몇페이지, 몇개씩
+	 *  
+	 *  사용처
+	 *  - 검색
+	 *  - 메인페이지(공연중 작품, 개막예정 작품, 추천리스트, 랜덤리스트, 핫랭킹 작품)
+	 */
+	@GetMapping("/search")
+	public ResponseEntity<List<Musical>> getMusicalByCondition(@RequestBody SearchCondition condition) {
+		List<Musical> list = service.getMusicalByCondition(condition);
+		if (list == null || list.size() == 0) return ResponseEntity.noContent().build();
+		else return ResponseEntity.ok(list);
+	}
 	
 	// 2. 좋아요
 	// 2-1. 좋아요 등록
-	// 2-2. 좋아요 해제
+	@PostMapping("/like")
+	public void likeOn(@RequestBody MusicalLikes like) {
+		service.likeOn(like);
+	}
 	
+	// 2-2. 좋아요 해제
+	@DeleteMapping("/like")
+	public void likeOff(@RequestBody MusicalLikes like) {
+		service.likeOff(like);
+	}
 
 }

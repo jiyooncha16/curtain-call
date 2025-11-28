@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapper namespace="com.ssafy.musical.mapper.MusicalMapper">
+
+	<!-- 전체 리스트 조회-->
+	<select id="selectAllMusical" resultType="com.ssafy.curtaincall.musical.Musical">
+		SELECT * FROM musical
+	</select>
+	
+	<!-- 개별 항목 조회 -->
+	<select id="selectMusical" parameterType="int" resultType="com.ssafy.curtaincall.musical.Musical">
+		SELECT * FROM musical
+		WHERE musical_id = #{id} <!-- id 넣어도 되나? -->
+	</select>
+	
+	<!-- 동적쿼리 : 검색 -->
+	<select id="selectMusicalByCondition" parameterType="com.ssafy.curtaincall.musical.SearchCondition" resultType="com.ssafy.curtaincall.musical.Musical">
+        SELECT * FROM musical as m
+      	JOIN tag_connection as c
+      	ON m.musical_id = c.musical_id
+        JOIN hashtag as t
+        ON c.tag_id = t.tag_id
+      	
+        <where>
+            <if test="hashtag != null and hashtag.size() > 0">
+                AND tag_id IN
+                <foreach collection="hashtag" item="tag" open="(" separator="," close=")">
+                    #{tag}
+                </foreach>
+            </if>
+        </where>
+        <choose>
+            <when test="sortBy == 'random'">
+                ORDER BY RAND()
+            </when>
+            <otherwise>
+                ORDER BY ${sortBy} ${order}
+            </otherwise>
+        </choose>
+
+    </select>
+    
+    <!-- 좋아요 있는지 확인 -->
+    <select id="checkLike" resultType="int" parameterType="com.ssafy.curtaincall.musical.MusicalLikes">
+    	select count(*) from like_musical where musical_id=#{musical_id};
+    </select>
+    
+    <!-- 좋아요 찾기 -->
+
+</mapper>
