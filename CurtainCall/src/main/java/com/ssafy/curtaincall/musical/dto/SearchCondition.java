@@ -4,11 +4,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -50,4 +52,26 @@ public class SearchCondition {
     //페이징
     private int page; // 0페이지부터
     private int size; // 페이지 크기 (몇개)
+    private int offset; // mybatis에서 곱셉 지원이 안 돼서 ... 여기에서 결정
+
+    // 롬복 인식 안 돼서 수기 게터세터
+    public int getPage() {
+		return page;
+	}
+	public void setPage(int page) {
+		this.page = page;
+	}
+	public int getSize() {
+		return size;
+	}
+	public void setSize(int size) {
+		this.size = size;
+	}
+	public int getOffset() {
+		return offset;
+	}
+	public void setOffset(int offset) {
+		this.offset = offset;
+	}
+
 }

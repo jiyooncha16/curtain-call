@@ -8,10 +8,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.curtaincall.musical.dto.Musical;
@@ -82,18 +84,19 @@ public class MusicalController {
 		else return ResponseEntity.ok(musical);
 	}
 	
-	/* 1-3. 필터링 조회 (검색)
+	/* 1-3. 필터링 조회 (검색) : 테스트 완료
 	 * 
 	 *  메서드 : GET
 	 *  엔드포인트 : /musicals/{id}
 	 *  파라미터
+	 *   - ModelAttribute : SearchCondition
 	 *   - pathVariable(url) : 없음
 	 *   - RequestBody(json) : 없음
 	 *  리턴 : List<Musical> 뮤지컬 전체 목록
 	 *  
 	 *  세부내용
-	 *  - 필터링 : 해시태그별, 키워드별, 극장별, 날짜별
-	 *  - 순서 : 좋아요 랜덤
+	 *  - 필터링 : 해시태그별(O), 키워드별(O), 극장별(O), 날짜별
+	 *  - 순서 : 좋아요(O), 랜덤
 	 *  - 페이징 : 몇페이지, 몇개씩
 	 *  
 	 *  사용처
@@ -101,22 +104,41 @@ public class MusicalController {
 	 *  - 메인페이지(공연중 작품, 개막예정 작품, 추천리스트, 랜덤리스트, 핫랭킹 작품)
 	 */
 	@GetMapping("/search")
-	public ResponseEntity<List<Musical>> getMusicalByCondition(@RequestBody SearchCondition condition) {
+	public ResponseEntity<List<Musical>> getMusicalByCondition(@ModelAttribute SearchCondition condition) {
+		condition.setOffset(condition.getPage() * condition.getSize());
 		List<Musical> list = service.getMusicalByCondition(condition);
 		if (list == null || list.size() == 0) return ResponseEntity.noContent().build();
 		else return ResponseEntity.ok(list);
 	}
 	
 	// 2. 좋아요
-	// 2-1. 좋아요 등록
+	/* 2-1. 좋아요 등록 - 테스트 완료
+	 * 
+	 *  메서드 : POST
+	 *  엔드포인트 : /musicals/like
+	 *  파라미터
+	 *   - pathVariable(url) : 없음
+	 *   - RequestBody(json) : MusicalLikes(userId, musicalId)
+	 *  리턴 : 없음
+	 */
 	@PostMapping("/like")
 	public void likeOn(@RequestBody MusicalLikes like) {
 		service.likeOn(like);
 	}
 	
-	// 2-2. 좋아요 해제
-	@DeleteMapping("/like")
-	public void likeOff(@RequestBody MusicalLikes like) {
+	/* 2-2. 좋아요 해제 - 테스트 완료
+	 * 
+	 *  메서드 : POST
+	 *  엔드포인트 : /musicals/like
+	 *  파라미터
+	 *   - pathVariable(url) : 없음
+	 *   - RequestBody(json) : MusicalLikes(userId, musicalId)
+	 *  리턴 : 없음
+	 */
+	@DeleteMapping("/like/{musicalId}")
+	public void likeOff(@PathVariable int musicalId, @RequestParam int userId) {
+		//빨간줄 무시 : 지금 명시적으로 생성자가 없어서 생기는 이슈. 롬복에서 생성자 만들어주니 괜찮음
+		MusicalLikes like = new MusicalLikes(userId, musicalId);
 		service.likeOff(like);
 	}
 

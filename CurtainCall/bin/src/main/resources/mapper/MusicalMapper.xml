@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.curtaincall.musical.mapper.MusicalMapper">
 
 	<!-- 전체 리스트 조회-->
@@ -17,60 +17,44 @@
 	
 	<!-- 동적쿼리 : 검색 -->
 	<select id="selectMusicalByCondition" parameterType="SearchCondition" resultType="Musical">
-        SELECT m.*
-		FROM musical AS m
-		JOIN tag_connection AS c ON m.musical_id = c.musical_id
-		JOIN hashtag AS t ON c.tag_id = t.tag_id
-		LEFT JOIN like_musical AS l ON m.musical_id = l.musical_id
-
+        SELECT * FROM musical as m
+      	JOIN tag_connection as c
+      	ON m.musical_id = c.musical_id
+        JOIN hashtag as t
+        ON c.tag_id = t.tag_id
+      	
         <where>
             <if test="hashtag != null and hashtag.size() > 0">
-                t.tag IN
+                AND tag_id IN
                 <foreach collection="hashtag" item="tag" open="(" separator="," close=")">
                     #{tag}
                 </foreach>
             </if>
-            <if test="keyword != null">
-            		AND m.title like CONCAT ('%', #{keyword}, '%')
-            	</if>
-            	<if test="theater != null">
-            		AND m.theater like CONCAT ('%', #{theater}, '%')
-            	</if>
         </where>
-        GROUP BY m.musical_id
         <choose>
-            <when test="orderBy == 'random'">
+            <when test="sortBy == 'random'">
                 ORDER BY RAND()
             </when>
-            <when test="orderBy == 'likes'">
-                ORDER BY COUNT(l.musical_id) ${order}
-            </when>
-            <when test="orderBy != null and order != null">
-                ORDER BY ${orderBy} ${order}
-            </when>
             <otherwise>
-               	ORDER BY m.musical_id ASC
+                ORDER BY ${sortBy} ${order}
             </otherwise>
         </choose>
-        <!-- 페이징 limit : size, offset : 어디서부터? -->
-        	<if test="size != null and offset != null">
-            	LIMIT #{size} OFFSET #{offset}
-        </if>
+
     </select>
     
     <!-- 좋아요 있는지 확인 -->
     <select id="checkLike" resultType="int" parameterType="MusicalLikes">
-    		SELECT count(*) FROM like_musical WHERE musical_id = #{musicalId} AND user_id = #{userId}
+    	SELECT count(*) FROM like_musical WHERE musical_id = #{musicalId}
     </select>
     
     <!-- 좋아요 등록 -->
     <insert id="insertLike" parameterType="MusicalLikes">
-    		INSERT INTO like_musical VALUES (#{userId}, #{musicalId})
+    	INSERT INTO like_musical VALUES (#{userId}, #{musicalId})
     </insert>
     
     <!-- 좋아요 삭제 -->
     <delete id="deleteLike" parameterType="com.ssafy.curtaincall.musical.dto.MusicalLikes">
-    		DELETE FROM like_musical WHERE musical_id = #{musicalId} AND user_id = #{userId}
+    	DELETE FROM like_musical WHERE musical_id = #{musicalId} AND user_id = #{userId}
     </delete>
 
 </mapper>
