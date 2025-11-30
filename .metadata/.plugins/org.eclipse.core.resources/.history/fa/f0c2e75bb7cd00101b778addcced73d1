@@ -1,0 +1,12 @@
+package com.ssafy.curtaincall.theater.service;
+
+import java.util.List;
+
+import com.ssafy.curtaincall.theater.dto.Theater;
+
+public interface TheaterService {
+
+	List<Theater> getlist(); // 전체 리스트 조회
+	Theater getTheater(Theater theater); // 한 개 상세 조회
+
+}

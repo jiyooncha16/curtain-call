@@ -1,0 +1,10 @@
+package com.ssafy.curtaincall.theater.mapper;
+
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public class TheaterMapper {
+	
+	
+
+}

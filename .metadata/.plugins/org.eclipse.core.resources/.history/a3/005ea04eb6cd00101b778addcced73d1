@@ -1,0 +1,9 @@
+package com.ssafy.curtaincall.theater.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class TheaterServiceImpl implements TheaterService{
+	
+
+}

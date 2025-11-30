@@ -1,0 +1,5 @@
+package com.ssafy.curtaincall.theater.controller;
+
+public class TheaterController {
+
+}
