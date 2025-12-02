@@ -29,12 +29,17 @@ public class Musical {
 
 	// Musical : 뮤지컬 정보 객체
 	
-	private String musicalId; // pk (뮤지컬 아이디)
+	private int musicalId; // pk (뮤지컬 아이디)
 	private String title; // 뮤지컬 제목
 	private LocalDate startDate; // 뮤지컬 시작일
 	private LocalDate endDate; // 뮤지컬 종료일
 	private String description; // 뮤지컬 설명
 	private String theater; // 뮤지컬 상영 극장
+	
 
+	
+	
+	
+	
 }
 
