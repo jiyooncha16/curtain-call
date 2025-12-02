@@ -3,6 +3,7 @@ package com.ssafy.curtaincall.board.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -51,6 +52,7 @@ public class BoardController {
 	 */
 	
 	@Autowired
+	@Qualifier("boardServiceImpl") // 서비스 빈이 두개 찾아진다는 오류 때문에 추가했어용
 	BoardService service;
 	
 	// 1. 조회

@@ -3,6 +3,7 @@ package com.ssafy.curtaincall.theater.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,6 +46,7 @@ public class TheaterController {
 	 */
 	
 	@Autowired
+	@Qualifier("theaterServiceImpl") // 서비스 빈이 두개 찾아진다는 오류 때문에 추가했어용
 	TheaterService service;
 	
 	// 조회

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.curtaincall.actor.mapper.ActorMapper">
+
+	<!-- 전체 리스트 조회-->
+	<select id="selectAllActor" resultType="Actor">
+		SELECT * FROM actor
+	</select>
+	
+	<!-- 개별 항목 조회 -->
+	<select id="selectActor" parameterType="int" resultType="Actor">
+		SELECT * FROM actor
+		WHERE actor_id = #{id}
+	</select>
+	
+	<!-- 동적쿼리 : 검색 -->
+	<select id="selectActorByCondition" parameterType="ActorSearchCondition" resultType="Actor">
+        SELECT a.*
+		FROM actor AS a
+		LEFT JOIN like_actor AS l ON a.actor_id = l.actor_id
+
+        <where>
+            <if test="name != null and name!=''">
+            	a.name like CONCAT ('%', #{name}, '%')
+            </if>
+        </where>
+        GROUP BY a.actor_id
+        <choose>
+            <when test="orderBy == 'likes'">
+                ORDER BY COUNT(l.actor_id) DESC
+            </when>
+            <otherwise>
+               	ORDER BY a.actor_id ASC
+            </otherwise>
+        </choose>
+        <!-- 페이징 limit : size, page : 어디서부터-->
+        	<if test="size != null and offset != null">
+            	LIMIT #{size} OFFSET #{offset}
+        </if>
+    </select>
+    
+    <!-- 좋아요 있는지 확인 -->
+    <select id="checkLike" resultType="int" parameterType="ActorLikes">
+    		SELECT count(*) FROM like_actor WHERE actor_id = #{actorId} AND user_id = #{userId}
+    </select>
+    
+    <!-- 좋아요 등록 -->
+    <insert id="insertLike" parameterType="ActorLikes">
+    		INSERT INTO like_actor VALUES (#{userId}, #{actorId})
+    </insert>
+    
+    <!-- 좋아요 삭제 -->
+    <delete id="deleteLike" parameterType="ActorLikes">
+    		DELETE FROM like_actor WHERE actor_id = #{actorId} AND user_id = #{userId}
+    </delete>
+
+</mapper>

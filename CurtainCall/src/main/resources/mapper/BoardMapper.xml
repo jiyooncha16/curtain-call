@@ -17,8 +17,7 @@
 	
 	<!--
 		이부분 모르겠어서 gpt 돌림 ㅠㅠ;;
-		
-  <!-- 조건부 게시글 조회 (검색, 카테고리, 페이징) -->
+		조건부 게시글 조회 (검색, 카테고리, 페이징) -->
     <select id="selectBoardByCondition" parameterType="BoardSearchCondition" resultType="Board">
         SELECT *
         FROM board
@@ -40,7 +39,6 @@
         </choose>
         LIMIT #{offset}, #{size}
     </select>
-     -->
  	<!-- 게시글 등록 -->
     <insert id="insertBoard" parameterType="Board">
         INSERT INTO board(title, content, category, user_id, create_date)

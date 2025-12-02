@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.curtaincall.board.mapper.BoardMapper">
+
+    <!-- 전체 게시글 조회 -->
+    <select id="selectAllBoard" resultType="Board">
+        SELECT *
+        FROM board
+    </select>
+    <!-- 개별항목조회  -->
+    	<select id="selectBoard" parameterType="int" resultType="Board">
+		SELECT * FROM board
+		WHERE board_id = #{id}
+	</select>
+	
+	<!--
+		이부분 모르겠어서 gpt 돌림 ㅠㅠ;;
+		조건부 게시글 조회 (검색, 카테고리, 페이징) -->
+    <select id="selectBoardByCondition" parameterType="BoardSearchCondition" resultType="Board">
+        SELECT *
+        FROM board
+        <where>
+            <if test="category != null and category != ''">
+                AND category = #{category}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND title LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+        </where>
+        <choose>
+            <when test="orderBy != null and order != null">
+                ORDER BY ${orderBy} ${order}
+            </when>
+            <otherwise>
+                ORDER BY create_date DESC
+            </otherwise>
+        </choose>
+        LIMIT #{offset}, #{size}
+    </select>
+     -->
+ 	<!-- 게시글 등록 -->
+    <insert id="insertBoard" parameterType="Board">
+        INSERT INTO board(title, content, category, user_id, create_date)
+        VALUES(#{title}, #{content}, #{category}, #{userId}, NOW())
+    </insert>
+
+    <!-- 게시글 수정 -->
+    <update id="updateBoard" parameterType="Board">
+        UPDATE board
+        SET title = #{title},
+            content = #{content},
+            category = #{category}
+        WHERE board_id = #{boardId}
+    </update>
+
+    <!-- 게시글 삭제 -->
+    <delete id="deleteBoard" parameterType="int">
+        DELETE FROM board
+        WHERE board_id = #{boardId}
+    </delete>
+	
+</mapper>

@@ -28,7 +28,7 @@ public class BoardLikes {
 	// BoardLikes : 게시판 좋아요
 	
 	private int userId; // pk (유저 id (id 아닌 식별자))
-	private int boarsId; //  pk (보드 id)
+	private int boardId; //  pk (보드 id)
 
 }
 

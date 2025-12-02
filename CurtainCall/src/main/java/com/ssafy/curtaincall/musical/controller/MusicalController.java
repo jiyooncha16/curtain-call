@@ -3,6 +3,7 @@ package com.ssafy.curtaincall.musical.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -49,6 +50,7 @@ public class MusicalController {
 	 */
 	
 	@Autowired
+	@Qualifier("musicalServiceImpl") // 서비스 빈이 두개 찾아진다는 오류 때문에 추가했어용
 	MusicalService service;
 	
 	// 1. 조회
@@ -118,7 +120,7 @@ public class MusicalController {
 	 *  엔드포인트 : /musicals/like
 	 *  파라미터
 	 *   - pathVariable(url) : 없음
-	 *   - RequestBody(json) : MusicalLikes(userId, musicalId)
+	 *   - RequestBody(json) : ActorLikes(userId, actorId)
 	 *  리턴 : 없음
 	 */
 	@PostMapping("/like")
@@ -128,11 +130,11 @@ public class MusicalController {
 	
 	/* 2-2. 좋아요 해제 - 테스트 완료
 	 * 
-	 *  메서드 : POST
+	 *  메서드 : DELETE
 	 *  엔드포인트 : /musicals/like
 	 *  파라미터
-	 *   - pathVariable(url) : 없음
-	 *   - RequestBody(json) : MusicalLikes(userId, musicalId)
+	 *   - pathVariable(url) : musicalId
+	 *   - RequestBody(json) : userId
 	 *  리턴 : 없음
 	 */
 	@DeleteMapping("/like/{musicalId}")
