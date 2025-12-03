@@ -3,7 +3,6 @@ package com.ssafy.curtaincall.board.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.curtaincall.board.dto.Board;
@@ -38,19 +37,19 @@ public class BoardServiceImpl implements BoardService {
 	//CUD
 	//create
 	@Override
-	public void createBoard(Board board) {
-		mapper.insertBoard(board);
+	public int createBoard(Board board) {
+		return mapper.insertBoard(board);
 	}
 	//수정
 	@Override
-	public void updateBoard(Board board) {
-		mapper.updateBoard(board);
+	public int updateBoard(Board board) {
+		return mapper.updateBoard(board);
 	}
 	
 	//삭제
 	@Override
-	public void deleteBoard(int id) {
-		mapper.deleteBoard(id);
+	public int deleteBoard(int id) {
+		return mapper.deleteBoard(id);
 	}
 
 	////좋아요
