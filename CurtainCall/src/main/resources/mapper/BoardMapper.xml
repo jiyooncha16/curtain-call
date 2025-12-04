@@ -40,7 +40,8 @@
         LIMIT #{offset}, #{size}
     </select>
  	<!-- 게시글 등록 -->
-    <insert id="insertBoard" parameterType="Board">
+    <insert id="createBoard" parameterType="Board" 
+    useGeneratedKeys="true" keyProperty="boardId">
         INSERT INTO board(title, content, category, user_id, create_date)
         VALUES(#{title}, #{content}, #{category}, #{userId}, NOW())
     </insert>
@@ -58,6 +59,20 @@
     <delete id="deleteBoard" parameterType="int">
         DELETE FROM board
         WHERE board_id = #{boardId}
+    </delete>
+    <!-- 좋아요 있는지 확인 -->
+    <select id="checkLike" resultType="int" parameterType="BoardLikes">
+    		SELECT count(*) FROM like_board WHERE board_id = #{boardId} AND user_id = #{userId}
+    </select>
+    
+    <!-- 좋아요 등록 -->
+    <insert id="insertLike" parameterType="BoardLikes">
+    		INSERT INTO like_board VALUES (#{userId}, #{boardId})
+    </insert>
+    
+    <!-- 좋아요 삭제 -->
+    <delete id="deleteLike" parameterType="BoardLikes">
+    		DELETE FROM like_board WHERE board_id = #{boardId} AND user_id = #{userId}
     </delete>
 	
 </mapper>

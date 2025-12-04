@@ -22,9 +22,9 @@ public interface BoardService {
 	List<Board> getBoardByCondition(BoardSearchCondition condition); // 조건부 리스트 반환
 
 	//CUD
-    void createBoard(Board board);             // 게시글 등록 
-    void updateBoard(Board board);             // 게시글 수정
-    void deleteBoard(int id);                  // 게시글 삭제
+    int createBoard(Board board);             // 게시글 등록 
+    int updateBoard(Board board);             // 게시글 수정
+    int deleteBoard(int id);                  // 게시글 삭제
 	
 	//좋아요
 	void likeOn(BoardLikes like); // 좋아요 등록
