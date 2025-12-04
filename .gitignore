@@ -1,0 +1,14 @@
+# Eclipse workspace metadata
+.metadata/
+
+CurtainCall/.metadata/
+
+# Build directories
+bin/
+build/
+out/
+
+# IDE files
+*.classpath
+*.project
+*.settings/
