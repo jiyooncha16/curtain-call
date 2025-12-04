@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.curtaincall.reply.dto.Reply;
 import com.ssafy.curtaincall.reply.service.ReplyService;
 
 @RestController
@@ -91,7 +92,7 @@ public class ReplyController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable int id, @RequestBody Reply updatedReply) {
-        updatedReply.setCommentId(id);
+        updatedReply.setReplyId(id);
         int result = service.updateComment(updatedReply);
         if (result == 1) return ResponseEntity.ok("게시글이 수정되었습니다!");
         else return ResponseEntity.badRequest().body("게시글 수정 실패");

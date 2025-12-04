@@ -38,7 +38,9 @@ public class BoardServiceImpl implements BoardService {
 	//create
 	@Override
 	public int createBoard(Board board) {
-		return mapper.insertBoard(board);
+		int result = mapper.insertBoard(board);
+		if (result == 1) return board.getBoardId(); // int 값 들어옴
+		return -1;		
 	}
 	//수정
 	@Override

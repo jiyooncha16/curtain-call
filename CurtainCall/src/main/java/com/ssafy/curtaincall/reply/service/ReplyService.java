@@ -1,5 +1,12 @@
 package com.ssafy.curtaincall.reply.service;
 
-public interface ReplyService {
+import java.util.List;
 
+import com.ssafy.curtaincall.reply.dto.Reply;
+
+public interface ReplyService {
+	List<Reply> getlist();
+    int createComment(Reply reply);
+    int updateComment(Reply reply);
+    int deleteReply(int id);
 }

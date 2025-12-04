@@ -52,7 +52,6 @@ public class BoardController {
 	
 	@Autowired
 	@Qualifier("boardServiceImpl")
-
 	BoardService service;
 	
 	// 1. 조회
@@ -123,11 +122,14 @@ public class BoardController {
 	 * 리턴 : 게시글 생성 결과 메시지(ResponseEntity)
 	 */
 	@PostMapping("")
-    public ResponseEntity<?> create(@RequestBody Board board) {
-        int result = service.createBoard(board);
-        if (result == 1) return ResponseEntity.ok("게시글이 생성되었습니다.");
-        else return ResponseEntity.badRequest().body("게시글 생성 실패");
-    }
+	public ResponseEntity<?> create(@RequestBody Board board) {
+	    int id = service.createBoard(board);
+	    if (id != -1) {
+	        return ResponseEntity.ok(id);
+	    }
+	    return ResponseEntity.badRequest().body("게시글 생성 실패");
+	}
+
 	
 
 	 /*
@@ -143,7 +145,7 @@ public class BoardController {
     public ResponseEntity<?> update(@PathVariable int id, @RequestBody Board updatedBoard) {
         updatedBoard.setBoardId(id);
         int result = service.updateBoard(updatedBoard);
-        if (result == 1) return ResponseEntity.ok("게시글이 수정되었습니다!");
+        if (result == 1) return ResponseEntity.ok(id);
         else return ResponseEntity.badRequest().body("게시글 수정 실패");
     }  
     /*

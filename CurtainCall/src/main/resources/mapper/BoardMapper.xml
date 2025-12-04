@@ -40,7 +40,8 @@
         LIMIT #{offset}, #{size}
     </select>
  	<!-- 게시글 등록 -->
-    <insert id="insertBoard" parameterType="Board">
+    <insert id="createBoard" parameterType="Board" 
+    useGeneratedKeys="true" keyProperty="boardId">
         INSERT INTO board(title, content, category, user_id, create_date)
         VALUES(#{title}, #{content}, #{category}, #{userId}, NOW())
     </insert>
