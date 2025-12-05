@@ -26,13 +26,17 @@ public class ReviewSearchCondition {
 	
 	/*
 	 * 	세부내용
-	 *  - 인기순 정렬인지 : true이면 인기순, false이면 번호순
+	 *  - 정렬 기준 : 스네이크 케이스(create_date) 식으로 적어야 함
 	 *  - 페이징 : 몇페이지, 몇개씩
 	 */
 	
-	// 인기순인지
-	boolean likes;
-	private String orderBy = "ASC";
+	
+	//어떤 뮤지컬
+	private int musicalId;
+
+	// 정렬
+	private String orderBy = "create_date";
+	private String order = "DESC";
     
     //페이징
     private int page = 0; // 0페이지부터

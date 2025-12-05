@@ -18,16 +18,15 @@ public interface ReviewService {
 	 */
 	
 	
-	
 	//조회
-	List<Review> getlist(); // 전체 뮤지컬 리스트 반환
-	Review getReview(int id); // 게시글 상세조회
+//	List<Review> getlist(); // 전체 뮤지컬 리스트 반환
+	double getReviewRate(int id); // 평점 평균 조회
 	List<Review> getReviewByCondition(ReviewSearchCondition condition); // 조건부 리스트 반환
 
 	//CUD
-    int createReview(Review review);             // 게시글 등록 
-    int updateReview(Review review);             // 게시글 수정
-    int deleteReview(int id);                  // 게시글 삭제
+    int createReview(Review review);             // 등록 
+    int updateReview(Review review);             // 수정
+    int deleteReview(int id);                  // 삭제
 	
 	//좋아요
 	void likeOn(ReviewLikes like); // 좋아요 등록

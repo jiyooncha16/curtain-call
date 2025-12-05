@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.curtaincall.review.mapper.ReviewMapper">
+
+    <!-- 전체 게시글 조회 -->
+    <select id="selectAllReview" resultType="Review">
+        SELECT *
+        FROM review
+    </select>
+    
+    <!-- 개별항목조회  -->
+   	<select id="selectReview" parameterType="Review" resultType="Review">
+		SELECT * FROM review
+		WHERE user_id = #{userId}
+		AND musical_id = #{musicalId}
+	</select>
+	
+	<select id="selectReviewById" parameterType="int" resultType="Review">
+		SELECT * FROM review
+		WHERE review_id = #{reviewId}
+	</select>
+	
+	<!--조건부 게시글 조회 (검색, 카테고리, 페이징) -->
+    <select id="selectReviewByCondition" parameterType="ReviewSearchCondition" resultType="Review">
+        SELECT *
+        FROM review
+        WHERE musical_id = #{musicalId}
+        ORDER BY ${orderBy} ${order} <!--review_id 식으로 적어야 함-->
+        LIMIT #{offset}, #{size}
+    </select>
+    
+    <!-- 평점 조회 -->
+    <select id="selectReviewRate" parameterType="int" resultType="double">
+	    SELECT ROUND(AVG(rate), 1) FROM review
+		WHERE musical_id = #{musicalId};
+	</select>
+    
+ 	<!-- 게시글 등록 -->
+    <insert id="insertReview" parameterType="Review" 
+    useGeneratedKeys="true" keyProperty="reviewId">
+        INSERT INTO review(musical_id, user_id, content, rate, create_date)
+        VALUES(#{musicalId}, #{userId}, #{content}, #{rate}, NOW())
+    </insert>
+
+    <!-- 게시글 수정 -->
+    <update id="updateReview" parameterType="Review">
+        UPDATE review
+        SET content = #{content},
+            rate = #{rate}
+        WHERE review_id = #{reviewId}
+    </update>
+
+    <!-- 게시글 삭제 -->
+    <delete id="deleteReview" parameterType="int">
+        DELETE FROM review
+        WHERE review_id = #{reviewId}
+    </delete>
+    
+    
+    
+    
+    <!-- 좋아요 있는지 확인 -->
+    <select id="checkLike" resultType="int" parameterType="ReviewLikes">
+    		SELECT count(*) FROM like_review WHERE review_id = #{reviewId} AND user_id = #{userId}
+    </select>
+    
+    <!-- 좋아요 등록 -->
+    <insert id="insertLike" parameterType="ReviewLikes">
+    		INSERT INTO like_review VALUES (#{userId}, #{reviewId})
+    </insert>
+    
+    <!-- 좋아요 삭제 -->
+    <delete id="deleteLike" parameterType="ReviewLikes">
+    		DELETE FROM like_review WHERE review_id = #{reviewId} AND user_id = #{userId}
+    </delete>
+	
+</mapper>

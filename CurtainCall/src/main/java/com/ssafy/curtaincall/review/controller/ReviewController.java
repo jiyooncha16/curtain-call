@@ -58,118 +58,110 @@ public class ReviewController {
 	@Qualifier("reviewServiceImpl")
 	ReviewService service;
 	
-	// 1. 조회
-	/* 1-1. 전체 게시글 목록 조회 - 테스트 완료
+	/* 1-1. 뮤지컬별 리뷰 목록 조회
 	 *
 	 * 메서드 : GET
 	 * 엔드포인트 : /reviews
 	 * 파라미터
-	 *   - pathVariable(url) : 없음
-	 *   - RequestBody(json) : 없음
-	 * 리턴 : List<Board> 게시글 전체 목록
+	 *   - pathVariable(url) : 뮤지컬 id
+	 *   - ModelAttribute(쿼리스트링) : 필터/정렬 조건
+	 *   	- 좋아요 기준 여부
+	 *   	- 페이징
+	 * 리턴 : List<Board> 게시글 목록기본 10개씩
+	 * 
+	 * 사용처
+	 * - 리뷰 보여주기(날짜 역순) (http://localhost:8080/reviews/{musicalId}) 
+	 * - 리뷰 인기순 보여주기(좋아요 역순) 
+	 * 	- 인기순 상위 5개인 경우	
+	 * 		(http://localhost:8080/reviews/{musicalId}?likes=true&size=5)
 	 */
-	@GetMapping("")
-	public ResponseEntity<List<Review>> getlist() {
-		List<Review> list = service.getlist();
+	@GetMapping("/{musicalId}")
+	public ResponseEntity<List<Review>> getlist(@PathVariable int musicalId, @ModelAttribute ReviewSearchCondition condition) {
+		condition.setMusicalId(musicalId);
+		List<Review> list = service.getReviewByCondition(condition);
 		if (list == null || list.size() == 0) return ResponseEntity.noContent().build();
 		return ResponseEntity.ok(list);
 	}
 	
-	/* 1-2. 게시글 상세 조회 - 테스트 완료
+	
+	/* 1-2. 리뷰 평점 조회
 	 *
 	 * 메서드 : GET
-	 * 엔드포인트 : /reviews/{id}
+	 * 엔드포인트 : /reviews/rate/{id}
 	 * 파라미터
 	 *   - PathVariable(id) : 조회할 게시글 번호
 	 *   - RequestBody(json) : 없음
-	 * 리턴 : Board 게시글 상세 정보
+	 * 리턴 : 리뷰 평점 (double, 소수점 아래 한자리까지)
 	 */
-	@GetMapping("/{id}")
-	public ResponseEntity<Review> getReview(@PathVariable int id) {
-		Review review = service.getReview(id);
-		if (review == null) return ResponseEntity.noContent().build();
-		else return ResponseEntity.ok(review);
+	@GetMapping("/rating/{id}")
+	public ResponseEntity<Double> getReviewRate(@PathVariable int id) {
+		double rate = service.getReviewRate(id);
+		if (rate == 0.0 || rate == 0) return ResponseEntity.noContent().build();
+		else return ResponseEntity.ok((Double)rate);
 	}
 	
-	/* 1-3. 필터링 조회 (검색) : 테스트 완료
-	 * 
-	 *  메서드 : GET
-	 *  엔드포인트 : /reviews/{id}
-	 *  파라미터
-	 *   - ModelAttribute : SearchCondition
-	 *   - pathVariable(url) : 없음
-	 *   - RequestBody(json) : 없음
-	 *  리턴 : List<Board> 게시글 전체 목록
-	 *  
-	 *  세부내용
-	 *  - 필터링 : 해시태그별(O), 키워드별(O), 극장별(O), 날짜별
-	 *  - 순서 : 좋아요(O), 랜덤
-	 *  - 페이징 : 몇페이지, 몇개씩
-	 *  
-	 *  사용처
-	 *  - 검색
-	 *  - 메인페이지(공연중 작품, 개막예정 작품, 추천리스트, 랜덤리스트, 핫랭킹 작품)
-	 */
-	@GetMapping("/search")
-	public ResponseEntity<List<Review>> getMusicalByCondition(@ModelAttribute ReviewSearchCondition condition) {
-		condition.setOffset(condition.getPage() * condition.getSize());
-		List<Review> list = service.getReviewByCondition(condition);
-		if (list == null || list.size() == 0) return ResponseEntity.noContent().build();
-		else return ResponseEntity.ok(list);
-	}
+	
+	
+	
+	
+
 	// 2. CUD 
-	/* 2-1. 게시글 등록 
+	/* 2-1. 리뷰 등록 
 	 * 메서드 : POST
-	 * 엔드포인트 : /boards
+	 * 엔드포인트 : /reviews/{musicalId}
 	 * 파라미터
 	 *   - RequestBody(json) : review
 	 * 리턴 : 게시글 생성 결과 메시지(ResponseEntity)
 	 */
-	@PostMapping("")
-	public ResponseEntity<?> create(@RequestBody Review review) {
-	    int id = service.createReview(review);
+	@PostMapping("/{musicalId}")
+	public ResponseEntity<?> createReview(@PathVariable int musicalId, @RequestBody Review review) {
+	    review.setMusicalId(musicalId);
+		int id = service.createReview(review);
 	    if (id != -1) {
 	        return ResponseEntity.ok(id);
 	    }
-	    return ResponseEntity.badRequest().body("게시글 생성 실패");
+	    return ResponseEntity.badRequest().body("리뷰 생성 실패 : 이미 해당 뮤지컬에 대한 리뷰를 작성하셨니다.");
 	}
 
 	
 
 	 /*
-	 * 2-2. 게시글 수정
+	 * 2-2. 리뷰 수정
 	 * 메서드 : PUT
 	 * 엔드포인트 : /reviews/{id}
 	 * 파라미터
-	 *   - PathVariable(url) : id(수정할 게시글 번호)
-	 *   - RequestBody(json) : review (수정할 게시글 정보)
+	 *   - PathVariable(url) : id(수정할 번호)
+	 *   - RequestBody(json) : review (수정할 정보)
 	 * 리턴 : 수정 결과(ResponseEntity)
      */
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable int id, @RequestBody Review review) {
+    public ResponseEntity<?> updateReview(@PathVariable int id, @RequestBody Review review) {
     	review.setReviewId(id);
         int result = service.updateReview(review);
         if (result == 1) return ResponseEntity.ok(id);
-        else return ResponseEntity.badRequest().body("게시글 수정 실패");
+        else return ResponseEntity.badRequest().body("리뷰 수정 실패 : 없는 리뷰입니다.");
     }  
     /*
      * 2-3. 리뷰 삭제
      * 메서드 : DELETE
      * 엔드포인트 : /reviews/{id}
      * 파라미터
-     *   - PathVariable(url) : id(삭제할 게시글 번호)
+     *   - PathVariable(url) : id(삭제할 번호)
      *   - RequestBody : 없음
      * 리턴 : 삭제 결과(ResponseEntity)
      */
-    
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable int id) {
+    public ResponseEntity<?> deleteReview(@PathVariable int id) {
 		int result = service.deleteReview(id);
-		if (result == 1) return ResponseEntity.ok("게시글이 삭제되었습니다!");
-        else return ResponseEntity.badRequest().body("게시글 삭제 실패");
+		if (result == 1) return ResponseEntity.ok("리뷰가 삭제되었습니다!");
+        else return ResponseEntity.badRequest().body("리뷰 삭제 실패 : 없는 리뷰입니다.");
     }
+    
+    
+    
+    
 	// 3. 좋아요
-	/* 3-1. 좋아요 등록 - 테스트 완료
+	/* 3-1. 좋아요 등록
 	 * 
 	 *  메서드 : POST
 	 *  엔드포인트 : /reviews/like
@@ -183,18 +175,17 @@ public class ReviewController {
 		service.likeOn(like);
 	}
 	
-	/* 3-2. 좋아요 해제 - 테스트 완료
+	/* 3-2. 좋아요 해제
 	 *
 	 * 메서드 : DELETE
 	 * 엔드포인트 : /reviews/like/{reviewId}
 	 * 파라미터
-	 *   - PathVariable(boardId) : 좋아요 취소할 게시글 번호
+	 *   - PathVariable(reviewId) : 좋아요 취소할 리뷰 번호
 	 *   - RequestParam(userId) : 취소 요청 사용자 번호
 	 * 리턴 : 없음
 	 */
 	@DeleteMapping("/like/{reviewId}")
 	public void likeOff(@PathVariable int reviewId, @RequestParam int userId) {
-		//빨간줄 무시 : 지금 명시적으로 생성자가 없어서 생기는 이슈. 롬복에서 생성자 만들어주니 괜찮음
 		ReviewLikes like = new ReviewLikes(userId, reviewId);
 		service.likeOff(like);
 	}

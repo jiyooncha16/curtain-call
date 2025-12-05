@@ -16,16 +16,16 @@ public class ReviewServiceImpl implements ReviewService {
 	@Autowired
 	ReviewMapper mapper;
 	
-	//전체 목록 조회
+//	//전체 목록 조회
+//	@Override
+//	public List<Review> getlist() {
+//		return mapper.selectAllReview();
+//	}
+	
+	// 평점 평균 조회
 	@Override
-	public List<Review> getlist() {
-		return mapper.selectAllReview();
-	}
-	// 개별 항목 조회
-
-	@Override
-	public Review getReview(int id) {
-		return mapper.selectReview(id);
+	public double getReviewRate(int id) {
+		return mapper.selectReviewRate(id);
 	}
 	
 	// 조건별 조회
@@ -38,20 +38,32 @@ public class ReviewServiceImpl implements ReviewService {
 	//create
 	@Override
 	public int createReview(Review review) {
-		int result = mapper.insertReview(review);
-		if (result == 1) return review.getReviewId(); // int 값 들어옴
+		// 이 유저가 이 뮤지컬에 대한 리뷰를 작성한적이 없어야 진행
+		if(mapper.selectReview(review) == null) {
+			int result = mapper.insertReview(review);
+			if (result == 1) return review.getReviewId(); // int 값 들어옴
+		}
 		return -1;		
 	}
 	//수정
 	@Override
 	public int updateReview(Review review) {
-		return mapper.updateReview(review);
+		// 이 유저가 이 뮤지컬에 대한 리뷰가 있으면 진행
+		if(mapper.selectReview(review) != null) {
+			return mapper.updateReview(review);
+		}
+		return -1;
 	}
 	
 	//삭제
 	@Override
 	public int deleteReview(int id) {
-		return mapper.deleteReview(id);
+
+		// 이 유저가 이 뮤지컬에 대한 리뷰가 있으면 진행
+		if(mapper.selectReviewById(id) != null) {
+			return mapper.deleteReview(id);
+		}
+		return -1;
 	}
 
 	////좋아요
