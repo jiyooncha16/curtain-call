@@ -156,7 +156,7 @@ REFERENCES `musical` (
 
 CREATE TABLE `users` (
 	`user_id`	INT	PRIMARY KEY AUTO_INCREMENT,
-	`username`	VARCHAR(255)	NOT NULL, # 아이디 !!
+	`username`	VARCHAR(255)	NOT NULL UNIQUE, # 아이디 !!
 	`password`	VARCHAR(255)	NOT NULL,
 	`name`	VARCHAR(255)	NOT NULL,
 	`email`	VARCHAR(255)	NOT NULL,

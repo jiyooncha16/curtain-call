@@ -6,42 +6,36 @@
 
 	<!-- 전체 리스트 조회-->
 	<select id="selectAllUser" resultType="User">
-		SELECT * FROM user
+		SELECT * FROM users
 	</select>
 	
 	<!-- 개별 항목 조회 -->
 	<select id="selectUser" parameterType="String" resultType="User">
-		SELECT * FROM user
+		SELECT * FROM users
 		WHERE username = #{username}
 	</select>
 	
 	<!-- 이메일 조회
 	<select id="getEmail" parameterType="String" resultType="User">
-		SELECT * FROM user
+		SELECT * FROM users
 		WHERE email = #{email}
 	</select>
 	
 	휴대폰 조회
 	<select id="getPhone" parameterType="String" resultType="User">
-		SELECT * FROM user
+		SELECT * FROM users
 		WHERE phone = #{phone}
 	</select>-->
 	
 	<!--회원가입-->
 	<insert id="signup" parameterType="User">
-		INSERT INTO user (username, password, name, email, phone, nickname)
-		(#{username}, #{password}, #{name}, #{email}, #{phone}, #{nickname})
-	</insert>
-	
-	<!--회원가입-->
-	<insert id="signup" parameterType="User">
-		INSERT INTO user (username, password, name, email, phone, nickname)
-		(#{username}, #{password}, #{name}, #{email}, #{phone}, #{nickname})
+		INSERT INTO users (username, password, name, email, phone, nickname)
+		VALUES (#{username}, #{password}, #{name}, #{email}, #{phone}, #{nickname})
 	</insert>
 	
 	<!--수정-->
 	<update id="updateUser" parameterType="User">
-		UPDATE user SET 
+		UPDATE users SET 
 		password = #{password},
 		name = #{name},
 		email = #{email},
@@ -53,7 +47,7 @@
 	
 	<!-- 삭제 -->
 	<delete id="deleteUser" parameterType="String">
-		DELETE FROM user
+		DELETE FROM users
 		WHERE username=#{username}
 	</delete>
 

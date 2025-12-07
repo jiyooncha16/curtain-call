@@ -98,12 +98,14 @@ public class UserController {
 	 *   - pathVariable(url) : 없음
 	 *   - RequestBody(json) : User
 	 *  리턴 : 없음
+	 *  
+	 *  ///////// 유효성 검사 : 아이디 8자리 이상
 	 */
 	@PostMapping("")
 	public ResponseEntity<?> signup(@Valid @RequestBody User user) {// 유효성 검사
 		int result = service.signup(user);
 		if (result == 1) return ResponseEntity.ok(user);
-		return ResponseEntity.internalServerError().build();
+		return ResponseEntity.badRequest().body("잘못된 입력입니다.");
 	}
 	
 	
@@ -120,7 +122,7 @@ public class UserController {
 	public ResponseEntity<?> modifyUser(@Valid @RequestBody User user) {// 유효성 검사
 		int result = service.modifyUser(user);
 		if (result == 1) return ResponseEntity.ok(user);
-		return ResponseEntity.internalServerError().build();
+		return ResponseEntity.badRequest().body("잘못된 입력입니다.");
 	}
 	
 	//4. 회원 삭제
@@ -136,7 +138,7 @@ public class UserController {
 	public ResponseEntity<?> deleteUser(@PathVariable String username) {
 		int result = service.deleteUser(username);
 		if (result == 1) return ResponseEntity.ok(username);
-		return ResponseEntity.internalServerError().build();
+		return ResponseEntity.badRequest().body("잘못된 입력입니다.");
 	}
 	
 
