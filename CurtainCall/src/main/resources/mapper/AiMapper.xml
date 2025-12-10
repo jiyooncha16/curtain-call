@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.curtaincall.ai.mapper.AiMapper">
+
+	<!-- 관람한 뮤지컬 해시태그 조회(3 이상만) -->
+	<select id="selectCountGroupByHashtag" resultType="HashtagDTO" parameterType="int">
+		select h.tag as hashtag, count(*) as count
+		from users as u
+		left join review as r on u.user_id = r.user_id
+		left join musical as m on r.musical_id = m.musical_id
+		left join tag_connection as t on t.musical_id = m.musical_id
+		left join hashtag as h on h.tag_id = t.tag_id
+		where u.user_id = #{id} and r.rate >= 3
+		group by h.tag
+	</select>
+	
+</mapper>

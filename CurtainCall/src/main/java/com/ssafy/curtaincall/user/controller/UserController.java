@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.curtaincall.ai.service.AiService;
 import com.ssafy.curtaincall.user.dto.User;
 import com.ssafy.curtaincall.user.service.UserService;
 
@@ -55,6 +56,11 @@ public class UserController {
 	@Autowired
 	@Qualifier("userServiceImpl")
 	UserService service;
+	
+
+	@Autowired
+	@Qualifier("aiServiceImpl")
+	AiService aiService;
 	
 	// 1. 조회
 	/* 1-1. 전체 목록 조회
@@ -141,5 +147,14 @@ public class UserController {
 		return ResponseEntity.badRequest().body("잘못된 입력입니다.");
 	}
 	
+	//5. AI : 유저 수식어 만들기
+	@GetMapping("/taste/{id}")
+	public String getUserTaste(@PathVariable int id) {
+		System.out.println("컨트롤러 : 시작됐어요");
+		String result = aiService.generateUserTaste(id);
+		if (result == null) System.out.println("오류가 발생했습니다.");
+		else System.out.println(result);
+		return result;
+	}
 
 }
