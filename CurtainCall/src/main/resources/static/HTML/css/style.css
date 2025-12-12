@@ -73,7 +73,7 @@ main {
     justify-content: space-between;
     margin-top : 5px;
     margin-bottom : 10px;
-    gap: 10px;
+    /* gap: 10px; */
 }
 .musicalItem {
     flex: 1;
