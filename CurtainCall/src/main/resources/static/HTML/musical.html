@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!--폰트 사용-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!--부트스트랩 사용-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="./css/style_musical.css">
+</head>
+<body>
+    <!--헤더-->
+    <div id="header"></div>
+
+    <main>
+        <!-- 공연 중 작품 : 최대 5개-->
+        <div style="display:flex;">
+            <div class="musicalContainer">
+                <div class="texts">
+                    <div class="mainText">공연 중 작품</div>
+                </div>
+                <div class="musicals">
+                    <div class="musicalItem">
+                        <div class="poster"></div>
+                        <div class="titleText">위키드</div>
+                    </div>
+                    <div class="musicalItem">
+                        <div class="poster"></div>
+                        <div class="titleText">팬텀</div>
+                    </div>
+                    <div class="musicalItem">
+                        <div class="poster"></div>
+                        <div class="titleText">오페라의 유령</div>
+                    </div>
+                </div>
+            </div>
+            <!-- 개막 예정 작품 : 최대 5개-->
+            <div class="musicalContainer">
+                <div class="texts">
+                    <div class="mainText">개막 예정 작품</div>
+                </div>
+                <div class="musicals">
+                    <div class="musicalItem">
+                        <div class="poster"></div>
+                        <div class="titleText">위키드</div>
+                    </div>
+                    <div class="musicalItem">
+                        <div class="poster"></div>
+                        <div class="titleText">팬텀</div>
+                    </div>
+                    <div class="musicalItem">
+                        <div class="poster"></div>
+                        <div class="titleText">오페라의 유령</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <!-- 검색하기-->
+        <div class="searchContainer">
+            <div class="mainText">작품 검색하기</div>
+            <div class="searchPlace">
+                <div class="searchBar">
+                    <div class="subText"> 검색어</div>
+                    <div class="searchBarBox"></div>
+                    <div class="button">  V 상세검색</div>
+                    <div class="button">검색</div>
+                </div>
+                <div style="display: flex; flex-direction: column; background-color: #e9e9e9; margin-top:10px">
+                    <div class="row">
+                        <div class="subText">기간</div>
+                        <div class="date"></div>
+                        <div> - </div>
+                        <div class="date"></div>
+                    </div>
+                    <div class="row">
+                        <div class="subText">정렬</div>
+                        <input type="radio">좋아요 순</input>
+                        <input type="radio">제목 순</input>
+                        <input type="radio">최신 순</input>
+                    </div>
+                    <div class="row">
+                        <div class="subText">순서</div>
+                        <input type="radio">순서대로</input>
+                        <input type="radio">반대로</input>
+                    </div>
+                </div>
+            </div>
+            <div class="searchResult">
+                <div class="subText" style="font-weight: bold;">검색 결과 (2)</div>
+                <div>
+                    <div class="searchResultItem">
+                        <div class="poster"></div>
+                        <div>
+                            <div class="title">위키드(내한)</div>
+                            <div>2025.10.12 - 2026.01.01</div>
+                            <div>차지윤, 서지원</div>
+                            <div><i class="bi bi-heart-fill"></i> 55</div>
+                        </div>
+                    </div>
+                    <div class="searchResultItem">
+                        <div class="poster"></div>
+                        <div>
+                            <div class="title">위키드</div>
+                            <div>2025.10.12 - 2026.01.01</div>
+                            <div>은혜민, 조병국</div>
+                            <div><i class="bi bi-heart-fill"></i> 40</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="searchBarBox" style="width:200px;"> << 1 2 3 4 5 >> 페이징</div>
+            </div>
+        </div>
+
+    </main>
+    
+    <!-- 푸터 -->
+    <div id="footer"></div>
+    <script src="js/script.js"></script>
+</body>
+</html>
