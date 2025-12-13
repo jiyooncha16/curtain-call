@@ -1,0 +1,97 @@
+/*////////////// 리셋 //////////////*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+ul, ol {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+img {
+  display: block;
+}
+
+/*////////////// 색상, 폰트 //////////////*/
+:root {
+  /* 색상 */
+  --color-primary: #111111;
+  --color-secondary: #666666cc;
+  --color-accent: #800000;
+  --color-dark: #4d0000;
+
+  /* 배경색 */
+  --bg-main: #ffffff;
+  --bg-accent: #800000;
+  --bg-dark: #4d0000;
+
+  /* 폰트 */
+  --font-main: 'IBM Plex Sans KR', sans-serif;
+
+  /* 스페이스 */
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+}
+
+/*////////////// 텍스트 규칙 //////////////*/
+body {
+  font-family: var(--font-main);
+  color: black;
+}
+
+.main-text {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.sub-text {
+  font-size: 14px;
+  color: #666666;
+}
+
+.title-text {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/*////////////// 레이아웃 //////////////*/
+.container {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+
+/*////////////// 버튼 //////////////*/
+.btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: var(--color-accent);
+  color: white;
+}
+
+.btn-outline {
+  border: 1px solid var(--color-accent);
+  background: transparent;
+}

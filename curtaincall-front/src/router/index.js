@@ -1,0 +1,119 @@
+import { createRouter, createWebHistory } from 'vue-router'
+import MainView from '../views/MainView.vue'
+import MusicalView from '@/views/musical/MusicalView.vue'
+import ActorView from '@/views/actor/ActorView.vue'
+import MusicalDetailView from '@/views/musical/MusicalDetailView.vue'
+import ActorDetailView from '@/views/actor/ActorDetailView.vue'
+import CommunityView from '@/views/community/CommunityView.vue'
+import BoardDetailView from '@/views/community/BoardDetailView.vue'
+import BoardModifyView from '@/views/community/BoardModifyView.vue'
+import BoardCreateView from '@/views/community/BoardCreateView.vue'
+import ReviewCreateView from '@/views/review/ReviewCreateView.vue'
+import ReviewModifyView from '@/views/review/ReviewModifyView.vue'
+import MyReview from '@/views/review/MyReview.vue'
+import MyInfoModify from '@/views/myPage/MyInfoModify.vue'
+import FindIdView from '@/views/auth/FindIdView.vue'
+import LoginView from '@/views/auth/LoginView.vue'
+import ChangePasswordView from '@/views/auth/ChangePasswordView.vue'
+import MyPageView from '@/views/myPage/MyPageView.vue'
+
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [
+    {
+      path: '/',
+      name: 'main',
+      component: MainView,
+    },
+    {
+      path: '/musical',
+      name: 'musical',
+      component: MusicalView,
+    },
+    {
+      path: '/musical/:id',
+      name: 'musicalDetail',
+      component: MusicalDetailView,
+      props: true,
+    },
+    {
+      path: '/actor',
+      name: 'actor',
+      component: ActorView,
+    },
+    {
+      path: '/actor/:id',
+      name: 'actorDetail',
+      component: ActorDetailView,
+      props: true,
+    },
+    {
+      path: '/community',
+      name: 'community',
+      component: CommunityView,
+    },
+    {
+      path: '/community/:id',
+      name: 'boardDetail',
+      component: BoardDetailView,
+      props: true,
+    },
+    {
+      path: '/community/:id/edit',
+      name: 'boardModify',
+      component: BoardModifyView,
+      props: true,
+    },
+    {
+      path: '/community/new',
+      name: 'boardCreate',
+      component: BoardCreateView,
+    },
+    {
+      path: '/review/new',
+      name: 'reviewCreate',
+      component: ReviewCreateView,
+    },
+    {
+      path: '/review/:id/edit',
+      name: 'reviewModify',
+      component: ReviewModifyView,
+      props: true,
+    },
+    {
+      path: '/review/my/:id',
+      name: 'myReview',
+      component: MyReview,
+      props: true,
+    },
+    {
+      path: '/myPage/:id',
+      name: 'myPage',
+      component: MyPageView,
+      props: true,
+    },
+    {
+      path: '/myPage/:id/edit',
+      name: 'myInfoModify',
+      component: MyInfoModify,
+      props: true,
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: LoginView,
+    },
+    {
+      path: '/login/findId',
+      name: 'findId',
+      component: FindIdView,
+    },
+    {
+      path: '/login/changePassword',
+      name: 'changePassword',
+      component: ChangePasswordView,
+    },
+  ],
+})
+
+export default router
