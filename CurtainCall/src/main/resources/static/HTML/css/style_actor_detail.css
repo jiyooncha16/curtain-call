@@ -1,0 +1,94 @@
+
+/* 헤더, 푸터 */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap');
+html, body {margin: 0;}
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.headerText {
+    font-family: "IBM Plex Sans KR", sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    margin: 15px;
+    align-items: center;
+    justify-content: center;
+}
+#searchBar {
+    width:250px;
+    height:30px;
+    border: white 2px solid;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+/* 메인페이지 */
+main {
+    /* flex:1; */
+    width:50%;
+    max-width: 1200px;
+    min-width: 800px;
+    margin: auto;
+    padding-top:20px;
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+    flex-direction: column;
+    font-family: "IBM Plex Sans KR", sans-serif;
+    font-size: 18px;
+}
+
+.poster {
+    width:300px;
+    height:400px;
+    background-color: lightgray;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.actor {
+    display: flex;
+    margin : 10px;
+    font-family: "IBM Plex Sans KR", sans-serif;
+    /* font-weight: bold; */
+
+}
+
+.title {
+    font-weight: bold;
+    font-size: 30px;
+    margin-bottom: 10px;
+    margin-right:30px;
+}
+.subText {
+    margin: 10px 0;
+    font-size: 15px;
+}
+.row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.actor {
+    display:flex;
+    /* flex-direction: column; */
+    /* justify-content: center; */
+    align-items: center;
+    margin: 10px;
+}
+.poster-sm {
+    width:150px;
+    height:200px;
+    background-color: lightgray;
+}
+.musical {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin : 8px;
+    gap:10px;
+}
