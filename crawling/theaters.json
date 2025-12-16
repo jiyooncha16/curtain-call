@@ -1,0 +1,506 @@
+[
+  {
+    "place_cd": "6653",
+    "theater": "GS아트센터",
+    "address": "서울특별시 강남구 논현로 508(역삼동)",
+    "phone": "02-2005-0101",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "2151",
+    "theater": "디큐브 링크아트센터",
+    "address": "서울특별시 구로구 경인로 662(신도림동, 디큐브시티)",
+    "phone": "02-2211-3000",
+    "parking": true,
+    "seats": 1234,
+    "subway": "2호선 신도림역"
+  },
+  {
+    "place_cd": "105",
+    "theater": "충무아트센터",
+    "address": "서울특별시 중구 퇴계로 387 (흥인동)",
+    "phone": "02-2230-6600",
+    "parking": false,
+    "seats": 1253,
+    "subway": ""
+  },
+  {
+    "place_cd": "1367",
+    "theater": "코엑스아티움",
+    "address": "서울특별시 강남구 영동대로 513(삼성동) 코엑스아티움 5층",
+    "phone": "1661-5628",
+    "parking": false,
+    "seats": 1004,
+    "subway": ""
+  },
+  {
+    "place_cd": "53",
+    "theater": "한전아트센터",
+    "address": "서울특별시 서초구 효령로72길 60 한전아트센터",
+    "phone": "02)2105-8133",
+    "parking": false,
+    "seats": 1000,
+    "subway": ""
+  },
+  {
+    "place_cd": "2550",
+    "theater": "홍익대 대학로 아트센터",
+    "address": "서울특별시 종로구 대학로 57 (연건동)",
+    "phone": "02-742-0300",
+    "parking": true,
+    "seats": 702,
+    "subway": "4호선 혜화역"
+  },
+  {
+    "place_cd": "1941",
+    "theater": "플러스씨어터",
+    "address": "서울특별시 종로구 대학로12길 73(동숭동)",
+    "phone": "02-766-7667",
+    "parking": true,
+    "seats": 0,
+    "subway": "4호선 혜화역"
+  },
+  {
+    "place_cd": "6923",
+    "theater": "Converse Stage Arena “여명”",
+    "address": "서울특별시 동작구 현충로 213(동작동)",
+    "phone": "",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "5214",
+    "theater": "부산 드림씨어터",
+    "address": "부산광역시 남구 전포대로 133(문현동)",
+    "phone": "",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "259",
+    "theater": "충무아트센터",
+    "address": "서울특별시 중구 퇴계로 387 (흥인동)",
+    "phone": "02-2230-6600",
+    "parking": false,
+    "seats": 1253,
+    "subway": ""
+  },
+  {
+    "place_cd": "6575",
+    "theater": "NOL 유니플렉스",
+    "address": "서울특별시 종로구 대학로12길 64(동숭동)",
+    "phone": "02-766-2115",
+    "parking": false,
+    "seats": 300,
+    "subway": ""
+  },
+  {
+    "place_cd": "101",
+    "theater": "대학로 자유극장",
+    "address": "서울특별시 종로구 대학로12길 31",
+    "phone": "02-743-0661",
+    "parking": true,
+    "seats": 233,
+    "subway": "4호선 혜화역"
+  },
+  {
+    "place_cd": "247",
+    "theater": "세종문화회관",
+    "address": "서울특별시 종로구 세종대로 175 세종이야기",
+    "phone": "02-399-1114",
+    "parking": false,
+    "seats": 3022,
+    "subway": ""
+  },
+  {
+    "place_cd": "499",
+    "theater": "대학로 TOM(티오엠) 1관",
+    "address": "서울특별시 종로구 대학로8가길 85(동숭동)",
+    "phone": "1544-8303",
+    "parking": true,
+    "seats": 335,
+    "subway": ""
+  },
+  {
+    "place_cd": "895",
+    "theater": "부산시민회관",
+    "address": "부산 동구 범일2동 830-31번지",
+    "phone": "051-630-5200",
+    "parking": true,
+    "seats": 1606,
+    "subway": ""
+  },
+  {
+    "place_cd": "32",
+    "theater": "대학로 스타시티",
+    "address": "서울특별시 종로구 대학로11길 23(명륜4가)",
+    "phone": "02-747-9139",
+    "parking": false,
+    "seats": 186,
+    "subway": ""
+  },
+  {
+    "place_cd": "6053",
+    "theater": "링크아트센터",
+    "address": "서울특별시 종로구 대학로14길 29(혜화동)",
+    "phone": "",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "6419",
+    "theater": "링크아트센터드림 드림1관",
+    "address": "서울특별시 종로구 동숭길 123(동숭동) 드림1관",
+    "phone": "",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "6664",
+    "theater": "극장 온",
+    "address": "서울특별시 종로구 대학로12길 69(동숭동)",
+    "phone": "",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "911",
+    "theater": "경기아트센터",
+    "address": "경기도 수원시 팔달구 효원로307번길 20",
+    "phone": "031-230-3200",
+    "parking": true,
+    "seats": 1542,
+    "subway": ""
+  },
+  {
+    "place_cd": "6669",
+    "theater": "et theatre 1 (이티 씨어터 원)",
+    "address": "서울특별시 종로구 혜화로 17(명륜1가) et theatre 1",
+    "phone": "",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "1609",
+    "theater": "꿈의숲 아트센터",
+    "address": "서울특별시 강북구 월계로 173 (번동)",
+    "phone": "02-2289-5401",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "1752",
+    "theater": "부평아트센터",
+    "address": "인천광역시 부평구 아트센터로 166 (십정동)",
+    "phone": "032-500-2000",
+    "parking": true,
+    "seats": 893,
+    "subway": "1호선 백운역"
+  },
+  {
+    "place_cd": "1300",
+    "theater": "와일드 와일드 전용관 (명보아트홀)",
+    "address": "서울특별시 중구 마른내로 47(초동)",
+    "phone": "02-2274-2133",
+    "parking": true,
+    "seats": 354,
+    "subway": "4호선 충무로역"
+  },
+  {
+    "place_cd": "6420",
+    "theater": "링크아트센터드림 드림2관",
+    "address": "서울특별시 종로구 동숭길 123(동숭동) 드림2관",
+    "phone": "",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "4629",
+    "theater": "갤러리아포레",
+    "address": "서울특별시 성동구 성수동1가 685-696",
+    "phone": "",
+    "parking": false,
+    "seats": 342,
+    "subway": ""
+  },
+  {
+    "place_cd": "1567",
+    "theater": "올림픽공원 우리금융아트홀",
+    "address": "서울특별시 송파구 올림픽로 424(방이동)",
+    "phone": "02-410-1653",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "1786",
+    "theater": "3·15아트홀",
+    "address": "경상남도 창원시 마산회원구 삼호로 135(양덕동)",
+    "phone": "",
+    "parking": false,
+    "seats": 1182,
+    "subway": ""
+  },
+  {
+    "place_cd": "6066",
+    "theater": "링크아트센터",
+    "address": "서울특별시 종로구 대학로14길 29(혜화동)",
+    "phone": "",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "3075",
+    "theater": "예스24스테이지",
+    "address": "서울시 종로구 대학로 12길 21",
+    "phone": "02-742-9637",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "5375",
+    "theater": "갤러리아포레",
+    "address": "서울특별시 성동구 성수동1가 685-696",
+    "phone": "",
+    "parking": false,
+    "seats": 342,
+    "subway": ""
+  },
+  {
+    "place_cd": "3234",
+    "theater": "원주문화원",
+    "address": "강원도 원주시 원동 210",
+    "phone": "",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "5064",
+    "theater": "JS 아트홀",
+    "address": "서울특별시 양천구 등촌로 36(목동)",
+    "phone": "",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "4632",
+    "theater": "서대문 전용관(NH아트홀)",
+    "address": "서울특별시 중구 통일로 120 (충정로1가) 농협NH아트홀",
+    "phone": "",
+    "parking": true,
+    "seats": 0,
+    "subway": "5호선 서대문역"
+  },
+  {
+    "place_cd": "6208",
+    "theater": "오즈아트홀",
+    "address": "충청북도 청주시 상당구 교서로 8-4(영동) 2층",
+    "phone": "",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "189",
+    "theater": "국립중앙박물관 극장 용",
+    "address": "서울특별시 용산구 서빙고로 137(용산동6가)",
+    "phone": "1544-5955",
+    "parking": false,
+    "seats": 805,
+    "subway": ""
+  },
+  {
+    "place_cd": "1173",
+    "theater": "KBS 수원아트홀",
+    "address": "경기도 수원시 팔달구 인계로 123(인계동)",
+    "phone": "031-216-5201",
+    "parking": false,
+    "seats": 200,
+    "subway": ""
+  },
+  {
+    "place_cd": "6890",
+    "theater": "뮤지컬식당 스마일떡볶이",
+    "address": "대전광역시 중구 중앙로130번길 35(대흥동)",
+    "phone": "",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "6503",
+    "theater": "지구인아트홀",
+    "address": "서울특별시 종로구 창경궁로 260(명륜2가) 지구인아트홀 (구 해오름 예술극장)",
+    "phone": "",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "6647",
+    "theater": "한국항공대학교 투데이아트홀",
+    "address": "경기도 고양시 덕양구 항공대학로 76(화전동) 한국항공대학교 투데이아트홀",
+    "phone": "",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "324",
+    "theater": "더굿씨어터",
+    "address": "서울특별시 종로구 대학로 144, 중원빌딩 지하 2층 (혜화동)",
+    "phone": "02-742-9005",
+    "parking": true,
+    "seats": 350,
+    "subway": "4호선 혜화역"
+  },
+  {
+    "place_cd": "2201",
+    "theater": "전주교육문화회관 공연장",
+    "address": "전북특별자치도 전주시 덕진구 안덕원로 71(진북동)",
+    "phone": "063-270-1635",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "6014",
+    "theater": "광명문화예술교육지원센터 광명극장",
+    "address": "경기도 광명시 철망산로 2 (하안동) 광명문화예술교육지원센터 광명극장",
+    "phone": "",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "6480",
+    "theater": "엠스테이지",
+    "address": "서울특별시 종로구 인사동길 34-1(관훈동) 지하2층 엠스테이지",
+    "phone": "",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "2218",
+    "theater": "올림픽공원",
+    "address": "서울특별시 송파구 올림픽로 424 올림픽공원",
+    "phone": "02-410-1114",
+    "parking": false,
+    "seats": 15000,
+    "subway": ""
+  },
+  {
+    "place_cd": "6618",
+    "theater": "브이씨어터",
+    "address": "서울특별시 종로구 혜화로 18(혜화동) 지하 1층",
+    "phone": "",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "4601",
+    "theater": "여주시여성회관",
+    "address": "경기도 여주시 신륵사길 6-6 (천송동)",
+    "phone": "",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "1881",
+    "theater": "아양아트센터 (구 대구동구문화체육회관)",
+    "address": "대구광역시 동구 효동로2길 24, 동구문화체육회관 (효목동)",
+    "phone": "053-951-3300",
+    "parking": false,
+    "seats": 169,
+    "subway": ""
+  },
+  {
+    "place_cd": "1507",
+    "theater": "와일드 와일드 전용관 (명보아트홀)",
+    "address": "서울특별시 중구 마른내로 47(초동)",
+    "phone": "02-2274-2133",
+    "parking": true,
+    "seats": 354,
+    "subway": "4호선 충무로역"
+  },
+  {
+    "place_cd": "945",
+    "theater": "구로아트밸리 예술극장",
+    "address": "서울특별시 구로구 가마산로25길 9-24 (구로동)",
+    "phone": "02-2029-1700",
+    "parking": true,
+    "seats": 579,
+    "subway": "1호선 신도림역"
+  },
+  {
+    "place_cd": "1004",
+    "theater": "과천 시민회관",
+    "address": "경기 과천시 중앙동 6-2",
+    "phone": "509-7700",
+    "parking": false,
+    "seats": 929,
+    "subway": ""
+  },
+  {
+    "place_cd": "1114",
+    "theater": "대학로 스타시티",
+    "address": "서울특별시 종로구 대학로11길 23(명륜4가)",
+    "phone": "02-747-9139",
+    "parking": false,
+    "seats": 186,
+    "subway": ""
+  },
+  {
+    "place_cd": "2412",
+    "theater": "가온아트홀",
+    "address": "부산시 동구 범일2동 830-9번지 천일고속빌딩 지하1층",
+    "phone": "",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "4336",
+    "theater": "제주 난타",
+    "address": "제주특별자치도 제주시 선돌목동길 56-26(오등동)",
+    "phone": "",
+    "parking": false,
+    "seats": 659,
+    "subway": ""
+  },
+  {
+    "place_cd": "6322",
+    "theater": "명륜아트홀",
+    "address": "서울특별시 종로구 성균관로 48-2(명륜1가) 명륜아트홀",
+    "phone": "",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  },
+  {
+    "place_cd": "4786",
+    "theater": "대전 상상아트홀",
+    "address": "대전 중구 대종로 505번길 28 동훈빌딩 2층 상상아트홀",
+    "phone": "",
+    "parking": false,
+    "seats": 0,
+    "subway": ""
+  }
+]
