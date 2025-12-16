@@ -1,8 +1,9 @@
 <template>
-    <div>
+    <div class="center poster">
         <div class="img-box">
-            <img src="@/assets/홍광호.jpg">
+            <img src="@/assets/데스노트.jpg">
         </div>
+        <div class="basic-text">데스노트</div>
     </div>
 </template>
 
@@ -12,12 +13,13 @@
 
 <style scoped>
 .img-box {
-    width: 100px;
-    height: 120px;
+    width: 100%;
+    aspect-ratio: 3/4; /*비율*/
 }
 img {
     width: 100%;
     height: 100%;
     object-fit:cover;
 }
+
 </style>

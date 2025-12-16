@@ -40,12 +40,20 @@ img {
 /*////////////// 텍스트 규칙 //////////////*/
 body {
   font-family: var(--font-main);
+  font-size:16px;
+  margin:3px;
   color: black;
 }
 
 .main-text {
   font-size: 20px;
   font-weight: bold;
+  margin: 5px;
+}
+
+.basic-text {
+  font-size: 18px;
+  margin: 3px;
 }
 
 .sub-text {
@@ -56,12 +64,12 @@ body {
 .title-text {
   font-size: 24px;
   font-weight: 700;
+  margin: 5px 0;
 }
 
 /*////////////// 레이아웃 //////////////*/
 .container {
-  width: 70%;
-  margin: 0 auto;
+  margin: 10px 10px;
 }
 
 .flex {
@@ -72,6 +80,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .space-between {
