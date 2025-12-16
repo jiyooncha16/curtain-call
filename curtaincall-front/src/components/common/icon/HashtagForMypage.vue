@@ -1,20 +1,16 @@
 <template>
-  <div class="hashbox">
-    <!-- 보여줄 태그들 -->
-    <div
-      v-for="(tag, idx) in visibleTags"
-      :key="idx"
-      class="hash"
-    >
-      #{{ tag }}
-    </div>
+  <div class="hash-wrapper">
 
-    <!-- 숨겨진 태그 개수 -->
-    <div
-      v-if="hiddenCount > 0"
-      class="hash more"
-    >
-      +{{ hiddenCount }}
+    <div class="hashbox">
+      <!-- 보여줄 태그들 -->
+      <div v-for="(tag, idx) in visibleTags" :key="idx" class="hash main-text">
+        #{{ tag }}
+      </div>
+
+      <!-- 숨겨진 태그 개수 -->
+      <div v-if="hiddenCount > 0" class="hash more main-text">
+        +{{ hiddenCount }}
+      </div>
     </div>
   </div>
 </template>
@@ -45,6 +41,15 @@ const hiddenCount = computed(() => {
 </script>
 
 <style scoped>
+.hash-wrapper {
+  /* background-color: var(--bg-light); */
+  padding: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 8px;
+
+}
+
 .hashbox {
   display: flex;
   gap: 6px;
@@ -55,13 +60,12 @@ const hiddenCount = computed(() => {
   background-color: #e0e0e0;
   padding: 4px 10px;
   border-radius: 12px;
-  font-size: 13px;
-  font: bold;
+  /* font-size: 13px; */
   white-space: nowrap;
 }
 
 .hash.more {
   background-color: #d0d0d0;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 </style>

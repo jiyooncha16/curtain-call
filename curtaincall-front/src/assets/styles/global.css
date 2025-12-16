@@ -27,6 +27,8 @@ img {
   --bg-main: #ffffff;
   --bg-accent: #800000;
   --bg-dark: #4d0000;
+  --bg-light:#fde2e1;
+  --bg-highlight:#f34b4b;
 
   /* 폰트 */
   --font-main: 'IBM Plex Sans KR', sans-serif;
@@ -81,6 +83,20 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+.flex-left {
+  display: flex;
+  align-items: left;
+  justify-content: center;
+}
+
+.flex-right {
+  display: flex;
+  align-items: right;
+  justify-content: center;
+}
+
+
 
 .center {
   display: flex;
