@@ -7,9 +7,7 @@
         <router-link :to="{name : 'community'}" class="headerText">커뮤니티</router-link>
     </div>
     <div class="row">
-        <div id="searchBar">
-            <i class="bi bi-search"></i>
-        </div>
+        <search-bar/>
         <router-link :to="{name : 'myPage', params : {id : 1}}" class="headerText"> <!--id 받아오면 변경해넣기-->
             <i class="bi bi-person-fill"></i>
         </router-link>
@@ -19,6 +17,8 @@
 </template>
 
 <script setup>
+import SearchBar from '../common/icon/SearchBar.vue';
+
 
 </script>
 

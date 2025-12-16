@@ -1,13 +1,10 @@
 <template>
     <div class="carousel-wrapper">
-        <button ref="nextEl" class="nav prev" :class="{disabled : isBeginning}"><i class="bi bi-arrow-left"></i></button>
-        <button ref="prevEl" class="nav next" :class="{disabled : isEnd}" ><i class="bi bi-arrow-right"></i></button>
+        <button ref="prevEl" class="nav prev" :class="{disabled : isBeginning}"><i class="bi bi-arrow-left"></i></button>
+        <button ref="nextEl" class="nav next" :class="{disabled : isEnd}" ><i class="bi bi-arrow-right"></i></button>
         <Swiper
             :modules="[Navigation]"
-            :navigation="{
-                prevEl: '.prev',
-                nextEl: '.next'
-                }"
+            :navigation="{prevEl, nextEl}"
             :slides-per-view="'auto'"
             :space-between="16"
             @swiper="onSwiper"
@@ -59,6 +56,8 @@ const onSlideChange = (swiper) => {
 /* 전체 래퍼 */
 .carousel-wrapper {
   position: relative;
+  max-width: 1500px;
+  padding: 0 60px;
 }
 
 /* 버튼들 */
@@ -83,11 +82,11 @@ const onSlideChange = (swiper) => {
 
 /* 버튼 위치 */
 .nav.prev {
-  left: -50px;
+  left: 5px;
 }
 
 .nav.next {
-  right: -50px;
+  right: 5px;
 }
 
 .disabled {
