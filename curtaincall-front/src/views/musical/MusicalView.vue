@@ -32,7 +32,6 @@
 <script setup>
 import CardSlide from '@/components/common/CardSlide.vue';
 import SearchBox from '@/components/common/SearchBox.vue';
-import MusicalCard from '@/components/musical/MusicalCard.vue';
 import MusicalList from '@/components/musical/MusicalList.vue';
 
 
