@@ -54,6 +54,10 @@
             <hr>
             <HashtagForMypage :tags="['로맨스', '대극장', '판타지', 'OST', '눈물']" :limit="3" />
         </div>
+        <div class=" flex-center">
+            <PhotoBoard :obj="musical" />
+            <PhotoBoard :obj="actor" />
+        </div>
         <!-- 평점 통계 -->
         <div class="container">
             <div class="rate-avg-wrapper">
@@ -66,14 +70,10 @@
         <div class="container">
             <div class="title-text"> 0월 캘린더</div>
             <div class="calendar-wrapper">
-
+            <Calendar />
             </div>
         </div>
 
-        <div class="container flex-center">
-            <PhotoBoard :obj="musical" />
-            <PhotoBoard :obj="actor" />
-        </div>
 
     </div>
 </template>
@@ -82,6 +82,8 @@
 import PhotoBoard from '@/components/common/PhotoBoard.vue';
 import hong from '@/assets/홍광호.jpg';
 import HashtagForMypage from '@/components/common/icon/HashtagForMypage.vue';
+import Calendar from '@/components/common/calendar.vue';
+
 
 
 const musical = {
@@ -199,8 +201,8 @@ const actor = {
 }
 
 /* 달력 영역 */
-.calendar-wrapper {
-    height: 400px;
+/* .calendar-wrapper {
+    height: 500px;
 
-}
+} */
 </style>
