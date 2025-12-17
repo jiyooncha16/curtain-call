@@ -23,7 +23,7 @@ import Footer from './components/layout/Footer.vue';
 }
 main {
   margin : 20px auto;
-  width : 70%;
+  width : 50%;
   flex: 1;
   font-family: "IBM Plex Sans KR", sans-serif;
   font-size: 16px;

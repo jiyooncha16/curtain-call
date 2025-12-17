@@ -5,6 +5,7 @@
       :key="n"
       class="bi star"
       :class="n <= rate ? 'bi-star-fill active' : 'bi-star'"
+      @click="onClick(n)"
     ></i>
   </div>
 </template>
@@ -13,10 +14,15 @@
 const props = defineProps({
   rate: {
     type: Number,
-    default: 0
-  }
+    default: 0,
+  },
 })
 
+const emit = defineEmits(['update:rate'])
+
+const onClick = (n) => {
+  emit('update:rate', n)
+}
 </script>
 
 <style scoped>
