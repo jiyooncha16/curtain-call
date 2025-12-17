@@ -49,7 +49,7 @@ const onSlideChange = (swiper) => {
 <style scoped>
 
 .swiper-slide {
-  width: 200px;
+  width: 120px;
 }
 
 
@@ -97,5 +97,11 @@ const onSlideChange = (swiper) => {
 
 .nav:not(.disabled):hover {
   opacity: 0.8;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

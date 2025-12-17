@@ -9,6 +9,10 @@
                 </a>
             </div>
         </div>
+        
+        <div style="margin: 30px 0;">
+            <hr>
+        </div>
         <!-- 검색창 -->
         <div>
             <SearchBoxActor />
@@ -44,7 +48,6 @@ import SearchBoxActor from '@/components/common/SearchBoxActor.vue';
     grid-template-columns: repeat(7, 1fr);
     gap : 10px;
 }
-
 .result {
     border: 2px lightgray solid;
     padding: 10px;

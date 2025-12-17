@@ -16,6 +16,7 @@ import FindIdView from '@/views/auth/FindIdView.vue'
 import LoginView from '@/views/auth/LoginView.vue'
 import ChangePasswordView from '@/views/auth/ChangePasswordView.vue'
 import MyPageView from '@/views/myPage/MyPageView.vue'
+import SignupView from '@/views/auth/SignupView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -100,7 +101,7 @@ const router = createRouter({
     },
     {
       path: '/login',
-      name: 'Login',
+      name: 'login',
       component: LoginView,
     },
     {
@@ -112,6 +113,11 @@ const router = createRouter({
       path: '/login/changePassword',
       name: 'changePassword',
       component: ChangePasswordView,
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: SignupView,
     },
   ],
 })

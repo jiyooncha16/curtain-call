@@ -1,8 +1,7 @@
 <template>
   <div>
-    <div class="main-text">검색하기</div>
     <div class="flex" style="align-items: center;">
-      <div class="basic-text title">검색어</div>
+      <div class="basic-text title">검색</div>
       <div class="search-bar">
         <input v-model="keyword" @keyup.enter="onSearch" />
       </div>

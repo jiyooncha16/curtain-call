@@ -1,29 +1,31 @@
 <template>
     <div>
         <h2>뮤지컬</h2>
-        <div class="flex">
-            <div class="container">
-                <div class="title-text">공연 중인 작품</div>
-                <div class="wrapper">
-                    <CardSlide />
-                </div>
-            </div>
-            <div class="container">
-                <div class="title-text">공연 예정 작품</div>
-                <div class="wrapper">
-                    <CardSlide />
-                </div>
-            </div>
-        </div>
         <!-- 검색창 -->
         <div>
             <SearchBox />
         </div>
         <!-- 검색 결과 -->
+         <hr>
         <div>
-            <div class="basic-text">검색 결과(5)</div>
+            <div class="basic-text">검색 결과(2)</div>
             <div>
                 <MusicalList />
+            </div>
+        </div>
+        <div style="margin: 30px 0;">
+            <hr>
+        </div>
+        <div>
+            <div class="title-text">공연 중인 작품</div>
+            <div class="wrapper">
+                <CardSlide />
+            </div>
+        </div>
+        <div>
+            <div class="title-text">공연 예정 작품</div>
+            <div class="wrapper">
+                <CardSlide />
             </div>
         </div>
     </div>
@@ -39,7 +41,7 @@ import MusicalList from '@/components/musical/MusicalList.vue';
 
 <style scoped>
  .container {
-    width:50%;
+    width:100%;
 }
 .title-text {
     margin-left : 60px;
