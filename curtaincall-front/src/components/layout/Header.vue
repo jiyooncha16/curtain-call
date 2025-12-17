@@ -1,12 +1,12 @@
 <template>
     <header>
-    <div class="row">
+    <div class="board-row">
         <router-link to="/"><img src="../../assets/curtaincall.png" width="100px"></router-link>
         <router-link :to="{name : 'musical'}" class="headerText">뮤지컬</router-link>
         <router-link :to="{name : 'actor'}" class="headerText">배우</router-link>
         <router-link :to="{name : 'community'}" class="headerText">커뮤니티</router-link>
     </div>
-    <div class="row">
+    <div class="board-row">
         <search-bar/>
         <router-link :to="{name : 'myPage', params : {id : 1}}" class="headerText"> <!--id 받아오면 변경해넣기-->
             <i class="bi bi-person-fill"></i>
@@ -52,8 +52,9 @@ header {
     align-items: center;
     justify-content: end;
 }
-.row {
+.board-row {
     display:flex;
+    flex-direction: row;
     align-items: center;
 }
 

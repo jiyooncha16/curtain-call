@@ -1,5 +1,5 @@
 <template>
-    <div class="center poster">
+    <div class="poster">
         <div class="img-box">
             <img src="@/assets/데스노트.jpg">
         </div>
@@ -20,6 +20,11 @@ img {
     width: 100%;
     height: 100%;
     object-fit:cover;
+}
+.poster {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 </style>

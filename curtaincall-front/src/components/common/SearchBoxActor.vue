@@ -15,23 +15,6 @@
     <div v-if="isOpen" class="detail-panel" style="border:3px lightgray solid; padding: 10px; margin:10px 0;">
 
       <div class="flex basic-text box">
-        <div class="title">기간</div>
-        <div class="input-group">
-          <input ref="startInput" type="text" class="date" placeholder="시작날짜" readonly />
-          <span class="input-group-text">
-            <i class="fa-solid fa-calendar"></i>
-          </span>
-          </div>
-        <div style="margin:0 10px"> - </div>
-        <div class="input-group">
-          <input ref="endInput" type="text" class="date" placeholder="종료날짜" readonly />
-          <span class="input-group-text">
-            <i class="fa-solid fa-calendar"></i>
-          </span>
-        </div>
-      </div>
-
-      <div class="flex basic-text box">
         <div class="title">정렬</div>
 
         <label class="radio">
