@@ -19,9 +19,10 @@
 
 <style scoped>
 .searchResultItem {
-    border: 1px #800000 solid;
+    border: 2px lightgray solid;
     border-radius: 5px;
     margin: 10px 0;
+    overflow: hidden;
 }
 .img-box {
     width: 150px;

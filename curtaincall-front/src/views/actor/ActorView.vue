@@ -1,30 +1,30 @@
 <template>
     <div>
         <h2>배우</h2>
-        <div>
-            <div class="main-text">배우 인기 랭킹 TOP 7(좋아요 순)</div>
+        <section class="section-divider">
+            <div class="main-text">배우 인기 랭킹 TOP 5(좋아요 순)</div>
             <div class="wrapper">
-                <a href=""v-for="i in 7">
+                <a href=""v-for="i in 5">
                     <CardItem />
                 </a>
             </div>
-        </div>
-        
-        <div style="margin: 30px 0;">
-            <hr>
-        </div>
+        </section>
+
         <!-- 검색창 -->
-        <div>
+        <section class="section-divider">
             <SearchBoxActor />
-        </div>
+        </section>
+
         <!-- 검색 결과 -->
-        <div class="result">
-            <div class="basic-text">검색 결과(10)</div>
-            <hr>
-            <div style="margin : 10px 0;">
-                <ActorList />
+        <section class="section-divider">
+            <div class="result">
+                <div class="basic-text">검색 결과(10)</div>
+                <hr>
+                <div style="margin : 10px 0;">
+                    <ActorList />
+                </div>
             </div>
-        </div>
+        </section>
     </div>
 </template>
 
@@ -37,6 +37,9 @@ import SearchBoxActor from '@/components/common/SearchBoxActor.vue';
 </script>
 
 <style scoped>
+section {
+  margin-bottom: 50px;
+}
  .container {
     width:100%;
 }
@@ -45,14 +48,21 @@ import SearchBoxActor from '@/components/common/SearchBoxActor.vue';
 }
 .wrapper {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap : 10px;
+    grid-template-columns: repeat(5, 1fr);
+    gap : 24px;
 }
 .result {
     border: 2px lightgray solid;
     padding: 10px;
     margin: 10px 0;
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
 }
+/* .section-divider {
+  padding-top: 32px;
+  border-top: 1px solid #eee;
+} */
 
 
 </style>

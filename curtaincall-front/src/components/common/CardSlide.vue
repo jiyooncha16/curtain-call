@@ -49,7 +49,7 @@ const onSlideChange = (swiper) => {
 <style scoped>
 
 .swiper-slide {
-  width: 120px;
+  width: 140px;
 }
 
 

@@ -1,17 +1,20 @@
 <template>
-  <div>
-    <div class="flex" style="align-items: center;">
+  <div class="search-wrapper">
+    <div class="search-row flex">
       <div class="main-text title">검색</div>
+
       <div class="search-bar">
         <input v-model="keyword" @keyup.enter="onSearch" />
       </div>
-      <div class="search-btn" @click="toggleDetail">
+
+      <div class="search-btn secondary" @click="toggleDetail">
         상세 <i :class="isOpen ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
       </div>
+
       <div class="search-btn" @click="onSearch">검색</div>
     </div>
     <!--상세검색-->
-    <div v-if="isOpen" class="detail-panel" style="border:3px lightgray solid; padding: 10px; margin:10px 0;">
+    <div v-if="isOpen" class="detail-panel" style="border:3px lightgray solid; padding: 10px;">
 
       <div class="flex basic-text box">
         <div class="title">정렬</div>
@@ -61,6 +64,9 @@ const startInput = ref(null)
 const endInput = ref(null)
 const keyword = ref('')
 
+const sortType = ref('latest')
+const orderType = ref('desc')
+
 const toggleDetail = () => {
   isOpen.value = !isOpen.value
 }
@@ -108,7 +114,8 @@ watch(isOpen, async (open) => {
   height: 30px;
   margin-left: 10px;
   padding: 5px;
-  border: 3px #800000 solid;
+  border: 1px solid #ccc;
+  border-radius: 8px;
 }
 
 .search-bar input {
@@ -127,16 +134,30 @@ watch(isOpen, async (open) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 10%;
+  width: auto;
   height: 30px;
   margin-left: 10px;
-  padding: 5px;
+  padding: 0 16px;
+  border-radius: 8px;
   background-color: #800000;
   color: white;
 }
 
 .search-btn:hover {
   background-color: #800000a8;
+}
+
+.search-btn.secondary {
+  background: #eee;
+  color: #333;
+}
+
+.detail-panel {
+  background: #fff;
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-top: 16px;
 }
 
 .date {
@@ -171,6 +192,18 @@ watch(isOpen, async (open) => {
 .box {
   margin: 10px;
   display:flex;
+  align-items: center;
+}
+
+.search-wrapper {
+    border: 2px lightgray solid;
+    padding: 10px;
+    margin: 10px 0;
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+}
+.search-row {
   align-items: center;
 }
 </style>

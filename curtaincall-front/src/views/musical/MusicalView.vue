@@ -2,20 +2,17 @@
     <div>
         <h2>뮤지컬</h2>
         <!-- 검색창 -->
-        <div>
+        <div style="margin-bottom: 50px;">
             <SearchBox />
         </div>
         <!-- 검색 결과 -->
-         <hr>
-        <div>
+        <div class="result"  style="margin-bottom: 50px;">
             <div class="basic-text">검색 결과(2)</div>
             <div>
                 <MusicalList />
             </div>
         </div>
-        <div style="margin: 30px 0;">
-            <hr>
-        </div>
+        <!--기타-->
         <div>
             <div class="title-text">공연 중인 작품</div>
             <div class="wrapper">
@@ -45,6 +42,14 @@ import MusicalList from '@/components/musical/MusicalList.vue';
 }
 .title-text {
     margin-left : 60px;
+}
+.result {
+    border: 2px lightgray solid;
+    padding: 10px;
+    margin: 10px 0;
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
 }
 
 

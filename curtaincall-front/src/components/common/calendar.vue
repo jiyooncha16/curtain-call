@@ -21,8 +21,8 @@
         v-for="cell in calendarCells"
         :key="cell.key"
         class="day-cell"
-        :class="{ today: cell.isToday }"
-        @click="cell.review && openReview(cell.review)"
+        :class="{ today: cell.isToday , empty: !cell.day }"
+        @click="openCell(cell)"
       >
         <!-- 날짜 숫자 -->
         <div class="day-number">{{ cell.day }}</div>
@@ -37,16 +37,25 @@
     </div>
 
     <!-- ===== 리뷰 상세 모달 (Teleport) ===== -->
-    <teleport to="body">
+    <teleport to="#app">
       <div v-if="selectedReview" class="modal-bg" @click.self="closeReview">
         <div class="modal">
-          <h3>{{ selectedReview.title }}</h3>
-          <img :src="selectedReview.posterImg" />
-          <p>{{ selectedReview.content }}</p>
-          <p class="meta">
-            ⭐ {{ selectedReview.rate }} · {{ selectedReview.date }}
-          </p>
-          <button @click="closeReview">닫기</button>
+          <button class="close-btn" @click="closeReview">×</button>
+
+          <div class="poster-wrap">
+            <img :src="selectedReview.posterImg" />
+          </div>
+
+          <div class="modal-body">
+            <h3 class="title">{{ selectedReview.title }}</h3>
+
+            <div class="meta">
+              <span class="rate">⭐ {{ selectedReview.rate }}</span>
+              <span class="date">{{ selectedReview.date }}</span>
+            </div>
+
+            <p class="content">{{ selectedReview.content }}</p>
+          </div>
         </div>
       </div>
     </teleport>
@@ -165,6 +174,11 @@ const openReview = (review) => {
 const closeReview = () => {
   selectedReview.value = null
 }
+
+const openCell = (cell) => {
+  if (!cell.review) return
+  selectedReview.value = cell.review
+}
 </script>
 
 <style scoped>
@@ -225,7 +239,9 @@ const closeReview = () => {
   height: 100%;
   object-fit: cover;
 }
+</style>
 
+<style>
 /* ===== 모달 ===== */
 .modal-bg {
   position: fixed;
@@ -235,13 +251,25 @@ const closeReview = () => {
   justify-content: center;
   align-items: center;
   z-index: 999999;
+  backdrop-filter: blur(2px);
+  /* isolation: isolate; */
 }
 
 .modal {
+  all: initial;
   background: white;
-  padding: 20px;
-  width: 320px;
-  border-radius: 8px;
+  min-height: 200px;
+  z-index: 1000000;
+  position: fixed;
+  
+  width: 340px;
+  max-width: 90%;
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+
+  box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+  animation: modalFadeUp 0.25s ease-out;
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
@@ -249,5 +277,80 @@ const closeReview = () => {
   width: 100%;
   border-radius: 6px;
   margin: 10px 0;
+}
+
+.empty {
+  pointer-events: none;
+  background: transparent;
+}
+
+
+/* ===== 등장 애니메이션 ===== */
+@keyframes modalFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== 닫기 버튼 ===== */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  border: none;
+  background: rgba(0,0,0,0.55);
+  color: white;
+  font-size: 18px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* ===== 포스터 영역 (🔥 핵심) ===== */
+.poster-wrap {
+  padding: 16px 16px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.poster-wrap img {
+  max-width: 100%;
+  max-height: 420px;   /* 포스터 최대 높이 제한 */
+  object-fit: contain; /* 🔥 절대 안 잘림 */
+  border-radius: 8px;
+  background: #f5f5f5;
+}
+
+/* ===== 내용 ===== */
+.modal-body {
+  padding: 16px 18px 20px;
+}
+
+.modal-body .title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.modal-body .meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #777;
+  margin-bottom: 12px;
+}
+
+.modal-body .content {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  white-space: pre-line;
 }
 </style>
