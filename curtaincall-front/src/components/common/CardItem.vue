@@ -3,14 +3,17 @@
         <div class="card">
             <div class="img-box">
                 <img src="@/assets/데스노트.jpg">
+                 <!-- <img :src="musical.이미지........"> -->
             </div>
-            <div class="title basic-text">데스노트</div>
+            <div class="title basic-text">{{item.title}}</div>
         </div>
     </div>
 </template>
 
 <script setup>
-
+const props = defineProps({
+    item: Object
+})
 </script>
 
 <style scoped>

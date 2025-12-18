@@ -4,17 +4,19 @@
             <img src="@/assets/데스노트.jpg">
         </div>
         <div class="container">
-            <div class="main-text">위키드</div>
-            <div class="basic-text">2025.10.12 - 2026.01.01</div>
-            <div class="basic-text">세종문화회관</div>
-            <div class="basic-text">은혜민, 조병국, ...</div>
-            <div class="basic-text"><i class="bi bi-heart-fill"></i> 40</div>
+            <div class="main-text">{{musical.title}}</div>
+            <div class="basic-text">{{musical.startDate}} - {{musical.endDate}}</div>
+            <div class="basic-text">{{musical.theater}}</div>
+            <!-- <div class="basic-text">{{actors}}</div> -->
+            <!-- <div class="basic-text"><i class="bi bi-heart-fill"></i> {{like}}</div> -->
         </div>
     </div>
 </template>
 
 <script setup>
-
+  const props = defineProps ({
+        musical: Object
+    })
 </script>
 
 <style scoped>

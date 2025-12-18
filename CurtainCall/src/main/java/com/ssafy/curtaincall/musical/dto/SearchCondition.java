@@ -40,14 +40,16 @@ public class SearchCondition {
 	private String theater; // 극장
 	
 	// 날짜 필터
-	private LocalDate startDate;   // 포함 이후 공연
-    private LocalDate endDate;     // 포함 이전 공연
+	private LocalDate startDate;   // 언제부터
+    private LocalDate endDate;     // 언제까지
+    private LocalDate fromDate;    // 공연 예정 작품
+	private LocalDate date; // 현재날짜가 들어옴
     
     // 정렬 조건 : 좋아요/랜덤/아이디(등록 순서)
     private String orderBy;
     
     // 정렬 조건 : asc/desc/null
-    private String order;
+    private String order = "DESC";
     
     //페이징
     private int page = 0; // 0페이지부터

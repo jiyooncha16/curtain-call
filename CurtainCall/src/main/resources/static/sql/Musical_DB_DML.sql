@@ -61,3 +61,13 @@ left join hashtag as h
 on h.tag_id = t.tag_id
 where u.user_id = 1 and r.rate >= 3
 group by h.tag;
+
+#
+SELECT m.*
+		FROM musical AS m
+		JOIN tag_connection AS c ON m.musical_id = c.musical_id
+		JOIN hashtag AS t ON c.tag_id = t.tag_id
+		LEFT JOIN like_musical AS l ON m.musical_id = l.musical_id
+        GROUP BY m.musical_id
+        ORDER BY COUNT(l.musical_id) DESC
+            	LIMIT 10 OFFSET 10;

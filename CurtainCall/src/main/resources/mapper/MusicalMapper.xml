@@ -36,6 +36,19 @@
             	<if test="theater != null">
             		AND m.theater like CONCAT ('%', #{theater}, '%')
             	</if>
+            	<if test="date != null">
+	            AND #{date} BETWEEN m.start_date AND m.end_date
+	        </if>
+	        <if test="fromDate != null">
+			    AND m.start_date &gt; #{fromDate}
+			</if>
+			<if test="startDate != null">
+		        AND m.start_date &lt;= #{endDate}
+		    </if>
+			<if test="endDate != null">
+		        AND m.end_date &gt;= #{startDate}
+		    </if>
+			
         </where>
         GROUP BY m.musical_id
         <choose>
@@ -45,11 +58,11 @@
             <when test="orderBy == 'likes'">
                 ORDER BY COUNT(l.musical_id) ${order}
             </when>
-            <when test="orderBy != null and order != null">
-                ORDER BY ${orderBy} ${order}
+            <when test="order != null">
+                ORDER BY m.musical_id ${order}
             </when>
             <otherwise>
-               	ORDER BY m.musical_id ASC
+               	ORDER BY m.musical_id DESC
             </otherwise>
         </choose>
         <!-- 페이징 limit : size, offset : 어디서부터? -->

@@ -91,27 +91,59 @@ import { ref, watch, nextTick } from 'vue'
 import flatpickr from 'flatpickr'
 import 'flatpickr/dist/flatpickr.css'
 import { Korean } from 'flatpickr/dist/l10n/ko'
+import axios from 'axios'
 
 const isOpen = ref(false)
 
 const startInput = ref(null)
 const endInput = ref(null)
+
 const keyword = ref('')
 const sortType = ref('latest')
 const orderType = ref('desc')
+const startDate = ref(null)
+const endDate = ref(null)
 
+const searchResult = ref([])
+
+
+// 상세보기 토글
 const toggleDetail = () => {
   isOpen.value = !isOpen.value
 }
 
-const onSearch = () => {
+
+//검색하기 버튼 눌렀을 때
+const onSearch = async () => {
   console.log({
     keyword: keyword.value,
-    sort: sortType.value,
-    order: orderType.value
+    orderBy: sortType.value,
+    order: orderType.value,
+    startDate: startDate.value,
+    endDate: endDate.value,
   })
+  axios.get('/musicals/search', {
+        params: { 
+          keyword: keyword.value,
+          order: orderType.value,
+          orderBy: sortType.value,
+          startDate: startDate.value,
+          endDate: endDate.value,
+          page: 0, 
+          size: 10 }
+    })
+    .then((result)=> {
+      console.log('맞춤 작품', result.data)
+      emit('search', result.data)
+      // searchResult.value = result.data
+    })
 }
 
+//결과 부모로 올려보내기
+const emit = defineEmits(['search'])
+emit('search', searchResult.value)
+
+//기간검색 설정
 let startPicker = null
 let endPicker = null
 
@@ -123,7 +155,10 @@ watch(isOpen, async (open) => {
       startPicker = flatpickr(startInput.value, {
         locale: Korean,
         dateFormat: 'Y-m-d',
-        allowInput: false
+        allowInput: false,
+        onChange: (_, dateStr) => {
+          startDate.value = dateStr
+        }
       })
     }
 
@@ -131,7 +166,10 @@ watch(isOpen, async (open) => {
       endPicker = flatpickr(endInput.value, {
         locale: Korean,
         dateFormat: 'Y-m-d',
-        allowInput: false
+        allowInput: false,
+        onChange: (_, dateStr) => {
+          endDate.value = dateStr
+        }
       })
     }
   }

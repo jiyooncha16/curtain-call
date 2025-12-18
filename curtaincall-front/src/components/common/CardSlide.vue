@@ -12,8 +12,8 @@
         >
           <!-- <SwiperSlide v-for="movie in movies" :key="movie.id">
             <img :src="movie.poster" class="poster" /> -->
-          <SwiperSlide v-for="num in 10" :key="num">
-              <CardItem />
+          <SwiperSlide v-for="musical in musicalList" :key="musical.musicalId">
+              <CardItem :item="musical" />
           </SwiperSlide>
         </Swiper>
     </div>
@@ -44,6 +44,10 @@ const onSlideChange = (swiper) => {
   isBeginning.value = swiper.isBeginning
   isEnd.value = swiper.isEnd
 }
+
+const props = defineProps({
+  musicalList : Array
+})
 </script>
 
 <style scoped>

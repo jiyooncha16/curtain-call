@@ -11,15 +11,15 @@
     <!-- 나중에 props 내려보내야됨 지금은 다같이 움직임 -->
     <div class="container">
       <div class="title-text">HOT 작품</div>
-      <CardSlide />
+      <CardSlide :musicalList="hotMusical"/>
     </div>
     <div class="container">
       <div class="title-text">공연 중 작품</div>
-      <CardSlide />
+      <CardSlide :musicalList="onStageMusical"/>
     </div>
     <div class="container">
       <div class="title-text">당신을 위한 작품</div>
-      <CardSlide />
+      <CardSlide :musicalList="myMusical"/>
     </div>
     <div class="container">
       <div class="title-text">인기 영상</div>
@@ -39,7 +39,9 @@ import CardSlide from '@/components/common/CardSlide.vue';
 import PhotoBoard from '@/components/common/PhotoBoard.vue';
 import ReviewMainList from '@/components/review/ReviewMainList.vue';
 import VideoMain from '@/components/VideoMain.vue';
-import { ref } from 'vue';
+import axios from 'axios';
+import { onMounted, ref } from 'vue';
+
 
 const musical = {
   title: "자주 만나는 작품",
@@ -58,6 +60,47 @@ const actor = {
     { src: new URL('@/assets/홍광호.jpg', import.meta.url).href }
   ]
 }
+
+
+// const baseURL = "http://localhost:8080"
+const hotMusical = ref([])
+const onStageMusical = ref([])
+const myMusical = ref([])
+
+onMounted(async ()=> {
+  try {
+    const hotRes = await axios.get('/musicals/search', {
+      params: { orderBy: 'likes', 
+        order:"desc", 
+        page: 0, 
+        size: 10 }
+    })
+    console.log('HOT 작품', hotRes.data)
+    hotMusical.value = hotRes.data
+
+    const onStageRes = await axios.get('/musicals/search', {
+      params: {
+        date: "2025-12-18", 
+        order:"desc", 
+        page: 0, 
+        size: 10 }
+    })
+    console.log('공연 중 작품', onStageRes.data)
+    onStageMusical.value = onStageRes.data
+
+    const myRes = await axios.get('/musicals/search', {
+        params: { orderBy: 'random', 
+        order:"asc", 
+        page: 0, 
+        size: 10 }
+    })
+    console.log('맞춤 작품', myRes.data)
+    myMusical.value = myRes.data
+
+  } catch (e) {
+    console.error('API 에러', e)
+  }
+})
 </script>
 
 <style scoped>
