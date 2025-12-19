@@ -1,31 +1,33 @@
 <template>
   <div>
-    <div class="container flex-center"> 
-      <!-- <div class="wrapper main-text" style="color:white; align-content: center; flex-direction: column;">
-        <div>내가 본 작품</div>
-        <div class="circle flex">40</div>
-      </div> -->
-        <PhotoBoard :obj="musical"/>
-        <PhotoBoard :obj="actor"/>
+    <div class="hero-section" style="margin-bottom :50px;">
+      <div class="flex-center" style="gap:10px">
+          <div class="shadow photo-board">
+              <PhotoBoard :obj="musical" />
+          </div>
+          <div class="shadow photo-board">
+              <PhotoBoard :obj="actor" />
+          </div>
+      </div>
     </div>
     <!-- 나중에 props 내려보내야됨 지금은 다같이 움직임 -->
-    <div class="container">
+    <div class="shadow">
       <div class="title-text">HOT 작품</div>
       <CardSlide :musicalList="hotMusical"/>
     </div>
-    <div class="container">
+    <div class="shadow">
       <div class="title-text">공연 중 작품</div>
       <CardSlide :musicalList="onStageMusical"/>
     </div>
-    <div class="container">
-      <div class="title-text">당신을 위한 작품</div>
+    <div class="shadow">
+      <div class="title-text">당신을 위한 추천</div>
       <CardSlide :musicalList="myMusical"/>
     </div>
-    <div class="container">
+    <div class="shadow">
       <div class="title-text">인기 영상</div>
       <VideoMain :keyword="keyword"/>
     </div>
-    <div class="container">
+    <div class="shadow">
       <div class="title-text">인기 리뷰</div>
       <ReviewMainList />
     </div>
@@ -122,4 +124,21 @@ onMounted(async ()=> {
   align-items: center;
   justify-content: center;
 }
+.title-text {
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+.photo-board {
+  background-color: white;
+  position: relative;
+  background: transparent; /* 실제 배경은 가상요소가 담당 */
+  overflow: hidden;
+
+}
+.hero-section {
+  background: linear-gradient(135deg, #50000041, #460000e8);
+  padding: 20px 20px;
+  border-radius: 20px;
+}
+
 </style>

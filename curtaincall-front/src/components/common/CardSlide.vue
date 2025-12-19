@@ -94,7 +94,7 @@ const props = defineProps({
 }
 
 .disabled {
-  opacity: 0;          /* 없어지기 */
+  opacity: 0.2;          /* 없어지기 */
   pointer-events: none;  /* 클릭 차단 */
   cursor: default;
 }

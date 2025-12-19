@@ -1,7 +1,13 @@
 <template>
     <div>
         <h2>뮤지컬</h2>
-        <!-- 검색창 -->
+        <!--기타-->
+        <div>
+            <div class="title-text">공연 중인 작품</div>
+            <div class="wrapper">
+                <CardSlide :musicalList="onStageMusical"/>
+            </div>
+        </div><!-- 검색창 -->
         <div style="margin-bottom: 50px;">
             <SearchBox @search="onSearchResult"/>
         </div>
@@ -12,19 +18,13 @@
                 <MusicalList :musicalList="searchResult"/>
             </div>
         </div>
-        <!--기타-->
-        <div>
-            <div class="title-text">공연 중인 작품</div>
-            <div class="wrapper">
-                <CardSlide :musicalList="onStageMusical"/>
-            </div>
-        </div>
-        <div>
+        
+        <!-- <div>
             <div class="title-text">공연 예정 작품</div>
             <div class="wrapper">
                 <CardSlide :musicalList="willBeStageMusical"/>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 

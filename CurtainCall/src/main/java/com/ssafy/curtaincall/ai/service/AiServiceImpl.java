@@ -23,7 +23,6 @@ public class AiServiceImpl implements AiService{
 	//sql문 결과 받아오기
 	@Override
 	public List<HashtagDTO> hashtagCount(int id) {
-
 		return mapper.selectCountGroupByHashtag(id);
 	}
 

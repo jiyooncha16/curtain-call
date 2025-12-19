@@ -31,13 +31,10 @@
             <div class="basic-text">{{user.nickname}} 님은</div>
             <div class="main-text">{{ taste }}</div>
             <hr />
-            <HashtagForMypage
-              :tags="hashtag"
-              :limit="3"
-            />
+            <HashtagForMypage :tags="hashtag" :limit="3" />
           </div>
 
-          <!-- ✅ 통계 카드 영역 -->
+          <!-- 통계 카드 영역 -->
           <div class="stats-wrapper">
             <div class="stat-card" style="background-color: rgba(211, 211, 211, 1.0);">
               <div class="stat-value">Like</div>
@@ -61,7 +58,7 @@
     </div>
 
     <!--자주 만나는 작품, 자주 만나는 배우 -->
-    <div class="flex-center" style="margin-bottom :50px;">
+    <div class="flex-center" style="margin-bottom :50px; gap:10px">
         <div class="shadow">
             <PhotoBoard :obj="musical" />
         </div>
@@ -90,7 +87,7 @@
     
     <!-- 캘린더 -->
     <div class="container">
-      <div class="title-text">월 캘린더</div>
+      <div class="title-text">캘린더</div>
       <div class="calendar-wrapper">
         <Calendar/>
       </div>

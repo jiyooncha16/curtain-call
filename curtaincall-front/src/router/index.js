@@ -17,6 +17,7 @@ import LoginView from '@/views/auth/LoginView.vue'
 import ChangePasswordView from '@/views/auth/ChangePasswordView.vue'
 import MyPageView from '@/views/myPage/MyPageView.vue'
 import SignupView from '@/views/auth/SignupView.vue'
+import SubView from '@/views/SubView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -120,6 +121,11 @@ const router = createRouter({
       path: '/signup',
       name: 'signup',
       component: SignupView,
+    },
+    {
+      path: '/example',
+      name: 'exaple',
+      component: SubView,
     },
   ],
 })
