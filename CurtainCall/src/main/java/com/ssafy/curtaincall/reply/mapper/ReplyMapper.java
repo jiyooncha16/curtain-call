@@ -10,7 +10,7 @@ import com.ssafy.curtaincall.reply.dto.Reply;
 public interface ReplyMapper {
 	
 	//CRUD
-    List<Reply> selectAllReply();
+    List<Reply> selectAllReply(int boardId);
     int insertReply(Reply reply);
     int updateReply(Reply reply);
     int deleteReply(int replyId);

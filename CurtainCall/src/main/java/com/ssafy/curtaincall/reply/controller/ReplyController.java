@@ -51,21 +51,24 @@ public class ReplyController {
 	
 
 	// 1. CRUD
-	/* 1-1. 전체 게시글 목록 조회 - 테스트 완료
-	 *
+	/*
+	 * 1-1. 특정 게시글의 댓글 목록 조회
 	 * 메서드 : GET
-	 * 엔드포인트 : /reply
+	 * 엔드포인트 : /reply/board/{boardId}
 	 * 파라미터
-	 *   - pathVariable(url) : 없음
-	 *   - RequestBody(json) : 없음
-	 * 리턴 : List<Reply> 게시글 전체 목록
+	 *   - PathVariable : boardId
+	 * 리턴 : 해당 게시글의 댓글 목록
 	 */
-	@GetMapping("")
-	public ResponseEntity<List<Reply>> getlist() {
-		List<Reply> list = service.getlist();
-		if (list == null || list.size() == 0) return ResponseEntity.noContent().build();
-		return ResponseEntity.ok(list);
+	@GetMapping("/board/{boardId}")
+	public ResponseEntity<List<Reply>> getlist(@PathVariable int boardId) {
+	    List<Reply> list = service.getlist(boardId);
+	    if (list == null || list.isEmpty()) {
+	        return ResponseEntity.noContent().build();
+	    }
+	    return ResponseEntity.ok(list);
 	}
+
+	
 	/* 1-2. 게시글 등록 
 	 * 메서드 : POST
 	 * 엔드포인트 : /reply

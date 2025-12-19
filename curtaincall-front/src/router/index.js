@@ -47,7 +47,9 @@ const router = createRouter({
       name: 'actorDetail',
       component: ActorDetailView,
       props: true,
+      
     },
+    
     {
       path: '/community',
       name: 'community',
