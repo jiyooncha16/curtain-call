@@ -47,7 +47,9 @@ const router = createRouter({
       name: 'actorDetail',
       component: ActorDetailView,
       props: true,
+      
     },
+    
     {
       path: '/community',
       name: 'community',
@@ -56,7 +58,7 @@ const router = createRouter({
     {
       path: '/community/:id',
       name: 'boardDetail',
-      component: CommunityView,
+      component: BoardDetailView,
       props: true,
     },
     {

@@ -1,8 +1,8 @@
 <template>
   <div class="reply-item">
     <div class="top">
-      <span class="writer">작성자 {{ reply.userId }}</span>
-      <span class="date">· {{ reply.createDate }}</span>
+      <div class="writer">{{ reply.nickname }}</div> 
+      <div class="date">{{ reply.createDate }}</div>
     </div>
 
     <!-- 일반 보기 -->
@@ -18,7 +18,8 @@
     </div>
 
     <!-- 🔥 본인 댓글만 -->
-    <div class="actions" v-if="isOwner">
+    <div class="actions">
+        <!-- <div class="actions" v-if="isOwner"> -->
       <button @click="startEdit">수정</button>
       <button class="danger" @click="deleteReply">삭제</button>
     </div>

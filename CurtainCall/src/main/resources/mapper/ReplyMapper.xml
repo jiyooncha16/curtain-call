@@ -5,10 +5,11 @@
 <mapper namespace="com.ssafy.curtaincall.reply.mapper.ReplyMapper">
 
     <!-- 전체 댓글 조회 -->
-    <select id="selectAllReply" resultType="Reply">
-  SELECT * FROM reply
-  WHERE board_id = #{boardId}
-  ORDER BY reply_id ASC
+    <select id="selectAllReply" resultType="ReplyResponse">
+  	SELECT r.*, u.nickname FROM reply r
+  	JOIN users u ON r.user_id = u.user_id
+  	WHERE r.board_id = #{boardId}
+  	ORDER BY r.reply_id ASC
     </select>
 
 
@@ -28,7 +29,7 @@
     <!-- 댓글 삭제 -->
     <delete id="deleteReply" parameterType="int">
         DELETE FROM reply
-        WHERE reply_id = #{id}
+       WHERE reply_id = #{value}
     </delete>
 
 </mapper>

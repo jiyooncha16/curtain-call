@@ -15,7 +15,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Reply {
+public class ReplyResponse {
 
 	/*
 	 * ** 클래스 설명, 필드 설명 주석 필수 ** 
