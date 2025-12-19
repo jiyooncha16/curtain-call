@@ -1,11 +1,12 @@
 <template>
     <div class="wrapper">
-        <CardItem v-for="i in 10"/>
+        <CardItemActor v-for="i in 10"/>
     </div>
 </template>
 
 <script setup>
 import CardItem from '../common/CardItem.vue';
+import CardItemActor from '../common/CardItemActor.vue';
 
 
 </script>

@@ -6,15 +6,15 @@
                  <!-- <img :src="musical.이미지........"> -->
             </div>
             <!-- <div class="title basic-text">{{item.title}}</div> -->
-             <div class="title basic-text">아아아</div>
+             <div class="title basic-text">{{ actor }}</div>
         </div>
     </div>
 </template>
 
 <script setup>
-// const props = defineProps({
-//     item: Object
-// })
+const props = defineProps({
+    actor: Object
+})
 </script>
 
 <style scoped>

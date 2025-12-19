@@ -41,6 +41,15 @@
         </if>
     </select>
     
+    <!-- 탑 5 조회-->
+	<select id="selectActorOfTopFive" resultType="Actor">
+		select a.* from actor as a
+		left join like_actor as l on a.actor_id = l.actor_id
+		group by a.actor_id
+		order by count(*) desc
+		limit 5;
+	</select>
+    
     <!-- 좋아요 있는지 확인 -->
     <select id="checkLike" resultType="int" parameterType="ActorLikes">
     		SELECT count(*) FROM like_actor WHERE actor_id = #{actorId} AND user_id = #{userId}

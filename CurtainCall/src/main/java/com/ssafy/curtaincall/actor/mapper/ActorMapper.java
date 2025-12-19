@@ -15,6 +15,7 @@ public interface ActorMapper {
 	public List<Actor> selectAllActor(); // 전체 목록
 	public List<Actor> selectActorByCondition(ActorSearchCondition condition); // 조건부 목록(검색)
 	public Actor selectActor(int id); // 뮤지컬 상세조회
+	public List<Actor> selectActorOfTopFive();
 	
 	//좋아요
 	public int checkLike(ActorLikes like); // 좋아요 찍혀있는지 확인 (개수 반환)

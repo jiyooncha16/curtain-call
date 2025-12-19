@@ -113,6 +113,12 @@ public class ActorController {
 		else return ResponseEntity.ok(list);
 	}
 	
+	@GetMapping("/search/topFive")
+	public ResponseEntity<List<Actor>> getActorOfTopFive() {
+		List<Actor> list = service.getActorOfTopFive();
+		if (list == null || list.size() == 0) return ResponseEntity.noContent().build();
+		else return ResponseEntity.ok(list);
+	}
 	// 2. 좋아요
 	/* 2-1. 좋아요 등록 - 테스트 완료
 	 * 

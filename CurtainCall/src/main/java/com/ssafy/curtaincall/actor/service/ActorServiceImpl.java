@@ -62,6 +62,11 @@ public class ActorServiceImpl implements ActorService {
 		if (mapper.checkLike(like) >= 1) mapper.deleteLike(like);	
 		else System.out.println("삭제할 좋아요가 없습니다.");
 	}
+
+	@Override
+	public List<Actor> getActorOfTopFive() {
+		return mapper.selectActorOfTopFive();
+	}
 	
 
 }

@@ -2,10 +2,10 @@
     <div>
         <h2>배우</h2>
         <section class="section-divider">
-            <div class="main-text">배우 인기 랭킹 TOP 5(좋아요 순)</div>
+            <div class="main-text">배우 인기 랭킹 TOP 5</div>
             <div class="wrapper">
-                <a href=""v-for="i in 5">
-                    <CardItemActor />
+                <a href=""v-for="actor in topFiveList">
+                    <CardItemActor :actor="actor"/>
                 </a>
             </div>
         </section>
@@ -22,6 +22,8 @@
                 <hr>
                 <div style="margin : 10px 0;">
                     <ActorList />
+
+
                 </div>
             </div>
         </section>
@@ -32,7 +34,19 @@
 import ActorList from '@/components/actor/ActorList.vue';
 import CardItemActor from '@/components/common/CardItemActor.vue';
 import SearchBoxActor from '@/components/common/SearchBoxActor.vue';
+import axios from 'axios';
+import { onMounted, ref } from 'vue';
 
+
+// /search/topFive
+const topFiveList = ref([])
+onMounted(() => {
+    axios.get(`/api/actors/search/topFive`)
+    .then((res) => {
+        // console.log("top 5 : " + res.data)
+        topFiveList.value = res.data
+    })
+})
 
 </script>
 
