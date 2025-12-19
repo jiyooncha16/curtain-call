@@ -50,8 +50,8 @@
         </div>
         <!-- 해시태그 -->
         <div class="container">
-            <div class="main-text">해시태그</div>
-            <div class="basic-text">수식어 : {{taste}}</div>
+            <div class="title-text">해시태그</div>
+            <div class="basic-text">닉네임 님은 {{taste}}</div>
             <hr>
             <HashtagForMypage :tags="['로맨스', '대극장', '판타지', 'OST', '눈물']" :limit="3" />
         </div>
@@ -61,10 +61,18 @@
         </div>
         <!-- 평점 통계 -->
         <div class="container">
-            <div class="rate-avg-wrapper">
-                <div class="main-text">평점 통계</div>
+            <div class="title-text">평점 통계</div>
+            <div class="rate-avg-wrapper" >
+                <div class="center" style="width : 30%;">
+                    <div class="title-text">{{ rate }}</div>
+                    <Rate :rate="rate"/>
+                    <div class="basic-text">내 리뷰 27개</div>
+                </div>
                 <hr>
                 <!-- 평점 통계 연결해야함 -->
+                 <div style="width : 70%;">
+                     <RateStats />
+                 </div>
             </div>
         </div>
         <!-- 캘린더 -->
@@ -87,12 +95,15 @@ import Calendar from '@/components/common/calendar.vue';
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
+import RateStats from '@/components/common/RateStats.vue';
+import Rate from '@/components/common/icon/Rate.vue';
 
-const monthNow = emit.month 
-const emit = defineEmits({
-    month : Number
-})
+// const monthNow = emit.month 
+// const emit = defineEmits({
+//     month : Number
+// })
 
+const rate = 4.3
 const musical = {
     title: "자주 만나는 작품",
     imgs: [
@@ -215,6 +226,8 @@ onMounted(()=> {
 /* 평점통계 영역 */
 .rate-avg-wrapper {
     height: 200px;
+    display:flex;
+
 }
 
 /* 달력 영역 */
