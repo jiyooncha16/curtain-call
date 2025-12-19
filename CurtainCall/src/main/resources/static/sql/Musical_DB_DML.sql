@@ -6,6 +6,7 @@ SELECT * FROM hashtag;
 SELECT * FROM tag_connection;
 SELECT * FROM video;
 SELECT * FROM actor;
+
 SELECT * FROM cast;
 SELECT * FROM users;
 SELECT * FROM review;
@@ -73,4 +74,19 @@ SELECT m.*
             	LIMIT 10 OFFSET 0;
                 
 #
-SELECT * FROM musical
+SELECT b.*, u.nickname FROM board as b
+LEFT JOIN users as u on b.user_id = u.user_id;
+
+#
+select a.* from actor as a
+		left join like_actor as l on a.actor_id = l.actor_id
+		group by a.actor_id
+		order by count(*) desc
+		limit 5;
+        
+#
+select count(*) from users as u
+left join review as r on u.user_id = r.user_id
+group by r.rate
+where u.user_id = 1;
+

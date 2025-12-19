@@ -4,26 +4,22 @@
         <section class="section-divider">
             <div class="main-text">배우 인기 랭킹 TOP 5</div>
             <div class="wrapper">
-                <a href=""v-for="actor in topFiveList">
-                    <CardItemActor :actor="actor"/>
-                </a>
+                <CardItemActor v-for="actor in topFiveList" :key="actor.id" :actor="actor" />
             </div>
         </section>
 
         <!-- 검색창 -->
         <section class="section-divider">
-            <SearchBoxActor />
+            <SearchBoxActor @search="onSearchResult"/>
         </section>
 
         <!-- 검색 결과 -->
         <section class="section-divider">
             <div class="result">
-                <div class="basic-text">검색 결과(10)</div>
+                <div class="basic-text">검색 결과({{searchResult.length}})</div>
                 <hr>
                 <div style="margin : 10px 0;">
-                    <ActorList />
-
-
+                    <ActorList :searchResult="searchResult"/>
                 </div>
             </div>
         </section>
@@ -41,12 +37,19 @@ import { onMounted, ref } from 'vue';
 // /search/topFive
 const topFiveList = ref([])
 onMounted(() => {
+    console.log('mounted!!!')
     axios.get(`/api/actors/search/topFive`)
     .then((res) => {
-        // console.log("top 5 : " + res.data)
+        console.log("top 5 : ", res.data)
         topFiveList.value = res.data
     })
 })
+
+//자식에게서 받아오기
+const searchResult = ref([])
+const onSearchResult = (result) => {
+  searchResult.value = result
+}
 
 </script>
 

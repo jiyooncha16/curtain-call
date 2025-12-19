@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.curtaincall.user.dto.LikeCountDto;
 import com.ssafy.curtaincall.user.dto.User;
 import com.ssafy.curtaincall.user.mapper.UserMapper;
 
@@ -56,6 +57,17 @@ public class UserServiceImpl implements UserService {
 	public int deleteUser(String username) {
 		if (mapper.selectUser(username) == null) return 0;
 		return mapper.deleteUser(username);
+	}
+
+	@Override
+	public LikeCountDto getCount(int id) {
+		
+		return mapper.selectCount(id);
+	}
+
+	@Override
+	public User getUserById(int userId) {
+		return mapper.selectUserById(userId);
 	}
 
 }

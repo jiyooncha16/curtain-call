@@ -24,6 +24,7 @@ import com.ssafy.curtaincall.board.dto.BoardSearchCondition;
 import com.ssafy.curtaincall.board.service.BoardService;
 import com.ssafy.curtaincall.review.dto.Review;
 import com.ssafy.curtaincall.review.dto.ReviewLikes;
+import com.ssafy.curtaincall.review.dto.ReviewRateDto;
 import com.ssafy.curtaincall.review.dto.ReviewSearchCondition;
 import com.ssafy.curtaincall.review.service.ReviewService;
 
@@ -98,6 +99,23 @@ public class ReviewController {
 		double rate = service.getReviewRate(id);
 		if (rate == 0.0 || rate == 0) return ResponseEntity.noContent().build();
 		else return ResponseEntity.ok((Double)rate);
+	}
+	
+
+	/* 1-3. 리뷰 평점 통계 조회
+	 *
+	 * 메서드 : GET
+	 * 엔드포인트 : /reviews/rate/stats/{id}
+	 * 파라미터
+	 *   - PathVariable(id) : 조회할 게시글 번호
+	 *   - RequestBody(json) : 없음
+	 * 리턴 : 리뷰 평점 (double, 소수점 아래 한자리까지)
+	 */
+	@GetMapping("/rating/stats/{id}")
+	public ResponseEntity<List<ReviewRateDto>> getReviewRateStats(@PathVariable int id) {
+		List<ReviewRateDto> list = service.getReviewRateStats(id);
+		if (list == null || list.size() == 0) return ResponseEntity.noContent().build();
+		else return ResponseEntity.ok(list);
 	}
 	
 	

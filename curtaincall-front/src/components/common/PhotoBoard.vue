@@ -27,7 +27,7 @@ const props = defineProps({
     width : 100%;
     display : grid;
     grid-template-columns: repeat(3, 1fr);
-    margin: 10px 5px;
+    padding: 10px 5px;
     gap : 10px;
 }
 .img-wrapper {
@@ -42,12 +42,15 @@ const props = defineProps({
     display: block;
 }
 .photo-board {
-    width : 50%;
+    max-width: 900px;   /* 🔑 기준 너비 */
+    margin: 0 auto;     /* 🔑 가운데 정렬 */
+    padding: 0;
+    box-sizing: border-box;
 }
 .wrapper {
     background-color: #5000009e;
     padding : 10px;
-    margin : 5px;
+    margin : 5px 0;
     width : 100%;
 }
 </style>

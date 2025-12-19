@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.curtaincall.review.dto.Review;
 import com.ssafy.curtaincall.review.dto.ReviewLikes;
+import com.ssafy.curtaincall.review.dto.ReviewRateDto;
 import com.ssafy.curtaincall.review.dto.ReviewSearchCondition;
 import com.ssafy.curtaincall.review.mapper.ReviewMapper;
 
@@ -32,6 +33,12 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public List<Review> getReviewByCondition(ReviewSearchCondition condition) {
 		return mapper.selectReviewByCondition(condition);
+	}
+
+
+	@Override
+	public List<ReviewRateDto> getReviewRateStats(int id) {
+		return mapper.selectReviewRateStats(id);
 	}
 	
 	//CUD

@@ -2,6 +2,7 @@ package com.ssafy.curtaincall.user.service;
 
 import java.util.List;
 
+import com.ssafy.curtaincall.user.dto.LikeCountDto;
 import com.ssafy.curtaincall.user.dto.User;
 
 public interface UserService {
@@ -11,6 +12,8 @@ public interface UserService {
 	User getUser(String username); // 유저 상세조회
 //	User getEmail(String email); // 이메일 조회(중복확인용)
 //	User getPhone(String phone); // 전화번호 조회(중복확인용)
+	LikeCountDto getCount(int id);
+	User getUserById(int userId);
 
 	//회원 CUD
 	int signup(User user); // 회원등록 (가입)

@@ -36,6 +36,23 @@
 	    SELECT ROUND(AVG(rate), 1) FROM review
 		WHERE musical_id = #{musicalId};
 	</select>
+	
+	<!-- 평점 통계 -->
+	<select id="selectReviewRateStats" parameterType="int" resultType="ReviewRateDto">
+		SELECT n.rate, COUNT(r.review_id) AS count
+		FROM (
+		  SELECT 1 AS rate UNION ALL
+		  SELECT 2 UNION ALL
+		  SELECT 3 UNION ALL
+		  SELECT 4 UNION ALL
+		  SELECT 5
+		) n
+		LEFT JOIN review r
+		  ON r.rate = n.rate
+		 AND r.user_id = #{userId}
+		GROUP BY n.rate
+		ORDER BY n.rate;
+	</select>
     
  	<!-- 게시글 등록 -->
     <insert id="insertReview" parameterType="Review" 

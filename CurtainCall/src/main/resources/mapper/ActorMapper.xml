@@ -22,17 +22,20 @@
 		LEFT JOIN like_actor AS l ON a.actor_id = l.actor_id
 
         <where>
-            <if test="name != null and name!=''">
-            	a.name like CONCAT ('%', #{name}, '%')
+            <if test="keyword != null and keyword!=''">
+            	a.name like CONCAT ('%', #{keyword}, '%')
             </if>
         </where>
         GROUP BY a.actor_id
         <choose>
             <when test="orderBy == 'likes'">
-                ORDER BY COUNT(l.actor_id) DESC
+                ORDER BY COUNT(l.actor_id) ${order}
+            </when>
+            <when test="orderBy == 'name'">
+                ORDER BY a.name ${order}
             </when>
             <otherwise>
-               	ORDER BY a.actor_id ASC
+               	ORDER BY a.actor_id ${order}
             </otherwise>
         </choose>
         <!-- 페이징 limit : size, page : 어디서부터-->

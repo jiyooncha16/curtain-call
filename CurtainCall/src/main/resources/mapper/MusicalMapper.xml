@@ -58,6 +58,9 @@
             <when test="orderBy == 'likes'">
                 ORDER BY COUNT(l.musical_id) ${order}
             </when>
+            <when test="orderBy == 'title'">
+                ORDER BY m.title ${order}
+            </when>
             <when test="order != null">
                 ORDER BY m.musical_id ${order}
             </when>

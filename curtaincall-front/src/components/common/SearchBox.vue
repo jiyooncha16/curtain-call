@@ -122,7 +122,7 @@ const onSearch = async () => {
     startDate: startDate.value,
     endDate: endDate.value,
   })
-  axios.get('/musicals/search', {
+  axios.get('/api/musicals/search', {
         params: { 
           keyword: keyword.value,
           order: orderType.value,

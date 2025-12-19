@@ -20,12 +20,12 @@
         <div class="title">정렬</div>
 
         <label class="radio">
-          <input type="radio" name="sort" value="like" v-model="sortType" />
+          <input type="radio" name="sort" value="likes" v-model="sortType" />
           좋아요 순
         </label>
 
         <label class="radio">
-          <input type="radio" name="sort" value="title" v-model="sortType" />
+          <input type="radio" name="sort" value="name" v-model="sortType" />
           가나다 순
         </label>
 
@@ -57,6 +57,7 @@ import { ref, watch, nextTick } from 'vue'
 import flatpickr from 'flatpickr'
 import 'flatpickr/dist/flatpickr.css'
 import { Korean } from 'flatpickr/dist/l10n/ko'
+import axios from 'axios'
 
 const isOpen = ref(false)
 
@@ -71,38 +72,37 @@ const toggleDetail = () => {
   isOpen.value = !isOpen.value
 }
 
-const onSearch = () => {
+//결과 부모로 올려보내기
+const emit = defineEmits(['search'])
+
+//검색하기 버튼 눌렀을 때
+const searchResult = ref([])
+const onSearch = async () => {
+  console.log("눌렀다")
   console.log({
     keyword: keyword.value,
-    sort: sortType.value,
+    orderBy: sortType.value,
     order: orderType.value
   })
+  axios.get('/api/actors/search', {
+        params: { 
+          keyword: keyword.value,
+          order: orderType.value,
+          orderBy: sortType.value,
+          page: 0, 
+          size: 10 }
+    })
+    .then((result)=> {
+      console.log('검색 결과', result.data)
+      emit('search', result.data)
+      searchResult.value = result.data
+    })
 }
 
-let startPicker = null
-let endPicker = null
+// //결과 부모로 올려보내기
+// const emit = defineEmits(['search'])
+// emit('search', searchResult.value)
 
-watch(isOpen, async (open) => {
-  if (open) {
-    await nextTick()
-
-    if (!startPicker) {
-      startPicker = flatpickr(startInput.value, {
-        locale: Korean,
-        dateFormat: 'Y-m-d',
-        allowInput: false
-      })
-    }
-
-    if (!endPicker) {
-      endPicker = flatpickr(endInput.value, {
-        locale: Korean,
-        dateFormat: 'Y-m-d',
-        allowInput: false
-      })
-    }
-  }
-})
 </script>
 
 
