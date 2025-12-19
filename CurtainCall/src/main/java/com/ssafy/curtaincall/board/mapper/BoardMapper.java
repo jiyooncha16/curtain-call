@@ -6,15 +6,16 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.ssafy.curtaincall.board.dto.Board;
 import com.ssafy.curtaincall.board.dto.BoardLikes;
+import com.ssafy.curtaincall.board.dto.BoardResponseDto;
 import com.ssafy.curtaincall.board.dto.BoardSearchCondition;
 
 @Mapper
 public interface BoardMapper {
 	
 	//조회
-	public List<Board> selectAllBoard(); // 전체 목록
-	public List<Board> selectBoardByCondition(BoardSearchCondition condition); // 조건부 목록(검색)
-	public Board selectBoard(int id); // 게시글 상세조회
+	public List<BoardResponseDto> selectAllBoard(); // 전체 목록
+	public List<BoardResponseDto> selectBoardByCondition(BoardSearchCondition condition); // 조건부 목록(검색)
+	public BoardResponseDto selectBoard(int id); // 게시글 상세조회
 	
 	//CUD
     int insertBoard(Board board);

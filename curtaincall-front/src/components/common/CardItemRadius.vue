@@ -1,5 +1,5 @@
 <template>
-    <div class="poster container">
+    <div class="poster">
         <div class="img-box">
             <img src="@/assets/홍광호.jpg">
         </div>

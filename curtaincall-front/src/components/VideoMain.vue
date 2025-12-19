@@ -16,8 +16,8 @@
             >
             <!-- <SwiperSlide v-for="movie in movies" :key="movie.id">
                 <img :src="movie.poster" class="poster" /> -->
-            <SwiperSlide v-for="num in 10" :key="num">
-                    <VideoCard />
+            <SwiperSlide v-for="video in videoList" :key="video.channelId">
+                    <VideoCard :video="video"/>
             </SwiperSlide>
             </Swiper>
         </div>
@@ -30,11 +30,12 @@ import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Navigation } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import axios from 'axios';
 
+// 슬라이드 설정
 const prevEl = ref(null)
 const nextEl = ref(null)
-
 const isBeginning = ref(true)
 const isEnd = ref(false)
 
@@ -42,11 +43,36 @@ const onSwiper = (swiper) => {
   isBeginning.value = swiper.isBeginning
   isEnd.value = swiper.isEnd
 }
-
 const onSlideChange = (swiper) => {
   isBeginning.value = swiper.isBeginning
   isEnd.value = swiper.isEnd
 }
+
+//youtube api
+const props = defineProps ({
+  keyword : String,
+})
+const videoList = ref([])
+const youtubeSearch = function(keyword) {
+
+    axios.get("https://www.googleapis.com/youtube/v3/search", {
+      params:{
+        key: import.meta.env.VITE_YOUTUBE_API_KEY, // 키는 필수
+        part : `snippet`, // api 검색하려면 필수
+        q : keyword, // 키워드 변수
+        type : `video`, // 명시하지 않으면 채널, 플레이리스트도 검색됨
+        maxResults : 10 // 기본 5, 최대 50
+      }
+    })
+    .then((response)=> {
+      console.log(response.data)
+      videoList.value = response.data.items // 응답을 videoList에 담음
+    })
+}
+
+onMounted(() => {
+  youtubeSearch(props.keyword)
+})
 
 </script>
 

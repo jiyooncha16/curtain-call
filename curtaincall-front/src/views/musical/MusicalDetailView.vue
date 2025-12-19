@@ -8,7 +8,7 @@
         <!-- 작품 설명 영역 -->
         <div>
             <div class="center" style="margin: 20px 0">
-                <div class="title-text" style="margin:0;">데스노트</div>
+                <div class="title-text" style="margin:0;">{{title}}</div>
                 <Heart />
             </div>
             <Hashtag :tags="['로맨스', '대극장', '판타지', 'OST', '눈물']" :limit="3" />
@@ -32,6 +32,11 @@
         <div class="main-text" style="margin: 10px 0">공연장</div>
         <div class="map-wrapper"></div>
     </div>
+    <!-- 관련 영상 -->
+    <div class="container">
+        <div class="main-text" style="margin: 10px 0">관련 영상</div>
+        <VideoMain :keyword="title"/>
+    </div>
     <!-- 리뷰 영역 -->
     <div class="container">
         <div class="main-text" style="margin: 10px 0">리뷰(50개)</div>
@@ -47,6 +52,11 @@ import Hashtag from '@/components/common/icon/Hashtag.vue';
 import Heart from '@/components/common/icon/Heart.vue';
 import Rate from '@/components/common/icon/Rate.vue';
 import ReviewList from '@/components/review/ReviewList.vue';
+import VideoMain from '@/components/VideoMain.vue';
+import axios from 'axios';
+import { onMounted, ref } from 'vue';
+
+const title = "데스노트"
 const musicalInfo = `
 20220401 -20220619
 충무아트센터
@@ -89,7 +99,6 @@ const actors = [
     },
 ]
 const avgRate = 4;
-
 </script>
 
 <style scoped>
@@ -119,8 +128,9 @@ img {
 
 .actor-list {
     margin-top: 10px;
+    padding : 0;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: 5px;
     align-items: center;
     justify-content: start;

@@ -23,7 +23,7 @@
     </div>
     <div class="container">
       <div class="title-text">인기 영상</div>
-      <VideoMain />
+      <VideoMain :keyword="keyword"/>
     </div>
     <div class="container">
       <div class="title-text">인기 리뷰</div>
@@ -42,6 +42,7 @@ import VideoMain from '@/components/VideoMain.vue';
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 
+const keyword = "뮤지컬 인기 영상"
 
 const musical = {
   title: "자주 만나는 작품",
@@ -62,14 +63,13 @@ const actor = {
 }
 
 
-// const baseURL = "http://localhost:8080"
 const hotMusical = ref([])
 const onStageMusical = ref([])
 const myMusical = ref([])
 
 onMounted(async ()=> {
   try {
-    const hotRes = await axios.get('/musicals/search', {
+    const hotRes = await axios.get('/api/musicals/search', {
       params: { orderBy: 'likes', 
         order:"desc", 
         page: 0, 
@@ -78,7 +78,7 @@ onMounted(async ()=> {
     console.log('HOT 작품', hotRes.data)
     hotMusical.value = hotRes.data
 
-    const onStageRes = await axios.get('/musicals/search', {
+    const onStageRes = await axios.get('/api/musicals/search', {
       params: {
         date: "2025-12-18", 
         order:"desc", 
@@ -88,7 +88,7 @@ onMounted(async ()=> {
     console.log('공연 중 작품', onStageRes.data)
     onStageMusical.value = onStageRes.data
 
-    const myRes = await axios.get('/musicals/search', {
+    const myRes = await axios.get('/api/musicals/search', {
         params: { orderBy: 'random', 
         order:"asc", 
         page: 0, 

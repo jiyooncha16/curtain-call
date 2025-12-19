@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ssafy.curtaincall.board.dto.Board;
 import com.ssafy.curtaincall.board.dto.BoardLikes;
+import com.ssafy.curtaincall.board.dto.BoardResponseDto;
 import com.ssafy.curtaincall.board.dto.BoardSearchCondition;
 
 public interface BoardService {
@@ -17,9 +18,9 @@ public interface BoardService {
 	
 	
 	//조회
-	List<Board> getlist(); // 전체 뮤지컬 리스트 반환
-	Board getBoard(int id); // 게시글 상세조회
-	List<Board> getBoardByCondition(BoardSearchCondition condition); // 조건부 리스트 반환
+	List<BoardResponseDto> getlist(); // 전체 뮤지컬 리스트 반환
+	BoardResponseDto getBoard(int id); // 게시글 상세조회
+	List<BoardResponseDto> getBoardByCondition(BoardSearchCondition condition); // 조건부 리스트 반환
 
 	//CUD
     int createBoard(Board board);             // 게시글 등록 

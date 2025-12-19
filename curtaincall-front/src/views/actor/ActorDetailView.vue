@@ -8,28 +8,31 @@
             </div>
             <div>
                 <div class="center">
-                    <div class="title-text" style="margin:0;font-size: 35px;">홍광호</div>
-                    <Heart/>
+                    <div class="title-text" style="margin:0;font-size: 35px;">{{name}}</div>
+                    <Heart @click="heartClicked"/>
                 </div>
                 <div style="margin: 20px 0">
                     <div class="main-text">약력</div>
-                    <div class="basic-text text"> {{  profile }} </div>
+                    <div class="basic-text text"> {{description}} </div>
                 </div> 
             </div>
         </div>
         <hr>
         <div>
-            <div class="main-text">출연 작품</div>
+            <div class="title-text">출연 작품</div>
             <div class="flex musical-box">
-                <CardItem v-for="i in 10"/>
+                <CardItemActor v-for="i in 10"/>
+                <!-- <CardItemActor v-for="musical in musicalList" :musical="musical"/> -->
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import CardItem from '@/components/common/CardItem.vue';
+import CardItemActor from '@/components/common/CardItemActor.vue';
 import Heart from '@/components/common/icon/Heart.vue';
+import axios from 'axios';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 const profile = 
     `2002 뮤지컬 <명성황후>
@@ -45,6 +48,45 @@ const profile =
 
 const route = useRoute()
 const id = route.params.id
+
+//배우 정보 받아오기
+const name = ref('')
+const description = ref('')
+
+onMounted(() => {
+    axios.get(`/api/actors/${id}`)
+    .then((res) => {
+        console.log(res.data)
+        name.value = res.data.name
+        description.value = res.data.description
+        
+        console.log(name.value)
+        console.log(description.value)
+    })
+})
+
+// 하트 처리
+const isHearted = ref(false)
+const itemId = id
+const userId = 1 /////////// 나중에 처리
+
+const heartClicked = async () => {
+  try {
+    if (!isHearted.value) { // 하트 안 눌려있었다면 좋아요 post
+      await axios.post(`/api/actors/like`, {
+        actorId: id, 
+        userId: userId
+      })
+      isHearted.value = true
+    } else {
+      // 좋아요 취소
+      await axios.delete(`/api/actors/like/${itemId}?userId=${userId}`)
+      isHearted.value = false
+    }
+  } catch (e) {
+    console.error('하트 처리 실패', e)
+  }
+}
 
 </script>
 

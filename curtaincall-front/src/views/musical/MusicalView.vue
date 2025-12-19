@@ -41,7 +41,7 @@ const musicalList = ref([])
 
 onMounted(async ()=> {
   try {
-    const onStageRes = await axios.get('/musicals/search', {
+    const onStageRes = await axios.get('/api/musicals/search', {
       params: {
         date: "2025-12-18", 
         order:"desc", 
@@ -51,7 +51,7 @@ onMounted(async ()=> {
     console.log('공연 중 작품', onStageRes.data)
     onStageMusical.value = onStageRes.data
 
-    const willBeOnStageRes = await axios.get('/musicals/search', {
+    const willBeOnStageRes = await axios.get('/api/musicals/search', {
         params: { 
             fromDate: "2025-12-18",
             order:"asc", 

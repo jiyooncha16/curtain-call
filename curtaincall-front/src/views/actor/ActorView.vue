@@ -5,7 +5,7 @@
             <div class="main-text">배우 인기 랭킹 TOP 5(좋아요 순)</div>
             <div class="wrapper">
                 <a href=""v-for="i in 5">
-                    <CardItem />
+                    <CardItemActor />
                 </a>
             </div>
         </section>
@@ -30,7 +30,7 @@
 
 <script setup>
 import ActorList from '@/components/actor/ActorList.vue';
-import CardItem from '@/components/common/CardItem.vue';
+import CardItemActor from '@/components/common/CardItemActor.vue';
 import SearchBoxActor from '@/components/common/SearchBoxActor.vue';
 
 

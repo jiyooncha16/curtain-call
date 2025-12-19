@@ -17,7 +17,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/musicals': {
+      '/api': {
         target: 'http://localhost:8080',
         changeOrigin: true
       }

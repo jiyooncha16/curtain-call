@@ -5,15 +5,16 @@
                 <img src="@/assets/데스노트.jpg">
                  <!-- <img :src="musical.이미지........"> -->
             </div>
-            <div class="title basic-text">{{item.title}}</div>
+            <!-- <div class="title basic-text">{{item.title}}</div> -->
+             <div class="title basic-text">아아아</div>
         </div>
     </div>
 </template>
 
 <script setup>
-const props = defineProps({
-    item: Object
-})
+// const props = defineProps({
+//     item: Object
+// })
 </script>
 
 <style scoped>

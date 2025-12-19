@@ -1,6 +1,6 @@
-
+USE musical_db;
 # 테이블 전체 조회
-SELECT * FROM musical;
+SELECT * FROM musical; 
 SELECT * FROM theater;
 SELECT * FROM hashtag;
 SELECT * FROM tag_connection;
@@ -70,4 +70,7 @@ SELECT m.*
 		LEFT JOIN like_musical AS l ON m.musical_id = l.musical_id
         GROUP BY m.musical_id
         ORDER BY COUNT(l.musical_id) DESC
-            	LIMIT 10 OFFSET 10;
+            	LIMIT 10 OFFSET 0;
+                
+#
+SELECT * FROM musical

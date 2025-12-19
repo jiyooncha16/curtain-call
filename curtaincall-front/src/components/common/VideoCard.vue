@@ -1,14 +1,25 @@
 <template>
     <div class="flex video-container">
         <div class="img-box">
-            <img src="@/assets/thumbnail_데스노트.jpg"></img>
+            <img :src="video.snippet.thumbnails.high.url"></img>
         </div>
-        <div class="basic-text">뮤지컬 데스노트 MV_Death Note(홍광호)</div>
+        <div class="basic-text youtube-title">{{videoTitle}}</div>
     </div>
 </template>
 
 <script setup>
+import _ from 'lodash';
+import { computed } from 'vue';
 
+const props = defineProps({
+    video : Object
+})
+
+// 제목 escape문자 처리
+// npm install lodash
+const videoTitle = computed(()=> {
+    return _.unescape(props.video.snippet.title)
+})
 </script>
 
 <style scoped>
@@ -29,5 +40,11 @@
 .video-container {
     flex-direction: column;
     align-items:center;
+}
+.youtube-title {
+  width: 100%;
+  white-space: nowrap;      /* 줄바꿈 금지 */
+  overflow: hidden;         /* 넘친 부분 숨김 */
+  text-overflow: ellipsis;  /* ... 처리 */
 }
 </style>

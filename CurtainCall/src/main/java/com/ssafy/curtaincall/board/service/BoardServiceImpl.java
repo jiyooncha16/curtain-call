@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.curtaincall.board.dto.Board;
 import com.ssafy.curtaincall.board.dto.BoardLikes;
+import com.ssafy.curtaincall.board.dto.BoardResponseDto;
 import com.ssafy.curtaincall.board.dto.BoardSearchCondition;
 import com.ssafy.curtaincall.board.mapper.BoardMapper;
 
@@ -18,19 +19,19 @@ public class BoardServiceImpl implements BoardService {
 	
 	//전체 목록 조회
 	@Override
-	public List<Board> getlist() {
+	public List<BoardResponseDto> getlist() {
 		return mapper.selectAllBoard();
 	}
 	// 개별 항목 조회
 
 	@Override
-	public Board getBoard(int id) {
+	public BoardResponseDto getBoard(int id) {
 		return mapper.selectBoard(id);
 	}
 	
 	// 조건별 조회
 	@Override
-	public List<Board> getBoardByCondition(BoardSearchCondition condition) {
+	public List<BoardResponseDto> getBoardByCondition(BoardSearchCondition condition) {
 		return mapper.selectBoardByCondition(condition);
 	}
 	

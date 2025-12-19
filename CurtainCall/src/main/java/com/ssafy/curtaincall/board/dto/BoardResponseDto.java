@@ -18,7 +18,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Board {
+public class BoardResponseDto {
 
 	/*
 	 * ** 클래스 설명, 필드 설명 주석 필수 ** 
@@ -27,7 +27,7 @@ public class Board {
 	 * 게터, 세터 : 위 어노테이션으로 대신함(@Getter, @Setter)
 	 */
 
-	// Board : 뮤지컬 정보 객체
+	// BoardResponseDto : 게시글 정보 + 닉네임까지
 	
 	private int boardId; // pk (게시글 아이디)
 	private String title; // 게시글 제목
@@ -35,6 +35,7 @@ public class Board {
 	private String category; // 게시글 카테고리
 	private LocalDate createDate; // 작성일
 	private int userId; // userId FK
+	private String nickname;
 	
 
 	

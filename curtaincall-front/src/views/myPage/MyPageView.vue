@@ -51,6 +51,7 @@
         <!-- 해시태그 -->
         <div class="container">
             <div class="main-text">해시태그</div>
+            <div class="basic-text">수식어 : {{taste}}</div>
             <hr>
             <HashtagForMypage :tags="['로맨스', '대극장', '판타지', 'OST', '눈물']" :limit="3" />
         </div>
@@ -68,9 +69,9 @@
         </div>
         <!-- 캘린더 -->
         <div class="container">
-            <div class="title-text"> 0월 캘린더</div>
+            <div class="title-text"> {{month}}월 캘린더</div>
             <div class="calendar-wrapper">
-            <Calendar />
+            <Calendar @month="getMonth"/>
             </div>
         </div>
 
@@ -83,8 +84,14 @@ import PhotoBoard from '@/components/common/PhotoBoard.vue';
 import hong from '@/assets/홍광호.jpg';
 import HashtagForMypage from '@/components/common/icon/HashtagForMypage.vue';
 import Calendar from '@/components/common/calendar.vue';
+import { onMounted, ref } from 'vue';
+import axios from 'axios';
+import { useRoute } from 'vue-router';
 
-
+const monthNow = emit.month 
+const emit = defineEmits({
+    month : Number
+})
 
 const musical = {
     title: "자주 만나는 작품",
@@ -104,6 +111,16 @@ const actor = {
     ]
 }
 
+const route = useRoute()
+const id = route.params.id
+console.log("id : " + id)
+const taste = ref('')
+onMounted(()=> {
+    axios.get(`/api/user/taste/${id}`)
+    .then((res) => {
+    taste.value = res.data
+    })
+})
 </script>
 
 <style scoped>

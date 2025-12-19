@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.curtaincall.board.dto.Board;
 import com.ssafy.curtaincall.board.dto.BoardLikes;
+import com.ssafy.curtaincall.board.dto.BoardResponseDto;
 import com.ssafy.curtaincall.board.dto.BoardSearchCondition;
 import com.ssafy.curtaincall.board.service.BoardService;
 
@@ -65,8 +66,8 @@ public class BoardController {
 	 * 리턴 : List<Board> 게시글 전체 목록
 	 */
 	@GetMapping("")
-	public ResponseEntity<List<Board>> getlist() {
-		List<Board> list = service.getlist();
+	public ResponseEntity<List<BoardResponseDto>> getlist() {
+		List<BoardResponseDto> list = service.getlist();
 		if (list == null || list.size() == 0) return ResponseEntity.noContent().build();
 		return ResponseEntity.ok(list);
 	}
@@ -81,8 +82,8 @@ public class BoardController {
 	 * 리턴 : Board 게시글 상세 정보
 	 */
 	@GetMapping("/{id}")
-	public ResponseEntity<Board> getBoard(@PathVariable int id) {
-		Board board = service.getBoard(id);
+	public ResponseEntity<BoardResponseDto> getBoard(@PathVariable int id) {
+		BoardResponseDto board = service.getBoard(id);
 		if (board == null) return ResponseEntity.noContent().build();
 		else return ResponseEntity.ok(board);
 	}
@@ -107,9 +108,9 @@ public class BoardController {
 	 *  - 메인페이지(공연중 작품, 개막예정 작품, 추천리스트, 랜덤리스트, 핫랭킹 작품)
 	 */
 	@GetMapping("/search")
-	public ResponseEntity<List<Board>> getMusicalByCondition(@ModelAttribute BoardSearchCondition condition) {
+	public ResponseEntity<List<BoardResponseDto>> getMusicalByCondition(@ModelAttribute BoardSearchCondition condition) {
 		condition.setOffset(condition.getPage() * condition.getSize());
-		List<Board> list = service.getBoardByCondition(condition);
+		List<BoardResponseDto> list = service.getBoardByCondition(condition);
 		if (list == null || list.size() == 0) return ResponseEntity.noContent().build();
 		else return ResponseEntity.ok(list);
 	}
