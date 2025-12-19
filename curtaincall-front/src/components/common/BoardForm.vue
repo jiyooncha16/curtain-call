@@ -1,32 +1,42 @@
 <template>
-  <div class="form-wrapper">
+  <div class="board-form">
+    <!-- 제목 -->
+    <div class="row">
+      <label>제목</label>
+      <input
+        v-model="localTitle"
+        type="text"
+        placeholder="제목을 입력하세요"
+      />
+    </div>
 
-    <div class="form-box">
-      <!-- 제목 -->
-      <div class="row">
-        <label>제목</label>
-        <input v-model="localTitle" />
-      </div>
+    <!-- 작성자 -->
+    <div class="row">
+      <label>작성자</label>
+      <input
+        :value="writer"
+        readonly
+      />
+    </div>
 
-      <!-- 작성자 -->
-      <div class="row">
-        <label>작성자</label>
-        <input :value="writer" readonly />
-      </div>
+    <!-- 내용 -->
+    <div class="row">
+      <label>내용</label>
+      <textarea
+        v-model="localContent"
+        rows="10"
+        placeholder="내용을 입력하세요"
+      />
+    </div>
 
-      <!-- 내용 -->
-      <div class="row column">
-        <label>내용</label>
-        <textarea v-model="localContent" rows="12" />
-      </div>
-
-      <!-- 버튼 -->
-      <div class="btn-row">
-        <button class="cancel" @click="$emit('cancel')">취소</button>
-        <button class="submit" @click="submit">
-          {{ isEdit ? '수정하기' : '등록하기' }}
-        </button>
-      </div>
+    <!-- 버튼 -->
+    <div class="actions">
+      <button @click="submit">
+        {{ isEdit ? '수정하기' : '등록하기' }}
+      </button>
+      <button class="cancel" @click="$emit('cancel')">
+        취소
+      </button>
     </div>
   </div>
 </template>
@@ -43,16 +53,18 @@ const props = defineProps({
 
 const emit = defineEmits(['submit', 'cancel'])
 
-const localTitle = ref(props.title || '')
-const localContent = ref(props.content || '')
+/* 🔥 props를 직접 수정하지 말고 local state */
+const localTitle = ref('')
+const localContent = ref('')
 
-// 수정 시 props 변경 감지
+/* 🔥 수정 페이지에서 기존 값 세팅 */
 watch(
   () => [props.title, props.content],
   () => {
     localTitle.value = props.title || ''
     localContent.value = props.content || ''
-  }
+  },
+  { immediate: true }
 )
 
 const submit = () => {
@@ -69,50 +81,50 @@ const submit = () => {
 </script>
 
 <style scoped>
-.form-wrapper {
-  max-width: 800px;
-  margin: 40px auto;
-}
-.page-title {
-  font-size: 26px;
-  margin-bottom: 24px;
-}
-.form-box {
+.board-form {
+  width: 100%;
   background: #f2f2f2;
-  padding: 24px;
+  padding: 20px;
+  border-radius: 8px;
 }
+
 .row {
-  display: flex;
-  align-items: center;
   margin-bottom: 16px;
-}
-.row.column {
+  display: flex;
   flex-direction: column;
-  align-items: flex-start;
 }
+
 label {
-  width: 80px;
+  font-weight: bold;
+  margin-bottom: 6px;
 }
+
 input,
 textarea {
-  flex: 1;
-  background: #ddd;
   border: none;
   padding: 10px;
+  background: #ddd;
   font-size: 16px;
 }
-textarea {
-  width: 100%;
-  resize: none;
+
+input:focus,
+textarea:focus {
+  outline: none;
 }
-.btn-row {
+
+.actions {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
 }
+
 button {
+  padding: 6px 14px;
   border: none;
-  padding: 8px 18px;
   cursor: pointer;
+}
+
+.cancel {
+  background: #bbb;
 }
 </style>
