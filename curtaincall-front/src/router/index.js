@@ -56,7 +56,7 @@ const router = createRouter({
     {
       path: '/community/:id',
       name: 'boardDetail',
-      component: BoardDetailView,
+      component: CommunityView,
       props: true,
     },
     {

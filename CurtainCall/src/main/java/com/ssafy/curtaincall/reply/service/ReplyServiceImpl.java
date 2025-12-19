@@ -15,8 +15,8 @@ public class ReplyServiceImpl implements ReplyService {
     ReplyMapper mapper;
 	
 	@Override
-	public List<Reply> getlist() {
-		return mapper.selectAllReply();
+	public List<Reply> getlist(int boardId) {
+		return mapper.selectAllReply(boardId);
 	}
 
 	@Override

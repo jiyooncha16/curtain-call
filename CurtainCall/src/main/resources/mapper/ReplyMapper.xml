@@ -6,7 +6,9 @@
 
     <!-- 전체 댓글 조회 -->
     <select id="selectAllReply" resultType="Reply">
-        SELECT * FROM reply
+  SELECT * FROM reply
+  WHERE board_id = #{boardId}
+  ORDER BY reply_id ASC
     </select>
 
 
