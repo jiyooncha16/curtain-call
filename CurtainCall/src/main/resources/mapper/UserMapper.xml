@@ -15,6 +15,21 @@
 		WHERE username = #{username}
 	</select>
 	
+	<!-- 개별 항목 조회 -->
+	<select id="selectUserById" parameterType="int" resultType="User">
+		SELECT * FROM users
+		WHERE user_id = #{userId}
+	</select>
+	
+	<!--유저의 좋아요/리뷰 개수-->
+	<select id="selectCount" parameterType="int" resultType="LikeCountDto">
+		SELECT
+		  (SELECT COUNT(*) FROM like_musical WHERE user_id = #{userId}) AS likeMusicalCount,
+		  (SELECT COUNT(*) FROM like_review  WHERE user_id = #{userId}) AS likeReviewCount,
+		  (SELECT COUNT(*) FROM like_actor   WHERE user_id = #{userId}) AS likeActorCount,
+		  (SELECT COUNT(*) FROM review       WHERE user_id = #{userId}) AS reviewCount;
+	</select>
+	
 	<!-- 이메일 조회
 	<select id="getEmail" parameterType="String" resultType="User">
 		SELECT * FROM users

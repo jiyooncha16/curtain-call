@@ -6,7 +6,7 @@
                  <!-- <img :src="musical.이미지........"> -->
             </div>
             <!-- <div class="title basic-text">{{item.title}}</div> -->
-             <div class="title basic-text">{{ actor }}</div>
+             <div class="title basic-text">{{ actor?.name }}</div>
         </div>
     </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <CardItemActor v-for="i in 10"/>
+        <CardItemActor v-for="actor in searchResult" :actor=actor :key="actor.actorId"/>
     </div>
 </template>
 
@@ -8,6 +8,9 @@
 import CardItem from '../common/CardItem.vue';
 import CardItemActor from '../common/CardItemActor.vue';
 
+const props = defineProps ({
+    searchResult : Array
+})
 
 </script>
 

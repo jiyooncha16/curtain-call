@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.curtaincall.ai.dto.HashtagDTO;
 import com.ssafy.curtaincall.ai.service.AiService;
+import com.ssafy.curtaincall.user.dto.LikeCountDto;
 import com.ssafy.curtaincall.user.dto.User;
 import com.ssafy.curtaincall.user.service.UserService;
 
@@ -93,6 +95,54 @@ public class UserController {
 		User user = service.getUser(username);
 		if (user == null) return ResponseEntity.noContent().build();
 		else return ResponseEntity.ok(user);
+	}
+	
+	/* 1-2-2. 상세 조회
+	 * 
+	 *  메서드 : GET
+	 *  엔드포인트 : /user/{userId}
+	 *  파라미터
+	 *   - pathVariable(url) : userId
+	 *   - RequestBody(json) : 없음
+	 *  리턴 : User
+	 */
+	@GetMapping("/id/{userId}")
+	public ResponseEntity<User> getUserById(@PathVariable int userId) {
+		User user = service.getUserById(userId);
+		if (user == null) return ResponseEntity.noContent().build();
+		else return ResponseEntity.ok(user);
+	}
+
+	/* 1-3. count 조회
+	 * 
+	 *  메서드 : GET
+	 *  엔드포인트 : /user/count/{id}
+	 *  파라미터
+	 *   - pathVariable(url) : id
+	 *   - RequestBody(json) : 없음
+	 *  리턴 : User
+	 */
+	@GetMapping("/count/{id}")
+	public ResponseEntity<LikeCountDto> getCount(@PathVariable int id) {
+		LikeCountDto dto = service.getCount(id);
+		if (dto == null) return ResponseEntity.noContent().build();
+		else return ResponseEntity.ok(dto);
+	}
+	
+	/* 1-4. 해시태그 조회
+	 * 
+	 *  메서드 : GET
+	 *  엔드포인트 : /user/tag/{id}
+	 *  파라미터
+	 *   - pathVariable(url) : id
+	 *   - RequestBody(json) : 없음
+	 *  리턴 : User
+	 */
+	@GetMapping("/tag/{id}")
+	public ResponseEntity<List<HashtagDTO>> getTag(@PathVariable int id) {
+		List<HashtagDTO> dto = aiService.hashtagCount(id);
+		if (dto == null) return ResponseEntity.noContent().build();
+		else return ResponseEntity.ok(dto);
 	}
 	
 	

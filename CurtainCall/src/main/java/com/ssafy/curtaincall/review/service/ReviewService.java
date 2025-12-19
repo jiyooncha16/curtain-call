@@ -7,6 +7,7 @@ import com.ssafy.curtaincall.board.dto.BoardLikes;
 import com.ssafy.curtaincall.board.dto.BoardSearchCondition;
 import com.ssafy.curtaincall.review.dto.Review;
 import com.ssafy.curtaincall.review.dto.ReviewLikes;
+import com.ssafy.curtaincall.review.dto.ReviewRateDto;
 import com.ssafy.curtaincall.review.dto.ReviewSearchCondition;
 
 public interface ReviewService {
@@ -22,7 +23,7 @@ public interface ReviewService {
 //	List<Review> getlist(); // 전체 뮤지컬 리스트 반환
 	double getReviewRate(int id); // 평점 평균 조회
 	List<Review> getReviewByCondition(ReviewSearchCondition condition); // 조건부 리스트 반환
-
+	List<ReviewRateDto> getReviewRateStats(int id); //평점 통계
 	//CUD
     int createReview(Review review);             // 등록 
     int updateReview(Review review);             // 수정

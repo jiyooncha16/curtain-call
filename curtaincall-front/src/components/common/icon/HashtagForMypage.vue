@@ -43,8 +43,8 @@ const hiddenCount = computed(() => {
 <style scoped>
 .hash-wrapper {
   /* background-color: var(--bg-light); */
-  padding: 10px;
-  padding: 12px;
+  width:100%;
+  padding: 5px;
   border-radius: 8px;
   margin-top: 8px;
 
@@ -52,7 +52,7 @@ const hiddenCount = computed(() => {
 
 .hashbox {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   flex-wrap: wrap;
 }
 
@@ -60,7 +60,8 @@ const hiddenCount = computed(() => {
   background-color: #e0e0e0;
   padding: 4px 10px;
   border-radius: 12px;
-  /* font-size: 13px; */
+  /* width:80px; */
+  font-size: 16px;
   white-space: nowrap;
 }
 

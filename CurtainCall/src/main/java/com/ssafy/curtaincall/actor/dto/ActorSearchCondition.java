@@ -32,13 +32,13 @@ public class ActorSearchCondition {
 	 */
 	
 	//필터
-	private String name; // 이름
+	private String keyword; // 이름
     
     // 정렬 조건 : 좋아요/아이디(등록 순서)
     private String orderBy;
     
     // 정렬 조건 : asc/desc/null
-    private String order;
+    private String order = "DESC";
     
     //페이징
     private int page = 0; // 0페이지부터

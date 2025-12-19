@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.ssafy.curtaincall.review.dto.Review;
 import com.ssafy.curtaincall.review.dto.ReviewLikes;
+import com.ssafy.curtaincall.review.dto.ReviewRateDto;
 import com.ssafy.curtaincall.review.dto.ReviewSearchCondition;
 
 @Mapper
@@ -17,6 +18,7 @@ public interface ReviewMapper {
 	public double selectReviewRate(int musicalId); // 평점 평균 조회
 	public Review selectReview(Review review);
 	public Review selectReviewById(int id);
+	public List<ReviewRateDto> selectReviewRateStats(int id);
 	
 	//CUD
     int insertReview(Review review);
