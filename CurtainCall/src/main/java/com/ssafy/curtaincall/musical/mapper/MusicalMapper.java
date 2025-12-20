@@ -20,5 +20,6 @@ public interface MusicalMapper {
 	public int checkLike(MusicalLikes like); // 좋아요 찍혀있는지 확인 (개수 반환)
 	public void insertLike(MusicalLikes like); // 좋아요 등록
 	public void deleteLike(MusicalLikes like); // 좋아요 해제
+	public int selectLike(int musicalId);
 	
 }

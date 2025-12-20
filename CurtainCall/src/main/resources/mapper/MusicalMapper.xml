@@ -88,5 +88,10 @@
     <delete id="deleteLike" parameterType="com.ssafy.curtaincall.musical.dto.MusicalLikes">
     		DELETE FROM like_musical WHERE musical_id = #{musicalId} AND user_id = #{userId}
     </delete>
+    
+    <!-- 뮤지컬 좋아요 수 얻기 -->
+    <select id="selectLike" resultType="int" parameterType="int">
+    		SELECT count(*) FROM like_musical WHERE musical_id = #{musicalId}
+    </select>
 
 </mapper>

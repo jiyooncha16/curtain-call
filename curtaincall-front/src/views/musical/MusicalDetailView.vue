@@ -8,12 +8,13 @@
         <!-- 작품 설명 영역 -->
         <div>
             <div class="center" style="margin: 20px 0">
-                <div class="title-text" style="margin:0;">{{title}}</div>
-                <Heart />
+                <div class="title-text" style="margin:0;">{{musical.title}}</div>
+                <Heart v-if="isLoaded" :like="like"/>
             </div>
             <Hashtag :tags="['로맨스', '대극장', '판타지', 'OST', '눈물']" :limit="3" />
             <div style="margin: 20px 0">
-                <div class="basic-text text"> {{ musicalInfo }} </div>
+                <div class="basic-text text"> {{ musical.startDate }} - {{ musical.endDate }}  </div>
+                <div class="basic-text text"> {{ musical.description }} </div>
             </div>
         </div>
 
@@ -67,7 +68,8 @@ import Rate from '@/components/common/icon/Rate.vue';
 import ReviewList from '@/components/review/ReviewList.vue';
 import VideoMain from '@/components/VideoMain.vue';
 import axios from 'axios';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
 
 const title = "데스노트"
@@ -114,58 +116,69 @@ const actors = [
 ]
 const avgRate = 4;
 
-// 뮤지컬 정보 불러오기
-// onMounted(() => {
-//     axios.get
 
+const route = useRoute()
+const id = route.params.id
 
+const musical = ref({})
+const theater = ref('')
+const like = ref('')
+const isLoaded = ref(false)
 
-
-
-//카카오맵 API
-
-const theater = '세종문화회관'
+// 카카오맵
 const theaterAddress = ref('')
 const theaterPhone = ref('')
 const theaterUrl = ref('')
+let map = null
+let ps = null
 
-const coordinate = {
-  lat: 37.566826,
-  lng: 126.9786567
-};
-onMounted(() => {
-  console.log('🔥 onMounted 실행됨')
-  console.log('kakao:', window.kakao)
+// 1️⃣ 뮤지컬 정보 로드
+onMounted(async () => {
+  const res = await axios.get(`/api/musicals/${id}`)
+  musical.value = res.data
+  theater.value = res.data.theater
 
-  const map = new kakao.maps.Map(
-    document.getElementById('kakao-map'),
-    {
-      center: new kakao.maps.LatLng(37.566826, 126.9786567),
-      level: 3
-    }
-  )
+  const likeRes = await axios.get(`/api/musicals/like/${id}`)
+  like.value = likeRes.data
+  isLoaded.value = true
+})
 
-  const ps = new kakao.maps.services.Places()
-  ps.keywordSearch(theater, (data, status) => {
-    console.log('places result:', data)
+// 2️⃣ theater 값이 생기면 카카오맵 실행
+watch(theater, (newTheater) => {
+  if (!newTheater) return
 
+  console.log('🎯 theater 변경 감지:', newTheater)
+
+  // 지도 최초 생성 (1번만)
+  if (!map) {
+    map = new kakao.maps.Map(
+      document.getElementById('kakao-map'),
+      {
+        center: new kakao.maps.LatLng(37.566826, 126.9786567),
+        level: 3
+      }
+    )
+    ps = new kakao.maps.services.Places()
+  }
+
+  ps.keywordSearch(newTheater, (data, status) => {
     if (status !== kakao.maps.services.Status.OK) return
 
     const place = data[0]
 
-    const marker = new kakao.maps.Marker({
+    new kakao.maps.Marker({
       map,
       position: new kakao.maps.LatLng(place.y, place.x)
     })
 
     map.setCenter(new kakao.maps.LatLng(place.y, place.x))
 
-    theaterAddress.value = place.road_address_name
+    theaterAddress.value =
+      place.road_address_name || place.address_name
     theaterPhone.value = place.phone
     theaterUrl.value = place.place_url
   })
 })
-
 
 </script>
 
