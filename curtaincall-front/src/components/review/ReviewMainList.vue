@@ -1,11 +1,11 @@
 <template>
     <div class="flex" style="gap:20px;">
-        <ReviewMainListItem />
-        <ReviewMainListItem />
+        <ReviewCard />
     </div>
 </template>
 
 <script setup>
+import ReviewCard from '../ReviewCard.vue';
 import ReviewMainListItem from './ReviewMainListItem.vue';
 
 

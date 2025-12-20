@@ -48,7 +48,7 @@
               <div class="stat-value">{{ likeActorCount }}</div>
               <div class="stat-label">배우</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card" @click="goMyReview">
               <div class="stat-value">{{ reviewCount }}</div>
               <div class="stat-label">리뷰</div>
             </div>
@@ -68,14 +68,22 @@
     </div>
 
     <!-- 평점 통계 -->
-    <div>
-      <div class="title-text">평점 통계</div>
+    <div   @click="goMyReview">
+      <!-- 제목 줄 -->
+      <div class="rate-header">
+        <div class="title-text">평점 통계</div>
+
+        <!-- ⭐ 내 리뷰 보기 -->
+        <button class="my-review-btn" @click.stop="goMyReview" >
+          내 리뷰 보기 →
+        </button>
+      </div>
       <div class="rate-wrapper">
         <div class="rate-avg-wrapper">
             <div class=" rate-box center" style="width: 30%">
                 <div class="title-text" style="font-size: 35px;">{{ rate }}</div>
                 <Rate :rate="rate" />
-                <div class="basic-text">내 리뷰 27개</div>
+                <div class="basic-text" >내 리뷰 27개</div>
             </div>
             <!-- 평점 통계 연결해야함 -->
             <div style="width: 70%;padding:10px 0">
@@ -102,7 +110,7 @@ import HashtagForMypage from "@/components/common/icon/HashtagForMypage.vue";
 import Calendar from "@/components/common/calendar.vue";
 import { onMounted, ref, toRaw } from "vue";
 import axios from "axios";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import RateStats from "@/components/common/RateStats.vue";
 import Rate from "@/components/common/icon/Rate.vue";
 
@@ -177,6 +185,12 @@ onMounted(() => {
     reviewCount.value = res.data.reviewCount;
   });
 });
+
+// 페이지 이동하기
+const router = useRouter()
+function goMyReview() {
+  router.push(`/review/my/${id}`)
+}
 </script>
 
 <style scoped>
@@ -331,4 +345,25 @@ onMounted(() => {
  .title-text {
     margin: 10px 0;
  }
+ .rate-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.my-review-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 6px;
+  font-weight: 300;
+  color : gray
+}
+
+.my-review-btn:hover {
+  text-decoration: underline;
+}
+
 </style>

@@ -29,7 +29,12 @@
     </div>
     <div class="shadow">
       <div class="title-text">인기 리뷰</div>
-      <ReviewMainList />
+      <ReviewCard
+          v-for="review in reviewList"
+          :key="review.id"
+          :review="review"
+          @toggle-like="toggleLike"
+        />
     </div>
     
   </div>
@@ -68,6 +73,8 @@ const actor = {
 const hotMusical = ref([])
 const onStageMusical = ref([])
 const myMusical = ref([])
+const reviewList = ref([])
+const toggleLike = ref('')
 
 onMounted(async ()=> {
   try {
@@ -98,6 +105,15 @@ onMounted(async ()=> {
     })
     console.log('맞춤 작품', myRes.data)
     myMusical.value = myRes.data
+
+    const reviewRes = await axios.get('/api/reviews/1', {
+        params: { orderBy: 'likes', 
+        order:"desc", 
+        page: 0, 
+        size: 2 }
+    })
+    console.log('맞춤 작품', reviewRes.data)
+    reviewList.value = reviewRes.data
 
   } catch (e) {
     console.error('API 에러', e)
@@ -133,7 +149,6 @@ onMounted(async ()=> {
   position: relative;
   background: transparent; /* 실제 배경은 가상요소가 담당 */
   overflow: hidden;
-
 }
 .hero-section {
   background: linear-gradient(135deg, #50000041, #460000e8);
