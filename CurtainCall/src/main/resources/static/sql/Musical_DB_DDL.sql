@@ -118,9 +118,9 @@ ON DELETE CASCADE;
 CREATE TABLE `actor` (
 	`actor_id`	INT	PRIMARY KEY AUTO_INCREMENT,
 	`name`	VARCHAR(255)	NOT NULL,
-	`birth`	VARCHAR(255)	NOT NULL,
-	`agency`	VARCHAR(255)	NOT NULL,
-	`sns`	VARCHAR(255)	NOT NULL,
+	`birth`	VARCHAR(255),
+	`agency`	VARCHAR(255),
+	`sns`	VARCHAR(255),
 	`image`	VARCHAR(255)	NOT NULL,
     `work1` TEXT,
     `work2` TEXT,

@@ -101,7 +101,6 @@ LEFT JOIN review r
 GROUP BY n.rate
 ORDER BY n.rate;
 
-
 #
 SELECT
   (SELECT COUNT(*) FROM like_musical WHERE user_id = 1) AS likeMusicalCount,
@@ -109,7 +108,16 @@ SELECT
   (SELECT COUNT(*) FROM like_actor   WHERE user_id = 1) AS likeActorCount,
   (SELECT COUNT(*) FROM review       WHERE user_id = 1) AS reviewCount;
   
-  #
-  SELECT * FROM cast as c
-		LEFT JOIN actor as a ON c.actor_id = a.actor_id
-		WHERE c.musical_id = 1;
+#
+SELECT m.title, c.role_name
+FROM cast as c
+LEFT JOIN actor as a ON c.actor_id = a.actor_id
+LEFT JOIN musical as m ON c.musical_id = m.musical_id
+WHERE c.musical_id = 1;
+
+#
+SELECT t.tag
+		FROM musical AS m
+		left JOIN tag_connection AS c ON m.musical_id = c.musical_id
+		left JOIN hashtag AS t ON c.tag_id = t.tag_id
+        where m.musical_id = 2;

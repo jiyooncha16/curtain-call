@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.ssafy.curtaincall.actor.dto.Actor;
 import com.ssafy.curtaincall.actor.dto.ActorLikes;
 import com.ssafy.curtaincall.actor.dto.ActorSearchCondition;
+import com.ssafy.curtaincall.actor.dto.Casting;
 import com.ssafy.curtaincall.actor.mapper.ActorMapper;
 
 @Service
@@ -66,6 +67,11 @@ public class ActorServiceImpl implements ActorService {
 	@Override
 	public List<Actor> getActorOfTopFive() {
 		return mapper.selectActorOfTopFive();
+	}
+
+	@Override
+	public List<Casting> getCasting(int id) {
+		return mapper.selectMusicalActor(id);
 	}
 	
 

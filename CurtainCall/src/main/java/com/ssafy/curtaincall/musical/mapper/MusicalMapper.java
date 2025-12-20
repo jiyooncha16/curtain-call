@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.ssafy.curtaincall.musical.dto.Musical;
 import com.ssafy.curtaincall.musical.dto.MusicalLikes;
 import com.ssafy.curtaincall.musical.dto.SearchCondition;
+import com.ssafy.curtaincall.musical.dto.Tag;
 
 @Mapper
 public interface MusicalMapper {
@@ -15,6 +16,7 @@ public interface MusicalMapper {
 	public List<Musical> selectAllMusical(); // 전체 목록
 	public List<Musical> selectMusicalByCondition(SearchCondition condition); // 조건부 목록(검색)
 	public Musical selectMusical(int id); // 뮤지컬 상세조회
+	public List<Tag> selectTag(int id);
 	
 	//좋아요
 	public int checkLike(MusicalLikes like); // 좋아요 찍혀있는지 확인 (개수 반환)

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.curtaincall.actor.dto.Actor;
 import com.ssafy.curtaincall.actor.dto.ActorLikes;
 import com.ssafy.curtaincall.actor.dto.ActorSearchCondition;
+import com.ssafy.curtaincall.actor.dto.Casting;
 import com.ssafy.curtaincall.actor.service.ActorService;
 
 @RestController
@@ -116,6 +117,13 @@ public class ActorController {
 	@GetMapping("/search/topFive")
 	public ResponseEntity<List<Actor>> getActorOfTopFive() {
 		List<Actor> list = service.getActorOfTopFive();
+		if (list == null || list.size() == 0) return ResponseEntity.noContent().build();
+		else return ResponseEntity.ok(list);
+	}
+	
+	@GetMapping("/casting/{id}")
+	public ResponseEntity<List<Casting>> getCasting(@PathVariable int id) {
+		List<Casting> list = service.getCasting(id);
 		if (list == null || list.size() == 0) return ResponseEntity.noContent().build();
 		else return ResponseEntity.ok(list);
 	}

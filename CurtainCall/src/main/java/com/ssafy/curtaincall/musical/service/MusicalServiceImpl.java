@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.ssafy.curtaincall.musical.dto.Musical;
 import com.ssafy.curtaincall.musical.dto.MusicalLikes;
 import com.ssafy.curtaincall.musical.dto.SearchCondition;
+import com.ssafy.curtaincall.musical.dto.Tag;
 import com.ssafy.curtaincall.musical.mapper.MusicalMapper;
 
 @Service
@@ -65,6 +66,11 @@ public class MusicalServiceImpl implements MusicalService {
 	@Override
 	public int getLike(int musicalId) {
 		return mapper.selectLike(musicalId);
+	}
+
+	@Override
+	public List<Tag> getTag(int id) {
+		return mapper.selectTag(id);
 	}
 	
 

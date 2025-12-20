@@ -93,5 +93,12 @@
     <select id="selectLike" resultType="int" parameterType="int">
     		SELECT count(*) FROM like_musical WHERE musical_id = #{musicalId}
     </select>
-
+    
+	<!-- 뮤지컬 태그 리스트 얻기 -->
+    <select id="selectTag" resultType="Tag" parameterType="int">
+    		SELECT t.tag FROM musical AS m
+		LEFT JOIN tag_connection AS c ON m.musical_id = c.musical_id
+		LEFT JOIN hashtag AS t ON c.tag_id = t.tag_id
+        where m.musical_id = #{id};
+    </select>
 </mapper>

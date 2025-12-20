@@ -25,11 +25,19 @@ public class Actor {
 	 * 게터, 세터 : 위 어노테이션으로 대신함(@Getter, @Setter)
 	 */
 
-	// Actor : 뮤지컬 정보 객체
+	// Actor
 	
-	private int actorId; // pk (배우 아이디)
-	private String name; // 뮤지컬 제목
-	private String description; // 배우 약력
+	private int actorId;
+	private String name;
+	private String birth;
+	private String agency;
+	private String sns;
+	private String image;
+	private String work1; 
+	private String work2; 
+	private String work3; 
+	private String work4; 
+	private String work5; 
 	
 }
 

@@ -1,3 +1,5 @@
+
+
 package com.ssafy.curtaincall.musical.controller;
 
 import java.util.List;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.curtaincall.musical.dto.Musical;
 import com.ssafy.curtaincall.musical.dto.MusicalLikes;
 import com.ssafy.curtaincall.musical.dto.SearchCondition;
+import com.ssafy.curtaincall.musical.dto.Tag;
 import com.ssafy.curtaincall.musical.service.MusicalService;
 
 @RestController
@@ -109,6 +112,13 @@ public class MusicalController {
 	public ResponseEntity<List<Musical>> getMusicalByCondition(@ModelAttribute SearchCondition condition) {
 		condition.setOffset(condition.getPage() * condition.getSize());
 		List<Musical> list = service.getMusicalByCondition(condition);
+		if (list == null || list.size() == 0) return ResponseEntity.noContent().build();
+		else return ResponseEntity.ok(list);
+	}
+	
+	@GetMapping("/tag/{id}")
+	public ResponseEntity<List<Tag>> getTag(@PathVariable int id) {
+		List<Tag> list = service.getTag(id);
 		if (list == null || list.size() == 0) return ResponseEntity.noContent().build();
 		else return ResponseEntity.ok(list);
 	}
