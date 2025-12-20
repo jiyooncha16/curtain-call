@@ -1,4 +1,4 @@
-INSERT INTO casting (cast_id, musical_id, actor_id, role_name) VALUES
+INSERT INTO cast (cast_id, musical_id, actor_id, role_name) VALUES
 (1,1,9,'김해진 역'),
 (2,1,7,'김해진 역'),
 (3,1,12,'김해진 역'),
