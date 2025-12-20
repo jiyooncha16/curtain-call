@@ -29,7 +29,7 @@
           <!--해시태그-->
           <div class="container">
             <div class="basic-text">{{user.nickname}} 님은</div>
-            <div class="main-text">{{ taste }}</div>
+            <div class="title-text">{{ taste }}</div>
             <hr />
             <HashtagForMypage :tags="hashtag" :limit="3" />
           </div>
@@ -230,6 +230,7 @@ onMounted(() => {
 }
 .nickname-text {
   font-weight: bold;
+  font-size: 25px;
 }
 
 /* 내 정보 카드 */

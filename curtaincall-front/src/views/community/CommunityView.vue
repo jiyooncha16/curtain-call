@@ -134,7 +134,7 @@ const goWrite = () => {
 .btn.primary {
   border-color: transparent;
   background: #ffd6d6;
-  color: #ff5454;
+  color: #fd4040;
 }
 
 .btn.primary:hover {

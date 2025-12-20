@@ -2,6 +2,7 @@
     <div>
         <h2>뮤지컬</h2>
         <!--기타-->
+        <!-- <div class="shadow"> -->
         <div>
             <div class="title-text">공연 중인 작품</div>
             <div class="wrapper">
