@@ -3,7 +3,7 @@
     <div class="container flex" style="align-items:flex-start">
         <!-- 포스터 영역 -->
         <div class="img-box">
-            <img src="@\assets\데스노트.jpg">
+            <img :src="`/${musical.image}`">
         </div>
         <!-- 작품 설명 영역 -->
         <div>
@@ -11,13 +11,12 @@
                 <div class="title-text" style="margin:0;">{{musical.title}}</div>
                 <Heart v-if="isLoaded" :like="like"/>
             </div>
-            <Hashtag :tags="['로맨스', '대극장', '판타지', 'OST', '눈물']" :limit="3" />
             <div style="margin: 20px 0">
+                <div class="basic-text text">{{ musical.theater }}</div>
                 <div class="basic-text text"> {{ musical.startDate }} - {{ musical.endDate }}  </div>
-                <div class="basic-text text"> {{ musical.description }} </div>
             </div>
+            <Hashtag :tags="['로맨스', '대극장', '판타지', 'OST', '눈물']" :limit="3" />
         </div>
-
     </div>
     <!-- 출연 배우 영역 -->
     <div class="container">
@@ -49,7 +48,7 @@
     <!-- 관련 영상 -->
     <div class="container shadow">
         <div class="title-text" style="margin: 10px 0">관련 영상</div>
-        <VideoMain :keyword="title"/>
+        <VideoMain v-if="musical.title" :keyword="musical.title"/>
     </div>
     <!-- 리뷰 영역 -->
     <div class="container shadow">
@@ -72,7 +71,6 @@ import { onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
 
-const title = "데스노트"
 const musicalInfo = `
 20220401 -20220619
 충무아트센터
