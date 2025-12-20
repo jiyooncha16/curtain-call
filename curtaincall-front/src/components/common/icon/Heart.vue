@@ -1,17 +1,22 @@
 <template>
     <div class="box" @click="heartClicked">
-        <div><i :class="icon"></i> 40</div>
+        <div><i :class="icon"></i> {{like}}</div>
     </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+const props = defineProps ({
+    like : Number,
+})
 
+// const likeCnt = ref(like)
 
 const icon = ref("bi bi-heart")
 const heartClicked = function() {
     if (icon.value === "bi bi-heart") {
         icon.value = "bi bi-heart-fill"
+        
     } else {
         icon.value = "bi bi-heart"
     }

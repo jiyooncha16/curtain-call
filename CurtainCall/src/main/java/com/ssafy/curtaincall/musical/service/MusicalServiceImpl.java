@@ -61,6 +61,11 @@ public class MusicalServiceImpl implements MusicalService {
 		if (mapper.checkLike(like) >= 1) mapper.deleteLike(like);	
 		else System.out.println("삭제할 좋아요가 없습니다.");
 	}
+
+	@Override
+	public int getLike(int musicalId) {
+		return mapper.selectLike(musicalId);
+	}
 	
 
 }

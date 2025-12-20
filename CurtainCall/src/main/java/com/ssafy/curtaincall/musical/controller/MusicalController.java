@@ -144,4 +144,9 @@ public class MusicalController {
 		service.likeOff(like);
 	}
 
+	// 2-3. 좋아요 조회
+	@GetMapping("/like/{musicalId}")
+	public int getLike(@PathVariable int musicalId) {
+		return service.getLike(musicalId);
+	}
 }

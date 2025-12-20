@@ -15,6 +15,14 @@
 		WHERE actor_id = #{id}
 	</select>
 	
+	<!-- 특정 뮤지컬에 출연한 배우 목록-->
+	<select id="selectMusicalActor" parameterType="int" resultType="Actor">
+		SELECT * FROM cast as c
+		LEFT JOIN actor as a ON c.actor_id = a.actor_id
+		WHERE c.musical_id = #{id}
+	</select>
+	
+	
 	<!-- 동적쿼리 : 검색 -->
 	<select id="selectActorByCondition" parameterType="ActorSearchCondition" resultType="Actor">
         SELECT a.*

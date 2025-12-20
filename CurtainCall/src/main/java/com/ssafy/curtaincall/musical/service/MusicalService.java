@@ -22,6 +22,7 @@ public interface MusicalService {
 	//좋아요
 	void likeOn(MusicalLikes like); // 좋아요 등록
 	void likeOff(MusicalLikes like); // 좋아요 해제
+	int getLike(int musicalId); // 좋아요 조회
 	
 
 }

@@ -44,9 +44,9 @@ commit;
 # 리뷰 추가 더미데이터
 
 INSERT INTO review (`musical_id`, `content`, `rate`, `user_id`) VALUES
-(8, '더미데이터0', 5, 1),
-(9, '더미데이터0', 5, 1),
-(10, '더미데이터0', 5, 1);
+(2, '더미데이터0', 3, 1),
+(3, '더미데이터0', 3, 1),
+(4, '더미데이터0', 3, 1);
 
 
 # ai를 위한 유저가 관람한 뮤지컬 목록 뽑기
@@ -85,8 +85,31 @@ select a.* from actor as a
 		limit 5;
         
 #
-select count(*) from users as u
-left join review as r on u.user_id = r.user_id
-group by r.rate
-where u.user_id = 1;
+SELECT
+  n.rate,
+  COUNT(r.review_id) AS cnt
+FROM (
+  SELECT 1 AS rate UNION ALL
+  SELECT 2 UNION ALL
+  SELECT 3 UNION ALL
+  SELECT 4 UNION ALL
+  SELECT 5
+) n
+LEFT JOIN review r
+  ON r.rate = n.rate
+ AND r.user_id =2
+GROUP BY n.rate
+ORDER BY n.rate;
 
+
+#
+SELECT
+  (SELECT COUNT(*) FROM like_musical WHERE user_id = 1) AS likeMusicalCount,
+  (SELECT COUNT(*) FROM like_review  WHERE user_id = 1) AS likeReviewCount,
+  (SELECT COUNT(*) FROM like_actor   WHERE user_id = 1) AS likeActorCount,
+  (SELECT COUNT(*) FROM review       WHERE user_id = 1) AS reviewCount;
+  
+  #
+  SELECT * FROM cast as c
+		LEFT JOIN actor as a ON c.actor_id = a.actor_id
+		WHERE c.musical_id = 1;
