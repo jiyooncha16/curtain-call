@@ -1,60 +1,55 @@
 <template>
-  <div class="actor-detail">
+    <div class="actor-detail">
 
-    <h2 class="title-text">배우 상세보기</h2>
-    <hr />
+        <h2 class="title-text">배우 상세보기</h2>
+        <hr />
 
-    <!-- 배우 기본 정보 -->
-    <div v-if="actor" class="profile-wrapper">
-      <div class="img-box">
-        <img :src="`/${actor.image}`" :alt="actor.name" />
-      </div>
+        <!-- 배우 기본 정보 -->
+        <div v-if="actor" class="profile-wrapper">
+            <div class="img-box">
+                <img :src="`/${actor.image}`" :alt="actor.name" />
+            </div>
 
-      <div class="info-box">
-        <div class="name-row">
-          <h1 class="actor-name">{{ actor.name }}</h1>
-          <Heart @click="heartClicked" />
+            <div class="info-box">
+                <div class="name-row">
+                    <h1 class="actor-name">{{ actor.name }}</h1>
+                    <Heart @click="heartClicked" />
+                </div>
+
+                <div class="meta">
+                    <div v-if="actor.birth">생년월일: {{ actor.birth }}</div>
+                    <div v-if="actor.agency">소속사: {{ actor.agency }}</div>
+
+                    <a v-if="actor.sns" :href="actor.sns" target="_blank" rel="noopener" class="sns">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+
+                    <p class="description">
+                        {{ actor.description }}
+                    </p>
+                </div>
+            </div>
         </div>
 
-        <div class="meta">
-          <div>생년월일: {{ actor.birth }}</div>
-          <div v-if="actor.agency">소속사: {{ actor.agency }}</div>
+        <hr />
 
-          <a
-            v-if="actor.sns"
-            :href="actor.sns"
-            target="_blank"
-            rel="noopener"
-            class="sns"
-          >
-            <i class="bi bi-instagram"></i>
-          </a>
-
-          <p class="description">
-            {{ actor.description }}
-          </p>
-        </div>
-      </div>
+        <!-- 출연 작품 -->
+        <section>
+            <ActorWorkList :works="works" />
+        </section>
+        <RelatedActorList :actors="relatedActors" />
     </div>
-
-    <hr />
-
-    <!-- 출연 작품 -->
-    <section>
-      <ActorWorkList :works="works" />
-    </section>
-
-  </div>
 </template>
 
 <script setup>
 
 import ActorWorkList from '@/components/common/actor/ActorWorkList.vue';
+import RelatedActorList from '@/components/common/actor/RelatedActorList.vue';
 import CardItemActor from '@/components/common/CardItemActor.vue';
 import Heart from '@/components/common/icon/Heart.vue';
 import { parseActorWorks } from '@/utils/workParser';
 import axios from 'axios';
-import { onMounted, ref, computed } from 'vue';
+import { onMounted, ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 const profile =
     `2002 뮤지컬 <명성황후>
@@ -69,25 +64,42 @@ const profile =
     `;
 
 const route = useRoute()
-const id = route.params.id
+const id = computed(() => route.params.id) 
 
 //배우 정보 받아오기
 const actor = ref(null)
 const name = ref('')
 const description = ref('')
+const relatedActors = ref([])
+
+const fetchActor = async () => {
+    const { data } = await axios.get(`/api/actors/${id.value}`) // 🔴
+    actor.value = data
+}
+
+const fetchRelatedActors = async () => {
+    try {
+        const { data } = await axios.get(`/api/actors/${id.value}/related`) // 🔴
+        relatedActors.value = data
+    } catch (e) {
+        console.error('관련 배우 조회 실패', e)
+    }
+}
 
 onMounted(() => {
-    axios.get(`/api/actors/${id}`)
-        .then((res) => {
-            console.log(res.data)
-            name.value = res.data.name
-            actor.value = res.data
-            description.value = res.data.description
-
-            console.log(name.value)
-            console.log(description.value)
-        })
+    fetchActor()
+    fetchRelatedActors()
 })
+watch(
+    () => route.params.id,
+    () => {
+        fetchActor()
+        fetchRelatedActors()
+    }
+)
+
+
+
 // 배우 work 위해서
 const works = computed(() => {
     if (!actor.value) return []
