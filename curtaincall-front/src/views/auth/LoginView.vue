@@ -29,25 +29,47 @@
 </template>
 
 <script setup>
+import api from '@/api/axios'
+import axios from 'axios'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
+const auth = useAuthStore()
 const router = useRouter()
 
 const username = ref('')
 const password = ref('')
 
+// 로그인 비동기 요청
 const login = () => {
+
+  // 둘 다 입력해야
   if (!username.value || !password.value) {
     alert('아이디와 비밀번호를 입력해주세요.')
     return
   }
 
-  // TODO: axios로 로그인 API 호출
+  // 로그인
   console.log('로그인 시도:', username.value, password.value)
-
-  // 임시 성공 처리
-  router.push('/')
+  api.post(`/api/user/auth/login`, {
+    username: username.value,
+    password: password.value
+  })
+  .then((res) => {
+    console.log(res.data)
+    alert("로그인에 성공했습니다.")
+    const token = res.data.accessToken
+    auth.login(token)
+    router.push('/')
+  })
+  .catch((err)=> {
+    alert("아이디, 비밀번호가 잘못되었습니다.")
+  })
+  .finally(() => {
+    username.value = ''
+    password.value = ''
+  })
 }
 
 const goSignup = () => {

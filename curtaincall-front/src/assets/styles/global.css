@@ -14,7 +14,9 @@ a {
 img {
   display: block;
 }
-
+.container, .page, .app {
+  transform: none !important;
+}
 /*////////////// 색상, 폰트 //////////////*/
 :root {
   /* 색상 */

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="user">
     <div class="container title-text">마이페이지</div>
     <!-- 상단 프로필 영역 -->
     <div class="flex">
@@ -21,17 +21,17 @@
           </div>
 
           <div class="info-row">
-            <div class="nickname-text">{{user.nickname}}</div>
+            <div class="nickname-text">{{user.user.nickname}}</div>
           </div>
         </div>
         <!-- 오른쪽 내 정보 -->
         <div class="container my-info">
           <!--해시태그-->
           <div class="container">
-            <div class="basic-text">{{user.nickname}} 님은</div>
-            <div class="title-text">{{ taste }}</div>
+            <div class="basic-text">{{user.user.nickname}} 님은</div>
+            <div class="title-text">{{ user.taste }}</div>
+            <HashtagForMypage :tags="user.tags"/>
             <hr />
-            <HashtagForMypage :tags="hashtag" :limit="3" />
           </div>
 
           <!-- 통계 카드 영역 -->
@@ -41,15 +41,15 @@
               <div class="stat-label">나의 취향</div>
             </div>
             <div class="stat-card">
-              <div class="stat-value">{{ likeMusicalCount }}</div>
+              <div class="stat-value">{{ user.counts.likeMusicalCount }}</div>
               <div class="stat-label">뮤지컬</div>
             </div>
             <div class="stat-card">
-              <div class="stat-value">{{ likeActorCount }}</div>
+              <div class="stat-value">{{ user.counts.likeActorCount }}</div>
               <div class="stat-label">배우</div>
             </div>
             <div class="stat-card" @click="goMyReview">
-              <div class="stat-value">{{ reviewCount }}</div>
+              <div class="stat-value">{{ user.counts.reviewCount }}</div>
               <div class="stat-label">리뷰</div>
             </div>
           </div>
@@ -58,7 +58,7 @@
     </div>
 
     <!--자주 만나는 작품, 자주 만나는 배우 -->
-    <div class="flex-center" style="margin-bottom :50px; gap:10px">
+    <div class="flex-center" style="margin-bottom :50px; gap:10px" v-if="false">
         <div class="shadow">
             <PhotoBoard :obj="musical" />
         </div>
@@ -81,13 +81,13 @@
       <div class="rate-wrapper">
         <div class="rate-avg-wrapper">
             <div class=" rate-box center" style="width: 30%">
-                <div class="title-text" style="font-size: 35px;">{{ rate }}</div>
+                <div class="title-text" style="font-size: 35px;">{{ rate }}</div> <!-- 받아와야 함-->
                 <Rate :rate="rate" />
-                <div class="basic-text" >내 리뷰 27개</div>
+                <div class="basic-text" >내 리뷰 {{ user.counts.reviewCount }}개</div>
             </div>
             <!-- 평점 통계 연결해야함 -->
             <div style="width: 70%;padding:10px 0">
-                <RateStats />
+                <RateStats :stats="stats"/>
             </div>
         </div>
         </div>
@@ -109,88 +109,58 @@ import hong from "@/assets/홍광호.jpg";
 import HashtagForMypage from "@/components/common/icon/HashtagForMypage.vue";
 import Calendar from "@/components/common/calendar.vue";
 import { onMounted, ref, toRaw } from "vue";
-import axios from "axios";
 import { useRoute, useRouter } from "vue-router";
 import RateStats from "@/components/common/RateStats.vue";
 import Rate from "@/components/common/icon/Rate.vue";
+import { useAuthStore } from "@/stores/auth";
+import api from "@/api/axios";
 
 // const monthNow = emit.month
 // const emit = defineEmits({
 //     month : Number
 // })
 
+const auth = useAuthStore()
+const user = ref(null)
 
-const route = useRoute();
-const id = route.params.id;
-console.log("id : " + id);
-const rate = 4.3;
+onMounted(async () => {
+  try {
+    const res = await api.get('/api/user/me')
+    user.value = res.data
+    console.log("유저 : ", res.data)
+  } catch (e) {
+    console.error('유저 정보 조회 실패', e)
+  }
+})
+// const route = useRoute();
+// const id = route.params.id;
+// console.log("id : " + id);
 
-// 내 정보 가져오기
+//리뷰 가져오기
+const rate = ref('');
+const stats = ref('');
 
-const user = ref({})
-onMounted (() => {
-    axios.get(`/api/user/id/${id}`)
-    .then((res) => {
-        user.value = res.data;
-        console.log(res.data)
-  });
+onMounted(async () => {
+  try {
+    const rateRes = await api.get('/api/reviews/rating/me')
+    rate.value = rateRes.data
+    console.log("rate : ", rate.value)
+    const statsRes = await api.get('/api/reviews/rating/stats/me')
+    stats.value = statsRes.data
+    console.log("stats : ", stats.value)
+
+  } catch (e) {
+    console.error('리뷰 정보 조회 실패', e)
+  }
 })
 
-const musical = {
-  title: "자주 만나는 작품",
-  imgs: [
-    { src: new URL("@/assets/데스노트.jpg", import.meta.url).href },
-    { src: new URL("@/assets/데스노트.jpg", import.meta.url).href },
-    { src: new URL("@/assets/데스노트.jpg", import.meta.url).href },
-  ],
-};
 
-const actor = {
-  title: "자주 만나는 배우",
-  imgs: [
-    { src: new URL("@/assets/홍광호.jpg", import.meta.url).href },
-    { src: new URL("@/assets/홍광호.jpg", import.meta.url).href },
-    { src: new URL("@/assets/홍광호.jpg", import.meta.url).href },
-  ],
-};
-
-//해시태그 받아오기
-const hashtag = ref([]);
-onMounted(() => {
-  axios.get(`/api/user/tag/${id}`).then((res) => {
-    hashtag.value = res.data.map(item => item.hashtag);
-    console.log("tag > ", toRaw(hashtag.value))
-  });
-});
-
-
-//수식어(AI)
-const taste = ref("");
-onMounted(() => {
-  axios.get(`/api/user/taste/${id}`).then((res) => {
-    taste.value = res.data;
-  });
-});
-
-// 좋아요 리뷰 카운트
-const likeReviewCount = ref("");
-const likeMusicalCount = ref("");
-const likeActorCount = ref("");
-const reviewCount = ref("");
-onMounted(() => {
-  axios.get(`/api/user/count/${id}`).then((res) => {
-    likeMusicalCount.value = res.data.likeMusicalCount;
-    likeActorCount.value = res.data.likeActorCount;
-    likeReviewCount.value = res.data.likeReviewCount;
-    reviewCount.value = res.data.reviewCount;
-  });
-});
-
-// 페이지 이동하기
+// // 페이지 이동하기 - 내 리뷰로
 const router = useRouter()
 function goMyReview() {
-  router.push(`/review/my/${id}`)
+  router.push(`/review/my`)
 }
+
 </script>
 
 <style scoped>

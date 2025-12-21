@@ -1,10 +1,15 @@
 package com.ssafy.curtaincall.user.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,16 +22,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nimbusds.oauth2.sdk.TokenResponse;
+import com.ssafy.curtaincall.CustomUserDetails;
+import com.ssafy.curtaincall.JwtProvider;
 import com.ssafy.curtaincall.ai.dto.HashtagDTO;
 import com.ssafy.curtaincall.ai.service.AiService;
 import com.ssafy.curtaincall.user.dto.LikeCountDto;
+import com.ssafy.curtaincall.user.dto.LoginRequest;
+import com.ssafy.curtaincall.user.dto.LoginResponse;
+import com.ssafy.curtaincall.user.dto.MyPageResponseDto;
 import com.ssafy.curtaincall.user.dto.User;
+import com.ssafy.curtaincall.user.dto.UserResponse;
 import com.ssafy.curtaincall.user.service.UserService;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/user")
+@RequiredArgsConstructor
 @CrossOrigin("*")
 public class UserController {
 	
@@ -64,6 +78,10 @@ public class UserController {
 	@Qualifier("aiServiceImpl")
 	AiService aiService;
 	
+
+	private final AuthenticationManager authenticationManager;
+    private final JwtProvider jwtProvider;
+	
 	// 1. 조회
 	/* 1-1. 전체 목록 조회
 	 * 
@@ -90,28 +108,28 @@ public class UserController {
 	 *   - RequestBody(json) : 없음
 	 *  리턴 : User
 	 */
-	@GetMapping("/{username}")
-	public ResponseEntity<User> getUser(@PathVariable String username) {
-		User user = service.getUser(username);
-		if (user == null) return ResponseEntity.noContent().build();
-		else return ResponseEntity.ok(user);
-	}
+//	@GetMapping("/{username}")
+//	public ResponseEntity<Optional<User>> getUser(@PathVariable String username) {
+//		Optional<User> user = service.getUser(username);
+//		if (user == null) return ResponseEntity.noContent().build();
+//		else return ResponseEntity.ok(user);
+//	}
 	
-	/* 1-2-2. 상세 조회
-	 * 
-	 *  메서드 : GET
-	 *  엔드포인트 : /user/{userId}
-	 *  파라미터
-	 *   - pathVariable(url) : userId
-	 *   - RequestBody(json) : 없음
-	 *  리턴 : User
-	 */
-	@GetMapping("/id/{userId}")
-	public ResponseEntity<User> getUserById(@PathVariable int userId) {
-		User user = service.getUserById(userId);
-		if (user == null) return ResponseEntity.noContent().build();
-		else return ResponseEntity.ok(user);
-	}
+//	/* 1-2-2. 상세 조회
+//	 * 
+//	 *  메서드 : GET
+//	 *  엔드포인트 : /user/id/{userId}
+//	 *  파라미터
+//	 *   - pathVariable(url) : userId
+//	 *   - RequestBody(json) : 없음
+//	 *  리턴 : User
+//	 */
+//	@GetMapping("/id/{userId}")
+//	public ResponseEntity<User> getUserById(@PathVariable int userId) {
+//		User user = service.getUserById(userId);
+//		if (user == null) return ResponseEntity.noContent().build();
+//		else return ResponseEntity.ok(user);
+//	}
 
 	/* 1-3. count 조회
 	 * 
@@ -174,11 +192,14 @@ public class UserController {
 	 *   - RequestBody(json) : User
 	 *  리턴 : 없음
 	 */
-	@PutMapping("")
-	public ResponseEntity<?> modifyUser(@Valid @RequestBody User user) {// 유효성 검사
-		int result = service.modifyUser(user);
-		if (result == 1) return ResponseEntity.ok(user);
-		return ResponseEntity.badRequest().body("잘못된 입력입니다.");
+	@PutMapping("/me")
+	public ResponseEntity<?> modifyMe(
+	    @RequestBody User user,
+	    @AuthenticationPrincipal CustomUserDetails loginUser
+	) {
+		user.setUserId(loginUser.getUserId());
+	    service.modifyUser(user);
+	    return ResponseEntity.ok().build();
 	}
 	
 	//4. 회원 삭제
@@ -190,13 +211,13 @@ public class UserController {
 	 *   - RequestBody(json) : username(실제 아이디)
 	 *  리턴 : 없음
 	 */
-	@DeleteMapping("/{username}")
-	public ResponseEntity<?> deleteUser(@PathVariable String username) {
-		int result = service.deleteUser(username);
-		if (result == 1) return ResponseEntity.ok(username);
-		return ResponseEntity.badRequest().body("잘못된 입력입니다.");
+	@DeleteMapping("/me")
+	public ResponseEntity<?> deleteMe(
+	    @AuthenticationPrincipal CustomUserDetails user
+	) {
+	    service.deleteUser(user.getUserId());
+	    return ResponseEntity.ok().build();
 	}
-	
 	//5. AI : 유저 수식어 만들기
 	@GetMapping("/taste/{id}")
 	public String getUserTaste(@PathVariable int id) {
@@ -206,5 +227,25 @@ public class UserController {
 		else System.out.println(result);
 		return result;
 	}
+	
+	// 6. 로그인 (spring security)
+	@PostMapping("/auth/login")
+	public LoginResponse login(@RequestBody LoginRequest req) {
 
+        Authentication authentication =
+            authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                    req.getUsername(),
+                    req.getPassword()
+                )
+            );
+        String token = jwtProvider.createToken(authentication);
+        return new LoginResponse(token);
+    }
+	
+	// 7. 현재 로그인한 유저 정보 반환
+	@GetMapping("/me")
+	public MyPageResponseDto me(@AuthenticationPrincipal CustomUserDetails user) {
+	        return service.getMyPage(user.getUserId());
+	}
 }

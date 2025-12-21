@@ -69,6 +69,7 @@
 </template>
 
 <script setup>
+import api from "@/api/axios";
 import ReviewCard from "@/components/ReviewCard.vue";
 import { computed, onMounted, ref } from "vue";
 // axios 사용 중이면 아래 주석 해제
@@ -80,66 +81,19 @@ const loading = ref(true);
 const keyword = ref("");
 const sortKey = ref("latest");
 
-// ✅ 실제 API 응답에 맞춰 필드명만 맞추면 그대로 사용 가능
 const reviews = ref([]);
-
-/**
- * 예시 데이터 (API 붙이면 이 부분 제거)
- * 필수: 작성자(authorName), 포스터(posterUrl), 뮤지컬명(musicalTitle), 리뷰내용(content), 좋아요(likeCount)
- */
-const mock = [
-  {
-    id: 1,
-    authorName: "지니",
-    musicalTitle: "데스노트",
-    posterUrl:
-      "https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?w=800&q=80",
-    content:
-      "극 전개가 빠르고 넘버가 미쳤어요. 배우 에너지랑 무대 연출이 한 번에 터지는 느낌… 커튼콜 때 진짜 소름. 다시 보고 싶다.",
-    likeCount: 87,
-    liked: false,
-    rating: 5,
-    createdAt: "2025-12-20T12:20:00",
-  },
-  {
-    id: 2,
-    authorName: "웬디",
-    musicalTitle: "오페라의 유령",
-    posterUrl:
-      "https://images.unsplash.com/photo-1527766833261-b09c3163a791?w=800&q=80",
-    content:
-      "클래식의 정석. 오케스트라부터 무대장치까지 촘촘하게 쌓여서 몰입감이 대단했어요. 특히 그 장면… 말이 필요 없음.",
-    likeCount: 52,
-    liked: true,
-    rating: 3,
-    createdAt: "2025-12-19T21:10:00",
-  },
-  {
-    id: 3,
-    authorName: "하나",
-    musicalTitle: "레베카",
-    posterUrl:
-      "https://images.unsplash.com/photo-1517602302552-471fe67acf66?w=800&q=80",
-    content:
-      "스토리+넘버 조합이 너무 탄탄해서 끝까지 긴장감 유지. 넘버가 감정선을 그대로 끌고 가서 눈물 줄줄…",
-    likeCount: 33,
-    liked: false,
-    rating: 4,
-    createdAt: "2025-12-18T10:05:00",
-  },
-];
 
 onMounted(async () => {
   try {
     loading.value = true;
 
-    // ✅ API 붙이는 버전 예시
-    // const res = await axios.get("/api/reviews");
-    // reviews.value = res.data;
+    const res = await api.get("/api/reviews/my");
+    reviews.value = res.data;
+    console.log("리뷰 목록 : ", reviews.value[0].image)
 
-    // 일단 mock
-    await new Promise((r) => setTimeout(r, 550));
-    reviews.value = mock;
+    // // 일단 mock
+    // await new Promise((r) => setTimeout(r, 550));
+    // reviews.value = mock;
   } catch (e) {
     console.error(e);
     reviews.value = [];
@@ -150,37 +104,20 @@ onMounted(async () => {
 
 const filtered = computed(() => {
   const k = keyword.value.trim().toLowerCase()
-  const ratingSet = selectedRatings.value   // ⭐ 이 줄이 빠져 있었음
+  const ratingSet = selectedRatings.value 
 
   return reviews.value.filter((r) => {
-    // 🔍 검색 필터
-    const matchKeyword =
-      !k ||
-      r.authorName.toLowerCase().includes(k) ||
-      r.musicalTitle.toLowerCase().includes(k) ||
-      r.content.toLowerCase().includes(k)
-
-    // ⭐ 별점 필터
+    // 별점 필터
     const matchRating =
-      ratingSet.size === 0 || ratingSet.has(r.rating)
-
-    return matchKeyword && matchRating
+      ratingSet.size === 0 || ratingSet.has(r.rate)
+    return matchRating
   })
 })
 
 
 const visibleReviews = computed(() => {
   const list = [...filtered.value];
-
-  if (sortKey.value === "likes") {
-    list.sort((a, b) => (b.likeCount ?? 0) - (a.likeCount ?? 0));
-  } else if (sortKey.value === "title") {
-    list.sort((a, b) => (a.musicalTitle || "").localeCompare(b.musicalTitle || ""));
-  } else {
-    // latest
-    list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-  }
-
+  list.sort((a, b) => new Date(b.createDate).getTime() - new Date(a.createdDate).getTime());
   return list;
 });
 

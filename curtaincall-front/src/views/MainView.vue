@@ -10,7 +10,6 @@
           </div>
       </div>
     </div>
-    <!-- 나중에 props 내려보내야됨 지금은 다같이 움직임 -->
     <div class="shadow">
       <div class="title-text">HOT 작품</div>
       <CardSlide :musicalList="hotMusical"/>
@@ -29,12 +28,14 @@
     </div>
     <div class="shadow">
       <div class="title-text">인기 리뷰</div>
-      <ReviewCard
+      <div class="review-grid">
+        <ReviewCard
           v-for="review in reviewList"
           :key="review.id"
           :review="review"
           @toggle-like="toggleLike"
         />
+      </div>
     </div>
     
   </div>
@@ -45,6 +46,7 @@ import CardItem from '@/components/common/CardItem.vue';
 import CardSlide from '@/components/common/CardSlide.vue';
 import PhotoBoard from '@/components/common/PhotoBoard.vue';
 import ReviewMainList from '@/components/review/ReviewMainList.vue';
+import ReviewCard from '@/components/ReviewCard.vue';
 import VideoMain from '@/components/VideoMain.vue';
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
@@ -106,12 +108,8 @@ onMounted(async ()=> {
     console.log('맞춤 작품', myRes.data)
     myMusical.value = myRes.data
 
-    const reviewRes = await axios.get('/api/reviews/1', {
-        params: { orderBy: 'likes', 
-        order:"desc", 
-        page: 0, 
-        size: 2 }
-    })
+    //리뷰
+    const reviewRes = await axios.get('/api/reviews/top')
     console.log('맞춤 작품', reviewRes.data)
     reviewList.value = reviewRes.data
 
@@ -155,5 +153,9 @@ onMounted(async ()=> {
   padding: 20px 20px;
   border-radius: 20px;
 }
-
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2열 */
+  gap: 20px; /* 카드 사이 간격 */
+}
 </style>

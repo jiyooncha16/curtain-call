@@ -18,6 +18,7 @@ import ChangePasswordView from '@/views/auth/ChangePasswordView.vue'
 import MyPageView from '@/views/myPage/MyPageView.vue'
 import SignupView from '@/views/auth/SignupView.vue'
 import SubView from '@/views/SubView.vue'
+import { useAuthStore } from '@/stores/auth'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -61,43 +62,50 @@ const router = createRouter({
       name: 'boardDetail',
       component: BoardDetailView,
       props: true,
+      meta: { requiresAuth: true },
     },
     {
       path: '/community/:id/edit',
       name: 'boardModify',
       component: BoardModifyView,
       props: true,
+      meta: { requiresAuth: true },
     },
     {
       path: '/community/new',
       name: 'boardCreate',
       component: BoardCreateView,
+      meta: { requiresAuth: true },
     },
     {
       path: '/review/new',
       name: 'reviewCreate',
       component: ReviewCreateView,
+      meta: { requiresAuth: true },
     },
     {
-      path: '/review/:id/edit',
+      path: '/review/edit',
       name: 'reviewModify',
       component: ReviewModifyView,
       props: true,
+      meta: { requiresAuth: true },
     },
     {
-      path: '/review/my/:id',
+      path: '/review/my',
       name: 'myReview',
       component: MyReview,
       props: true,
+      meta: { requiresAuth: true },
     },
     {
-      path: '/myPage/:id',
+      path: '/myPage',
       name: 'myPage',
       component: MyPageView,
       props: true,
+      meta: { requiresAuth: true },
     },
     {
-      path: '/myPage/:id/edit',
+      path: '/myPage/edit',
       name: 'myInfoModify',
       component: MyInfoModify,
       props: true,
@@ -130,4 +138,18 @@ const router = createRouter({
   ],
 })
 
+// requires Auth 인 페이지인데 로그인 안 되었다면 로그인 페이지로 이동
+router.beforeEach((to, from, next) => {
+  
+  const auth = useAuthStore()
+  if (to.meta.requiresAuth && !auth.isLogin) {
+    alert("로그인 페이지로 이동합니다.")
+    next({
+    name: 'login',
+    query: { redirect: to.fullPath } // 로그인 후 원래 가려던 페이지로 이동하기
+  })
+  } else {
+    next()
+  }
+})
 export default router

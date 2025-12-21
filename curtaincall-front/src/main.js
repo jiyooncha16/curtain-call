@@ -4,6 +4,8 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 import 'bootstrap-icons/font/bootstrap-icons.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import './assets/styles/global.css';
 import { Vue3KakaoMaps } from 'vue3-kakao-maps' // ⭐ named import
 // import Vue3KakaoMaps from 'vue3-kakao-maps'

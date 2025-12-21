@@ -9,14 +9,6 @@
       </button>
     </div>
 
-    <!-- ===== 전체 게시판 ===== -->
-    <section class="card">
-      <div class="section-header">
-        <h2 class="section-title">전체 게시글</h2>
-      </div>
-      <BoardList :list="allBoardList" />
-    </section>
-
     <!-- ===== 일반 게시판 ===== -->
     <section class="card">
       <div class="section-header">

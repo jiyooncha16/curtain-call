@@ -44,7 +44,7 @@ public class AiServiceImpl implements AiService{
 		prompt.append("5. 너무 일반적인 표현(로맨스 드라마 뮤덕 등)은 사용하지 마.\n");
 		prompt.append("6. 높은 빈도의 태그 1~2개만 반영해.\n");
 		prompt.append("7. 욕설, 비하, 부정적인 표현은 사용하지 마.\n");
-		prompt.append("8. 20자 이내로만 출력해.\n");
+		prompt.append("8. 15자 이내로만 출력해.\n");
 		
 		prompt.append("예시:\n");
 		prompt.append("- 태그: 로맨스, 드라마 -> 감정선에 깊이 몰입하는 뮤덕\n");

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.curtaincall.review.dto.MyReviewDto;
 import com.ssafy.curtaincall.review.dto.Review;
 import com.ssafy.curtaincall.review.dto.ReviewLikes;
 import com.ssafy.curtaincall.review.dto.ReviewRateDto;
@@ -89,6 +90,16 @@ public class ReviewServiceImpl implements ReviewService {
 		System.out.println("좋아요 삭제 요청 - 이미 있는 좋아요인가? : " + mapper.checkLike(like));
 		if (mapper.checkLike(like) >= 1) mapper.deleteLike(like);	
 		else System.out.println("삭제할 좋아요가 없습니다.");
+	}
+
+	@Override
+	public List<MyReviewDto> getMyReview(int id) {
+		return mapper.selectMyReview(id);
+	}
+
+	@Override
+	public List<MyReviewDto> getTopReview() {
+		return mapper.selectTopReview();
 	}
 
 

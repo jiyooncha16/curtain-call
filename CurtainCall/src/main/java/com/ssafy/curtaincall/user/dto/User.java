@@ -29,6 +29,9 @@ public class User {
 	 */
 
 	// User : 회원 정보 객체
+	
+	private int userId;
+	
 	@Size(min = 8, message = "아이디는 8자리 이상이어야 합니다.")
 	@NotBlank(message = "아이디는 필수 입력값입니다.")
 	private String username; // 아이디 -- 유효성 검사 필요

@@ -4,13 +4,13 @@
     <div class="poster-wrap">
       <img
         class="poster"
-        :src="review.posterUrl"
+        :src="`/${review.image}`"
         :alt="review.musicalTitle"
       />
       <div class="poster-title">
-        <div class="musical-name">{{ review.musicalTitle }}</div>
+        <div class="musical-name">{{ review.title }}</div>
         <div class="sub-meta">
-          <span class="time">{{ formatDate(review.createdAt) }}</span>
+          <span class="time">{{ formatDate(review.createDate) }}</span>
         </div>
       </div>
     </div>
@@ -20,10 +20,10 @@
       <div class="top">
         <div class="author">
           <div class="avatar">
-            <span>{{ initial(review.authorName) }}</span>
+            <span>{{ initial(review.nickname) }}</span>
           </div>
           <div class="author-info">
-            <div class="author-name">{{ review.authorName }}</div>
+            <div class="author-name">{{ review.nickname }}</div>
             <!-- <div class="author-sub">{{ formatDate(review.createdAt) }}</div> -->
 
             <!-- ⭐ 별점 -->
@@ -32,9 +32,9 @@
                 v-for="n in 5"
                 :key="n"
                 class="bi"
-                :class="n <= review.rating ? 'bi-star-fill' : 'bi-star'"
+                :class="n <= review.rate ? 'bi-star-fill' : 'bi-star'"
                 ></i>
-                <span class="rating-num">{{ review.rating }}</span>
+                <span class="rating-num">{{ review.rate }}</span>
             </div>
           </div>
         </div>
@@ -59,13 +59,13 @@
         <div class="pill">
           <i class="bi bi-person"></i>
           <span class="sep"> | </span>
-          <b>{{ review.authorName }}</b>
+          <b>{{ review.nickname }}</b>
         </div>
 
         <div class="pill">
           <i class="bi bi-film"></i>
           <span class="sep"> | </span>
-          <b>{{ review.musicalTitle }}</b>
+          <b>{{ review.title }}</b>
         </div>
       </div>
     </div>
@@ -76,7 +76,6 @@
 defineProps({
   review: {
     type: Object,
-    required: true,
   },
 })
 
