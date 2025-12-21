@@ -5,6 +5,7 @@ import java.util.List;
 import com.ssafy.curtaincall.board.dto.Board;
 import com.ssafy.curtaincall.board.dto.BoardLikes;
 import com.ssafy.curtaincall.board.dto.BoardSearchCondition;
+import com.ssafy.curtaincall.review.dto.MyReviewDto;
 import com.ssafy.curtaincall.review.dto.Review;
 import com.ssafy.curtaincall.review.dto.ReviewLikes;
 import com.ssafy.curtaincall.review.dto.ReviewRateDto;
@@ -24,6 +25,9 @@ public interface ReviewService {
 	double getReviewRate(int id); // 평점 평균 조회
 	List<Review> getReviewByCondition(ReviewSearchCondition condition); // 조건부 리스트 반환
 	List<ReviewRateDto> getReviewRateStats(int id); //평점 통계
+	List<MyReviewDto> getMyReview(int id); // 내 리뷰
+	List<MyReviewDto> getTopReview();
+	
 	//CUD
     int createReview(Review review);             // 등록 
     int updateReview(Review review);             // 수정

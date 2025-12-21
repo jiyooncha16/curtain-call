@@ -1,6 +1,7 @@
 package com.ssafy.curtaincall.user.mapper;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,8 +16,8 @@ public interface UserMapper {
 
 	//조회
 	List<User> selectAllUser();
-	User selectUser(String username);
-	User selectUserById(int userId);
+	Optional<User> selectUser(String username);
+	Optional<User> selectUserById(int userId);
 //	User getEmail(String email);
 //	User getPhone(String phone);
 	LikeCountDto selectCount(int id);
@@ -24,6 +25,6 @@ public interface UserMapper {
 	//cud
 	int signup(User user);
 	int updateUser(User user);
-	int deleteUser(String username);
+	int deleteUser(int id);
 	
 }

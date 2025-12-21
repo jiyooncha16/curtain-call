@@ -10,7 +10,6 @@
           </div>
       </div>
     </div>
-    <!-- 나중에 props 내려보내야됨 지금은 다같이 움직임 -->
     <div class="shadow">
       <div class="title-text">HOT 작품</div>
       <CardSlide :musicalList="hotMusical"/>
@@ -29,7 +28,14 @@
     </div>
     <div class="shadow">
       <div class="title-text">인기 리뷰</div>
-      <ReviewMainList />
+      <div class="review-grid">
+        <ReviewCard
+          v-for="review in reviewList"
+          :key="review.id"
+          :review="review"
+          @toggle-like="toggleLike"
+        />
+      </div>
     </div>
     
   </div>
@@ -40,6 +46,7 @@ import CardItem from '@/components/common/CardItem.vue';
 import CardSlide from '@/components/common/CardSlide.vue';
 import PhotoBoard from '@/components/common/PhotoBoard.vue';
 import ReviewMainList from '@/components/review/ReviewMainList.vue';
+import ReviewCard from '@/components/ReviewCard.vue';
 import VideoMain from '@/components/VideoMain.vue';
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
@@ -68,6 +75,8 @@ const actor = {
 const hotMusical = ref([])
 const onStageMusical = ref([])
 const myMusical = ref([])
+const reviewList = ref([])
+const toggleLike = ref('')
 
 onMounted(async ()=> {
   try {
@@ -98,6 +107,11 @@ onMounted(async ()=> {
     })
     console.log('맞춤 작품', myRes.data)
     myMusical.value = myRes.data
+
+    //리뷰
+    const reviewRes = await axios.get('/api/reviews/top')
+    console.log('맞춤 작품', reviewRes.data)
+    reviewList.value = reviewRes.data
 
   } catch (e) {
     console.error('API 에러', e)
@@ -133,12 +147,15 @@ onMounted(async ()=> {
   position: relative;
   background: transparent; /* 실제 배경은 가상요소가 담당 */
   overflow: hidden;
-
 }
 .hero-section {
   background: linear-gradient(135deg, #50000041, #460000e8);
   padding: 20px 20px;
   border-radius: 20px;
 }
-
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2열 */
+  gap: 20px; /* 카드 사이 간격 */
+}
 </style>

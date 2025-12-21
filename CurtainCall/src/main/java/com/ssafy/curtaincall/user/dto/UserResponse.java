@@ -19,17 +19,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class LikeCountDto {
-
-	/*
-	 * ** 클래스 설명, 필드 설명 주석 필수 ** 
-	 * toString : 위 어노테이션으로 대신함(@ToString)
-	 * 생성자 : 위 어노테이션으로 대신함(@AllArgsConstructor)
-	 * 게터, 세터 : 위 어노테이션으로 대신함(@Getter, @Setter)
-	 */
-
-	private int likeMusicalCount;
-	private int likeActorCount;
-	private int reviewCount;
+public class UserResponse {
+	private int userId;
+	private String username;
+	private String name;
+	private String email;
+	private String phone;
+	private String nickname;
+	
 }
-

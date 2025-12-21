@@ -1,16 +1,25 @@
 package com.ssafy.curtaincall.user.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.curtaincall.ai.dto.HashtagDTO;
+import com.ssafy.curtaincall.ai.service.AiService;
 import com.ssafy.curtaincall.user.dto.LikeCountDto;
+import com.ssafy.curtaincall.user.dto.MyPageResponseDto;
 import com.ssafy.curtaincall.user.dto.User;
+import com.ssafy.curtaincall.user.dto.UserResponse;
 import com.ssafy.curtaincall.user.mapper.UserMapper;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
+
 
 	/*
 	 * @Service 달았는지 확인
@@ -19,8 +28,14 @@ public class UserServiceImpl implements UserService {
 	 * 
 	 */
 	
-	@Autowired
-	UserMapper mapper;
+//	@Autowired
+//	UserMapper mapper;
+//	
+//	@Autowired
+//	AiService aiService;
+	
+	private final UserMapper mapper;
+    private final AiService aiService;
 
 	@Override
 	public List<User> getlist() {
@@ -28,8 +43,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User getUser(String username) {
-		return mapper.selectUser(username);
+	public Optional<User> getUser(int id) {
+		return mapper.selectUserById(id);
 	}
 //
 //	@Override
@@ -49,14 +64,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int modifyUser(User user) {
-		if (mapper.selectUser(user.getUsername()) == null) return 0;
+		if (mapper.selectUserById(user.getUserId()) == null) return 0;
 		return mapper.updateUser(user);
 	}
 
 	@Override
-	public int deleteUser(String username) {
-		if (mapper.selectUser(username) == null) return 0;
-		return mapper.deleteUser(username);
+	public int deleteUser(int id) {
+		if (mapper.selectUserById(id) == null) return 0;
+		return mapper.deleteUser(id);
 	}
 
 	@Override
@@ -66,9 +81,32 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User getUserById(int userId) {
+	public Optional<User> getUserById(int userId) {
 		return mapper.selectUserById(userId);
 	}
+	
+	@Override
+	public MyPageResponseDto getMyPage(int userId) {
+
+        User user = mapper.selectUserById(userId)
+                .orElseThrow(() -> new RuntimeException("유저 없음"));
+
+        UserResponse userDto = new UserResponse(
+    		  	user.getUserId(),
+	            user.getUsername(),
+	            user.getName(),
+	            user.getEmail(),
+	            user.getPhone(),
+	            user.getNickname()
+        );
+        List<HashtagDTO> tags = aiService.hashtagCount(userId);
+
+        String taste = aiService.generateUserTaste(userId);
+
+        LikeCountDto counts = mapper.selectCount(userId);
+
+        return new MyPageResponseDto(userDto, tags, taste, counts);
+    }
 
 }
 

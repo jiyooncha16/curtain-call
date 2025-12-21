@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.curtaincall.CustomUserDetails;
 import com.ssafy.curtaincall.board.dto.Board;
 import com.ssafy.curtaincall.board.dto.BoardLikes;
 import com.ssafy.curtaincall.board.dto.BoardSearchCondition;
 import com.ssafy.curtaincall.board.service.BoardService;
+import com.ssafy.curtaincall.review.dto.MyReviewDto;
 import com.ssafy.curtaincall.review.dto.Review;
 import com.ssafy.curtaincall.review.dto.ReviewLikes;
 import com.ssafy.curtaincall.review.dto.ReviewRateDto;
@@ -94,11 +97,17 @@ public class ReviewController {
 	 *   - RequestBody(json) : 없음
 	 * 리턴 : 리뷰 평점 (double, 소수점 아래 한자리까지)
 	 */
-	@GetMapping("/rating/{id}")
-	public ResponseEntity<Double> getReviewRate(@PathVariable int id) {
-		double rate = service.getReviewRate(id);
-		if (rate == 0.0 || rate == 0) return ResponseEntity.noContent().build();
-		else return ResponseEntity.ok((Double)rate);
+	@GetMapping("/rating/me")
+	public ResponseEntity<Double> getMyReviewRate(
+	        @AuthenticationPrincipal CustomUserDetails userDetails
+	) {
+	    int userId = userDetails.getUserId();
+	    double rate = service.getReviewRate(userId);
+
+	    if (rate == 0.0) {
+	        return ResponseEntity.noContent().build();
+	    }
+	    return ResponseEntity.ok(rate);
 	}
 	
 
@@ -111,15 +120,43 @@ public class ReviewController {
 	 *   - RequestBody(json) : 없음
 	 * 리턴 : 리뷰 평점 (double, 소수점 아래 한자리까지)
 	 */
-	@GetMapping("/rating/stats/{id}")
-	public ResponseEntity<List<ReviewRateDto>> getReviewRateStats(@PathVariable int id) {
-		List<ReviewRateDto> list = service.getReviewRateStats(id);
-		if (list == null || list.size() == 0) return ResponseEntity.noContent().build();
-		else return ResponseEntity.ok(list);
+	@GetMapping("/rating/stats/me")
+	public ResponseEntity<List<ReviewRateDto>> getMyReviewRateStats(
+	        @AuthenticationPrincipal CustomUserDetails userDetails
+	) {
+	    int userId = userDetails.getUserId();
+	    List<ReviewRateDto> list = service.getReviewRateStats(userId);
+
+	    if (list == null || list.isEmpty()) {
+	        return ResponseEntity.noContent().build();
+	    }
+	    return ResponseEntity.ok(list);
 	}
 	
 	
+	// 1-4. 내 리뷰 리스트
+	@GetMapping("/my")
+	public ResponseEntity<List<MyReviewDto>> getMyReview(
+	        @AuthenticationPrincipal CustomUserDetails userDetails
+	) {
+	    int userId = userDetails.getUserId();
+
+	    List<MyReviewDto> list = service.getMyReview(userId);
+
+	    if (list == null || list.isEmpty()) {
+	        return ResponseEntity.noContent().build();
+	    }
+
+	    return ResponseEntity.ok(list);
+	}
 	
+	// 1-5. 통합 top 10 조회
+	@GetMapping("/top")
+	public ResponseEntity<List<MyReviewDto>> getlist() {
+		List<MyReviewDto> list = service.getTopReview();
+		if (list == null || list.size() == 0) return ResponseEntity.noContent().build();
+		return ResponseEntity.ok(list);
+	}
 	
 	
 

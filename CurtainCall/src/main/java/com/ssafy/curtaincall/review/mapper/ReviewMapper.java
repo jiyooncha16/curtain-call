@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.ssafy.curtaincall.review.dto.MyReviewDto;
 import com.ssafy.curtaincall.review.dto.Review;
 import com.ssafy.curtaincall.review.dto.ReviewLikes;
 import com.ssafy.curtaincall.review.dto.ReviewRateDto;
@@ -19,6 +20,8 @@ public interface ReviewMapper {
 	public Review selectReview(Review review);
 	public Review selectReviewById(int id);
 	public List<ReviewRateDto> selectReviewRateStats(int id);
+	public List<MyReviewDto> selectMyReview(int id);
+	public List<MyReviewDto> selectTopReview();
 	
 	//CUD
     int insertReview(Review review);
