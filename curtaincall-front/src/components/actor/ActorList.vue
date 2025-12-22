@@ -5,7 +5,6 @@
 </template>
 
 <script setup>
-import CardItem from '../common/CardItem.vue';
 import CardItemActor from '../common/CardItemActor.vue';
 
 const props = defineProps ({

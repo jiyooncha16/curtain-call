@@ -43,25 +43,13 @@
 
 <script setup>
 
-import ActorWorkList from '@/components/common/actor/ActorWorkList.vue';
-import RelatedActorList from '@/components/common/actor/RelatedActorList.vue';
-import CardItemActor from '@/components/common/CardItemActor.vue';
+import ActorWorkList from '@/components/actor/ActorWorkList.vue';
+import RelatedActorList from '@/components/actor/RelatedActorList.vue';
 import Heart from '@/components/common/icon/Heart.vue';
 import { parseActorWorks } from '@/utils/workParser';
 import axios from 'axios';
 import { onMounted, ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
-const profile =
-    `2002 뮤지컬 <명성황후>
-    2006 뮤지컬 <미스 사이공>
-    2009 뮤지컬 <오페라의 유령>
-    2010 뮤지컬 <지킬 앤 하이드>
-    2013 뮤지컬 <노트르담 드 파리>
-    2015 뮤지컬 <데스노트>
-    2019 뮤지컬 <스위니토드>
-    2022 뮤지컬 <물랑루즈!>
-    2023 뮤지컬 <데스노트>
-    `;
 
 const route = useRoute()
 const id = computed(() => route.params.id) 
@@ -73,13 +61,13 @@ const description = ref('')
 const relatedActors = ref([])
 
 const fetchActor = async () => {
-    const { data } = await axios.get(`/api/actors/${id.value}`) // 🔴
+    const { data } = await axios.get(`/api/actors/${id.value}`) 
     actor.value = data
 }
 
 const fetchRelatedActors = async () => {
     try {
-        const { data } = await axios.get(`/api/actors/${id.value}/related`) // 🔴
+        const { data } = await axios.get(`/api/actors/${id.value}/related`) 
         relatedActors.value = data
     } catch (e) {
         console.error('관련 배우 조회 실패', e)
