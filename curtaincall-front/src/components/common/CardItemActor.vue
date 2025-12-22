@@ -1,20 +1,34 @@
 <template>
-    <div class="poster">
-        <div class="card">
-            <div class="img-box">
-                <img src="@/assets/데스노트.jpg">
-                 <!-- <img :src="musical.이미지........"> -->
-            </div>
-            <!-- <div class="title basic-text">{{item.title}}</div> -->
-             <div class="title basic-text">{{ actor?.name }}</div>
-        </div>
+  <div class="poster" @click="goDetail">
+    <div class="card" >
+      <div class="img-box">
+        <img
+          v-if="actor?.image"
+          :src="`/${actor.image}`"
+          :alt="actor.name"
+        />
+      </div>
+      <div class="title basic-text">{{ actor?.name }}</div>
     </div>
+  </div>
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
+
+
 const props = defineProps({
-    actor: Object
+  actor: {
+    type: Object,
+    required: true
+  }
 })
+
+const router = useRouter()
+
+const goDetail = () => {
+  router.push(`/actor/${props.actor.actorId}`)
+}
 </script>
 
 <style scoped>
