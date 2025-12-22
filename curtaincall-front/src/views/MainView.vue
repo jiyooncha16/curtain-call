@@ -8,7 +8,12 @@
     <!-- 상단 인사 -->
     <div class="hero-header flex" style="justify-content: space-between;">
       <div class="hello">
-        <span class="nickname">{{ me.nickname }}</span>님 안녕하세요 👋
+        <div>
+          <span class="nickname">{{ me.nickname }}</span>님 안녕하세요😄
+        </div>
+          <div>
+          <span class="nickname">지금까지의 관극 기록을 살펴볼까요?</span>
+        </div>
       </div>
 
       <button class="mypage-btn" @click="goMyPage">
@@ -322,6 +327,7 @@ const goMyPage = function() {
 
 /* 마이페이지 버튼 */
 .mypage-btn {
+  height: 50px;
   padding: 8px 18px;
   border-radius: 999px;
   border: 1px solid #c9a24d;
