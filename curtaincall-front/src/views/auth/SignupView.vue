@@ -20,11 +20,26 @@
       </div>
 
       <div class="input-group">
+        <label>이름</label>
+        <input type="text" v-model="name" placeholder="이름을 입력하세요" />
+      </div>
+
+      <div class="input-group">
         <label>이메일</label>
         <input type="email" v-model="email" placeholder="이메일을 입력하세요" />
       </div>
 
-      <button class="signup-btn" @click="signup">
+      <div class="input-group">
+        <label>전화번호</label>
+        <input type="text" v-model="phone" placeholder="전화번호를 입력하세요" />
+      </div>
+
+      <div class="input-group">
+        <label>닉네임</label>
+        <input type="text" v-model="nickname" placeholder="닉네임을 입력하세요" />
+      </div>
+
+      <button class="signup-btn" @click="signupClicked">
         회원가입
       </button>
 
@@ -36,6 +51,7 @@
 </template>
 
 <script setup>
+import axios from 'axios'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -44,9 +60,12 @@ const router = useRouter()
 const username = ref('')
 const password = ref('')
 const passwordCheck = ref('')
+const name = ref('')
 const email = ref('')
+const phone = ref('')
+const nickname = ref('')
 
-const signup = () => {
+const signupClicked = async () => {
   if (!username.value || !password.value || !passwordCheck.value || !email.value) {
     alert('모든 항목을 입력해주세요.')
     return
@@ -57,11 +76,28 @@ const signup = () => {
     return
   }
 
+  try {
+    console.log("시작해요")
+    const res = await axios.post('/api/user', {
+      username: username.value,
+      password: password.value,
+      name: name.value,
+      email : email.value,
+      phone : phone.value,
+      nickname: nickname.value
+    })
+   } catch(err) {
+      console.log(err)
+   }
+
   // TODO: axios 회원가입 API 호출
   console.log('회원가입:', {
     username: username.value,
     password: password.value,
-    email: email.value
+    name: name.value,
+    email : email.value,
+    phone : phone.value,
+    nickname: nickname.value
   })
 
   alert('회원가입이 완료되었습니다. 로그인해주세요.')

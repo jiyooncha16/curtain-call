@@ -178,6 +178,8 @@ public class UserController {
 	@PostMapping("")
 	public ResponseEntity<?> signup(@Valid @RequestBody User user) {// 유효성 검사
 		int result = service.signup(user);
+
+	    System.out.println("insert result = " + result);
 		if (result == 1) return ResponseEntity.ok(user);
 		return ResponseEntity.badRequest().body("잘못된 입력입니다.");
 	}

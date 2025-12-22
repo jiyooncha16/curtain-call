@@ -2,7 +2,7 @@
     <div class="poster">
         <div class="card">
             <div class="img-box">
-                <img src="@/assets/데스노트.jpg">
+                <img :src="`/${item.image}`">
                  <!-- <img :src="musical.이미지........"> -->
             </div>
             <div class="title basic-text">{{item.title}}</div>
@@ -14,6 +14,7 @@
 const props = defineProps({
     item: Object
 })
+console.log(props.item)
 </script>
 
 <style scoped>

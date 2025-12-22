@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.curtaincall.ai.dto.HashtagDTO;
 import com.ssafy.curtaincall.ai.service.AiService;
@@ -18,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
 
@@ -36,6 +39,7 @@ public class UserServiceImpl implements UserService {
 	
 	private final UserMapper mapper;
     private final AiService aiService;
+    private final PasswordEncoder passwordEncoder;
 
 	@Override
 	public List<User> getlist() {
@@ -59,6 +63,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int signup(User user) {
+		String encodedPw = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPw);
 		return mapper.signup(user);
 	}
 
