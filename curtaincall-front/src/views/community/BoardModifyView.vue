@@ -39,6 +39,7 @@
 </template>
 
 <script setup>
+import { useAuthStore } from '@/stores/auth'
 import axios from 'axios'
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -46,9 +47,9 @@ import { useRoute, useRouter } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
 
-// const id = route.params.id
-const id = 2
-const userId = 2
+const auth = useAuthStore()
+const id = route.params.id
+const userId = auth.userId
 
 
 
