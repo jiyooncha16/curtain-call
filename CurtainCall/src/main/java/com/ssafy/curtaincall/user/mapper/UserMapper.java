@@ -8,8 +8,10 @@ import org.apache.ibatis.annotations.Mapper;
 import com.ssafy.curtaincall.actor.dto.Actor;
 import com.ssafy.curtaincall.actor.dto.ActorLikes;
 import com.ssafy.curtaincall.actor.dto.ActorSearchCondition;
+import com.ssafy.curtaincall.musical.dto.Musical;
 import com.ssafy.curtaincall.user.dto.LikeCountDto;
 import com.ssafy.curtaincall.user.dto.User;
+import com.ssafy.curtaincall.user.dto.UserMeResponse;
 
 @Mapper
 public interface UserMapper {
@@ -21,6 +23,9 @@ public interface UserMapper {
 //	User getEmail(String email);
 //	User getPhone(String phone);
 	LikeCountDto selectCount(int id);
+	String selectNickname(int userId);
+    List<Musical> selectRecentMusicals(int userId);
+    List<Actor> selectFavoriteActors(int userId);
 
 	//cud
 	int signup(User user);

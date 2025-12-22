@@ -1,6 +1,6 @@
 <template>
   <div v-if="user">
-    <div class="container title-text">마이페이지</div>
+    <div class=" title-text">마이페이지</div>
     <!-- 상단 프로필 영역 -->
     <div class="flex">
       <div
@@ -58,6 +58,37 @@
     </div>
 
     <!--자주 만나는 작품, 자주 만나는 배우 -->
+    <!-- 로그인 상태 -->
+  <div v-if="me" class="hero-user">
+    <!-- 개인화 콘텐츠 -->
+    <div class="hero-content">
+
+      <!-- 최근 본 뮤지컬 -->
+      <div class="photo-wrapper">
+        <PhotoBoard
+          v-if="me.recentMusicals?.length"
+          :obj="{
+            title: '최근 본 뮤지컬',
+            imgs: me.recentMusicals.map(m => ({
+              src: '/' + m.image
+            }))
+          }"
+        />
+      </div>
+
+      <!-- 자주 본 배우 -->
+      <div class="photo-wrapper">
+        <PhotoBoard
+          v-if="me.favoriteActors?.length"
+          :obj="{
+            title: '자주 본 배우',
+            imgs: me.favoriteActors.map(a => ({
+              src: '/' + a.image
+            }))
+          }"
+        />
+      </div>
+    </div>
     <div class="flex-center" style="margin-bottom :50px; gap:10px" v-if="false">
         <div class="shadow">
             <PhotoBoard :obj="musical" />
@@ -65,6 +96,7 @@
         <div class="shadow">
             <PhotoBoard :obj="actor" />
         </div>
+    </div>
     </div>
 
     <!-- 평점 통계 -->
@@ -139,7 +171,7 @@ onMounted(async () => {
 //리뷰 가져오기
 const rate = ref('');
 const stats = ref('');
-
+const me = ref([])
 onMounted(async () => {
   try {
     const rateRes = await api.get('/api/reviews/rating/me')
@@ -148,6 +180,15 @@ onMounted(async () => {
     const statsRes = await api.get('/api/reviews/rating/stats/me')
     stats.value = statsRes.data
     console.log("stats : ", stats.value)
+
+    // my 정보
+    const res = await api.get('/api/user/main', {
+      headers: {
+        Authorization: `Bearer ${auth.token}`
+      }
+    })
+    me.value = res.data
+    console.log('me:', me.value)
 
   } catch (e) {
     console.error('리뷰 정보 조회 실패', e)
@@ -169,6 +210,7 @@ function goMyReview() {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 8px;
 }
 .circle-img-wrapper {
@@ -336,4 +378,88 @@ function goMyReview() {
   text-decoration: underline;
 }
 
+/* 로그인 후 히어로 전체 */
+/* .hero-user {
+  margin-bottom: 50px;
+  padding: 32px;
+  border-radius: 22px;
+  background: linear-gradient(
+    135deg,
+    #1e1f26,
+    #2a2c36
+  );
+  color: #f5f5f5;
+} */
+ .hero-user {
+  margin-bottom: 50px;
+  padding: 32px;
+  border-radius: 22px;
+  color: #f5f5f5;
+}
+
+/* 상단 헤더 */
+.hero-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 26px;
+}
+
+/* 인사 */
+.hello {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.nickname {
+  color: #c9a24d; /* 골드 포인트 */
+  font-weight: 700;
+}
+
+/* 마이페이지 버튼 */
+.mypage-btn {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid #c9a24d;
+  background: transparent;
+  color: #c9a24d;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mypage-btn:hover {
+  background: #c9a24d;
+  color: #1e1f26;
+}
+
+/* 콘텐츠 영역 */
+.hero-content {
+  display: flex;
+  gap: 22px;
+}
+
+/* PhotoBoard 감싸는 영역 */
+.photo-wrapper {
+  flex: 1;
+  min-width: 0;
+}
+
+/* PhotoBoard hover */
+.photo-wrapper .photo-board {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.photo-wrapper .photo-board:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
+}
+
+/* 반응형 */
+@media (max-width: 900px) {
+  .hero-content {
+    flex-direction: column;
+  }
+}
 </style>

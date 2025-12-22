@@ -3,14 +3,49 @@
     <div class="hero-section" style="margin-bottom:50px;">
   
   <!-- 로그인 상태 -->
-  <div v-if="isLogin" class="flex-center" style="gap:10px">
-    <div class="shadow photo-board">
-      <PhotoBoard :obj="musical" />
+  <div v-if="isLogin && me" class="hero-user shadow">
+
+    <!-- 상단 인사 -->
+    <div class="hero-header">
+      <div class="hello">
+        <span class="nickname">{{ me.nickname }}</span>님 안녕하세요 👋
+      </div>
+
+      <button class="mypage-btn" @click="goMyPage">
+        마이페이지 →
+      </button>
     </div>
-    <div class="shadow photo-board">
-      <PhotoBoard :obj="actor" />
-    </div>
+
+    <!-- 개인화 콘텐츠 -->
+    <div class="hero-content">
+
+      <!-- 최근 본 뮤지컬 -->
+      <div class="photo-wrapper">
+        <PhotoBoard
+          v-if="me.recentMusicals?.length"
+          :obj="{
+            title: '최근 본 뮤지컬',
+            imgs: me.recentMusicals.map(m => ({
+              src: '/' + m.image
+            }))
+          }"
+        />
+      </div>
+
+      <!-- 자주 본 배우 -->
+      <div class="photo-wrapper">
+        <PhotoBoard
+          v-if="me.favoriteActors?.length"
+          :obj="{
+            title: '자주 본 배우',
+            imgs: me.favoriteActors.map(a => ({
+              src: '/' + a.image
+            }))
+          }"
+        />
+      </div>
   </div>
+</div>
 
   <!-- 비로그인 상태 -->
   <div v-else class="login-cta shadow">
@@ -83,23 +118,23 @@ const goLogin = () => {
 
 const keyword = "뮤지컬 인기 영상"
 
-const musical = {
-  title: "자주 만나는 작품",
-  imgs: [
-    { src: new URL('@/assets/데스노트.jpg', import.meta.url).href },
-    { src: new URL('@/assets/데스노트.jpg', import.meta.url).href },
-    { src: new URL('@/assets/데스노트.jpg', import.meta.url).href }
-  ]
-}
+// const musical = {
+//   title: "자주 만나는 작품",
+//   imgs: [
+//     { src: new URL('@/assets/데스노트.jpg', import.meta.url).href },
+//     { src: new URL('@/assets/데스노트.jpg', import.meta.url).href },
+//     { src: new URL('@/assets/데스노트.jpg', import.meta.url).href }
+//   ]
+// }
 
-const actor = {
-  title: "자주 만나는 배우",
-  imgs: [
-    { src: new URL('@/assets/홍광호.jpg', import.meta.url).href },
-    { src: new URL('@/assets/홍광호.jpg', import.meta.url).href },
-    { src: new URL('@/assets/홍광호.jpg', import.meta.url).href }
-  ]
-}
+// const actor = {
+//   title: "자주 만나는 배우",
+//   imgs: [
+//     { src: new URL('@/assets/홍광호.jpg', import.meta.url).href },
+//     { src: new URL('@/assets/홍광호.jpg', import.meta.url).href },
+//     { src: new URL('@/assets/홍광호.jpg', import.meta.url).href }
+//   ]
+// }
 
 
 const hotMusical = ref([])
@@ -107,6 +142,7 @@ const onStageMusical = ref([])
 const myMusical = ref([])
 const reviewList = ref([])
 const toggleLike = ref('')
+const me = ref([])
 
 onMounted(async ()=> {
   try {
@@ -143,10 +179,23 @@ onMounted(async ()=> {
     console.log('맞춤 작품', reviewRes.data)
     reviewList.value = reviewRes.data
 
+    // my 정보
+    const res = await axios.get('/api/user/main', {
+      headers: {
+        Authorization: `Bearer ${authStore.token}`
+      }
+    })
+    me.value = res.data
+    console.log('me:', me.value)
+
   } catch (e) {
     console.error('API 에러', e)
   }
 })
+
+const goMyPage = function() {
+  router.push('/myPage')
+}
 </script>
 
 <style scoped>
@@ -173,16 +222,16 @@ onMounted(async ()=> {
   margin-left: 10px;
 }
 .photo-board {
-  background-color: white;
+  /* background-color: white; */
   position: relative;
-  background: transparent; /* 실제 배경은 가상요소가 담당 */
+  /* background: transparent; 실제 배경은 가상요소가 담당 */
   overflow: hidden;
 }
-.hero-section {
+/* .hero-section {
   background: linear-gradient(135deg, #50000041, #460000e8);
   padding: 20px 20px;
   border-radius: 20px;
-}
+} */
 .review-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* 2열 */
@@ -197,11 +246,12 @@ onMounted(async ()=> {
   padding: 60px 40px;
   border-radius: 20px;
   background: linear-gradient(
-    135deg,
-    #1c1c1c,
-    #2a2a2a
-  );
-  color: white;
+  135deg,
+  #1c1f2b,
+  #2a2f45,
+  #1f2a3a
+);
+  color: #f5f5f5;
 }
 
 /* 내부 정렬 */
@@ -222,8 +272,7 @@ onMounted(async ()=> {
   line-height: 1.6;
   color: #d0d0d0;
 }
-
-/* 로그인 버튼 */
+/* 로그인 버튼 - Gold */
 .login-btn {
   margin-top: 30px;
   padding: 12px 36px;
@@ -235,24 +284,103 @@ onMounted(async ()=> {
 
   background: linear-gradient(
     135deg,
-    #ff4d6d,
-    #ff758f
+    #c9a24d,
+    #e0b85c
   );
-  color: white;
+  color: #1e1f26;
 
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* 버튼 호버 */
 .login-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4);
+  box-shadow: 0 10px 25px rgba(201, 162, 77, 0.45);
 }
 
-/* 버튼 클릭 */
 .login-btn:active {
   transform: translateY(0);
-  box-shadow: 0 6px 15px rgba(255, 77, 109, 0.3);
+  box-shadow: 0 6px 15px rgba(201, 162, 77, 0.35);
 }
+
+
+/* 로그인 후 히어로 전체 */
+.hero-user {
+  margin-bottom: 50px;
+  padding: 32px;
+  border-radius: 22px;
+  background: linear-gradient(
+    135deg,
+    #1b1d24,
+    #232631
+  );
+  color: #f5f5f5;
+}
+
+/* 상단 헤더 */
+.hero-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 26px;
+}
+
+/* 인사 */
+.hello {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.nickname {
+  color: #c9a24d; /* 골드 포인트 */
+  font-weight: 700;
+}
+
+/* 마이페이지 버튼 */
+.mypage-btn {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid #c9a24d;
+  background: transparent;
+  color: #c9a24d;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mypage-btn:hover {
+  background: #c9a24d;
+  color: #1e1f26;
+}
+
+/* 콘텐츠 영역 */
+.hero-content {
+  display: flex;
+  gap: 22px;
+}
+
+/* PhotoBoard 감싸는 영역 */
+.photo-wrapper {
+  flex: 1;
+  min-width: 0;
+}
+
+/* PhotoBoard hover */
+.photo-wrapper .photo-board {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.photo-wrapper .photo-board:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
+}
+
+/* 반응형 */
+@media (max-width: 900px) {
+  .hero-content {
+    flex-direction: column;
+  }
+}
+
 
 </style>

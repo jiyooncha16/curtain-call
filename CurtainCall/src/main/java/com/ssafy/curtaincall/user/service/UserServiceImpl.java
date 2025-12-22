@@ -13,6 +13,7 @@ import com.ssafy.curtaincall.ai.service.AiService;
 import com.ssafy.curtaincall.user.dto.LikeCountDto;
 import com.ssafy.curtaincall.user.dto.MyPageResponseDto;
 import com.ssafy.curtaincall.user.dto.User;
+import com.ssafy.curtaincall.user.dto.UserMeResponse;
 import com.ssafy.curtaincall.user.dto.UserResponse;
 import com.ssafy.curtaincall.user.mapper.UserMapper;
 
@@ -112,6 +113,24 @@ public class UserServiceImpl implements UserService {
         LikeCountDto counts = mapper.selectCount(userId);
 
         return new MyPageResponseDto(userDto, tags, taste, counts);
+    }
+	
+	@Override
+    public UserMeResponse getMyInfo(int userId) {
+
+        UserMeResponse res = new UserMeResponse();
+
+        // 닉네임
+        String nickname = mapper.selectNickname(userId);
+        res.setNickname(nickname);
+
+        // 최근 본 뮤지컬
+        res.setRecentMusicals(mapper.selectRecentMusicals(userId));
+
+        // 자주 본 배우
+        res.setFavoriteActors(mapper.selectFavoriteActors(userId));
+
+        return res;
     }
 
 }

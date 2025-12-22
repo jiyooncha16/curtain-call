@@ -1,17 +1,16 @@
 ##### 기본 데이터 추가
-# 8. 유저
-INSERT INTO users (`username`, `password`, `name`, `email`, `phone`, `nickname`) VALUES
-('user1','pass1','차지윤','user1@email.com','010-1111-1111','지니'),
-('user2','pass2','서지원','user2@email.com','010-2222-2222','재이'),
-('user3','pass3','은혜민','user3@email.com','010-3333-3333','혬'),
-('user4','pass4','조재봉','user4@email.com','010-4444-4444','초코'),
-('user5','pass5','조병국','user5@email.com','010-5555-5555','깨꾹이'),
-('user6','pass6','김서형','user6@email.com','010-6666-6666','형서'),
-('user7','pass7','이지영','user7@email.com','010-7777-7777','징넝'),
-('user8','pass8','박영빈','user8@email.com','010-8888-8888','나멋박'),
-('user9','pass9','지드래곤','user9@email.com','010-9999-9999','지디'),
-('user10','pass10','김시영','user10@email.com','010-1010-1010','셩');
-
+# 8. 유저 -- 비밀번호 pass1 pass2 ...
+INSERT INTO users (username, password, name, email, phone, nickname) VALUES
+('user1',  '$2a$12$3Go1Gukg9Ih.I0gVFlficesuRzKzQ9c0dUD/JuMDEC7TVQwiWsC.S', 'user1',  'user1@test.com',  '010-0000-0001', 'user1'),
+('user2',  '$2a$12$t/QbKyZGnIMjwPbXPiXP0ugGtjAUnz7tVE1qng0s9tDEng3gNtUCK', 'user2',  'user2@test.com',  '010-0000-0002', 'user2'),
+('user3',  '$2a$12$e73NySDQzSmnwilz/g6f4OFHJLyAwVpCtLMzKFZlPSpqSMgqm88Fi', 'user3',  'user3@test.com',  '010-0000-0003', 'user3'),
+('user4',  '$2a$12$wjSYDU.1SjoMk2kon766Jee4Dffc7H5XRHkgesrx.v/4Vfje1lqvG', 'user4',  'user4@test.com',  '010-0000-0004', 'user4'),
+('user5',  '$2a$12$bFV7BcDFTEfGcQXRdGque.meEy8StMNXMtogm8lDaRDZPCitPzOqu', 'user5',  'user5@test.com',  '010-0000-0005', 'user5'),
+('user6',  '$2a$12$qaHHotSEAweWyl89t7Vun.g7eyNVXEsJMVf2iOWkxpDNK5gFsQ9Fa', 'user6',  'user6@test.com',  '010-0000-0006', 'user6'),
+('user7',  '$2a$12$ePyEVPfLOu4LmedbOTphd.mmd2LSBICDZPTiykjw88BZdlYUbCYa.', 'user7',  'user7@test.com',  '010-0000-0007', 'user7'),
+('user8',  '$2a$12$99on9Y45hU41GWzQqNcC..cwB6OdTFDJwZfJFWtomgNhmrNfzm6Bm', 'user8',  'user8@test.com',  '010-0000-0008', 'user8'),
+('user9',  '$2a$12$HUGAhTNVb7VkM.ctqySgtuVjQKEHhrm0OK3To5XX13VB1T.XWMB6O', 'user9',  'user9@test.com',  '010-0000-0009', 'user9'),
+('user10', '$2a$12$4gdOBSFdSXIKueW5Io2pj./G05K5q7WbKx8lLFQNTHdFiWqzT/eF2', 'user10', 'user10@test.com', '010-0000-0010', 'user10');
 
 # 9. 리뷰
 INSERT INTO review (musical_id, content, rate, user_id) VALUES
@@ -584,3 +583,72 @@ INSERT INTO reply (`board_id`, `content`, `user_id`) VALUES
 -- board 40
 (40, '정리해주셔서 감사합니다.', 3),
 (40, '정보 찾기 편하네요.', 9);
+
+
+
+
+
+
+# 뮤지컬 좋아요
+INSERT INTO like_musical (user_id, musical_id) VALUES
+-- user 1
+(1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10),
+
+-- user 2
+(2,11),(2,12),(2,13),(2,14),(2,15),(2,16),(2,17),(2,18),(2,19),(2,20),
+
+-- user 3
+(3,21),(3,22),(3,23),(3,24),(3,25),(3,26),(3,27),(3,28),(3,29),(3,30),
+
+-- user 4
+(4,31),(4,32),(4,33),(4,34),(4,35),(4,36),(4,37),(4,38),(4,39),(4,40),
+
+-- user 5
+(5,41),(5,42),(5,43),(5,44),(5,45),(5,46),(5,47),(5,48),(5,49),(5,50),
+
+-- user 6
+(6,51),(6,52),(6,53),(6,54),(6,55),(6,56),(6,57),(6,58),(6,59),(6,60),
+
+-- user 7
+(7,1),(7,3),(7,5),(7,7),(7,9),(7,11),(7,13),(7,15),(7,17),(7,19),
+
+-- user 8
+(8,2),(8,4),(8,6),(8,8),(8,10),(8,12),(8,14),(8,16),(8,18),(8,20),
+
+-- user 9
+(9,21),(9,23),(9,25),(9,27),(9,29),(9,31),(9,33),(9,35),(9,37),(9,39),
+
+-- user 10
+(10,40),(10,42),(10,44),(10,46),(10,48),(10,50),(10,52),(10,54),(10,56),(10,58);
+
+# 배우 좋아요
+INSERT INTO like_actor (user_id, actor_id) VALUES
+-- user 1
+(1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10),
+
+-- user 2
+(2,11),(2,12),(2,13),(2,14),(2,15),(2,16),(2,17),(2,18),(2,19),(2,20),
+
+-- user 3
+(3,21),(3,22),(3,23),(3,24),(3,25),(3,26),(3,27),(3,28),(3,29),(3,30),
+
+-- user 4
+(4,31),(4,32),(4,33),(4,34),(4,35),(4,36),(4,37),(4,38),(4,39),(4,40),
+
+-- user 5
+(5,41),(5,42),(5,43),(5,44),(5,45),(5,46),(5,47),(5,48),(5,49),(5,50),
+
+-- user 6
+(6,101),(6,102),(6,103),(6,104),(6,105),(6,106),(6,107),(6,108),(6,109),(6,110),
+
+-- user 7
+(7,201),(7,202),(7,203),(7,204),(7,205),(7,206),(7,207),(7,208),(7,209),(7,210),
+
+-- user 8
+(8,211),(8,212),(8,213),(8,214),(8,215),(8,216),(8,217),(8,218),(8,219),(8,220),
+
+-- user 9
+(9,301),(9,302),(9,303),(9,304),(9,305),(9,306),(9,307),(9,308),(9,309),(9,310),
+
+-- user 10
+(10,351),(10,352),(10,353),(10,354),(10,355),(10,356),(10,357),(10,358),(10,359),(10,360);

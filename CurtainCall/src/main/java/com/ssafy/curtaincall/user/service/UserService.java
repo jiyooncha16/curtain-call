@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.ssafy.curtaincall.user.dto.LikeCountDto;
 import com.ssafy.curtaincall.user.dto.MyPageResponseDto;
 import com.ssafy.curtaincall.user.dto.User;
+import com.ssafy.curtaincall.user.dto.UserMeResponse;
 
 public interface UserService {
 	
@@ -17,6 +18,7 @@ public interface UserService {
 	LikeCountDto getCount(int id);
 	Optional<User> getUserById(int userId);
 	MyPageResponseDto getMyPage(int userId);
+	UserMeResponse getMyInfo(int userId);
 
 	//회원 CUD
 	int signup(User user); // 회원등록 (가입)

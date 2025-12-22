@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,9 +33,11 @@ import com.ssafy.curtaincall.user.dto.LoginRequest;
 import com.ssafy.curtaincall.user.dto.LoginResponse;
 import com.ssafy.curtaincall.user.dto.MyPageResponseDto;
 import com.ssafy.curtaincall.user.dto.User;
+import com.ssafy.curtaincall.user.dto.UserMeResponse;
 import com.ssafy.curtaincall.user.dto.UserResponse;
 import com.ssafy.curtaincall.user.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -250,4 +253,14 @@ public class UserController {
 	public MyPageResponseDto me(@AuthenticationPrincipal CustomUserDetails user) {
 	        return service.getMyPage(user.getUserId());
 	}
+
+	// 8. 현재 로그인한 유저 정보 반환 (메인 페이지 전용)
+	@GetMapping("/main")
+	public ResponseEntity<?> main(@AuthenticationPrincipal CustomUserDetails userDetails) {
+
+	    int userId = userDetails.getUserId();
+	    UserMeResponse response = service.getMyInfo(userId);
+	    return ResponseEntity.ok(response);
+	}
+
 }

@@ -30,6 +30,34 @@
 		  (SELECT COUNT(*) FROM review       WHERE user_id = #{userId}) AS reviewCount;
 	</select>
 	
+	<!-- 닉네임 -->
+    <select id="selectNickname" parameterType="int" resultType="string">
+        SELECT nickname
+        FROM users
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 최근 본 뮤지컬 -->
+    <select id="selectRecentMusicals" parameterType="int" resultType="Musical">
+        SELECT m.*
+        FROM review r
+        JOIN musical m ON r.musical_id = m.musical_id
+        WHERE r.user_id = #{userId}
+        ORDER BY r.create_date DESC
+        LIMIT 3
+    </select>
+
+    <!-- 자주 본 배우 -->
+    <select id="selectFavoriteActors" parameterType="int" resultType="Actor">
+        SELECT a.*
+	    FROM like_actor la
+	    JOIN actor a ON la.actor_id = a.actor_id
+	    WHERE la.user_id = #{userId}
+	    GROUP BY a.actor_id
+	    ORDER BY COUNT(*) DESC
+	    LIMIT 3
+    </select>
+	
 	<!-- 이메일 조회
 	<select id="getEmail" parameterType="String" resultType="User">
 		SELECT * FROM users
