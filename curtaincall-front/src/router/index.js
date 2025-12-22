@@ -78,13 +78,13 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: '/review/new',
+      path: '/review/new/:id',
       name: 'reviewCreate',
       component: ReviewCreateView,
       meta: { requiresAuth: true },
     },
     {
-      path: '/review/edit',
+      path: '/review/edit/:id',
       name: 'reviewModify',
       component: ReviewModifyView,
       props: true,

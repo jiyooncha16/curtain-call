@@ -67,20 +67,43 @@
           <span class="sep"> | </span>
           <b>{{ review.title }}</b>
         </div>
+
+        <!-- 수정 버튼 @click="$emit('edit', review)"-->
+        <button
+          v-if="isMine"
+          class="edit-btn"
+          @click="clicked(review.reviewId)"
+          type="button"
+          title="리뷰 수정"
+        >
+          <i class="bi bi-pencil-square"></i>
+        </button>
       </div>
     </div>
   </article>
 </template>
 
 <script setup>
-defineProps({
-  review: {
-    type: Object,
-  },
+import router from '@/router'
+import { useAuthStore } from '@/stores/auth'
+import { computed } from 'vue'
+
+const props = defineProps({
+  review: Object,
 })
 
-defineEmits(['toggle-like'])
+defineEmits(['toggle-like', 'edit'])
 
+// 내 리뷰인지 확인하기
+const authStore = useAuthStore()
+const isMine = computed(() => {
+  return authStore.userId === props.review.userId
+})
+console.log('auth userId =', authStore.userId)
+console.log('review userId =', props.review.userId)
+
+
+// 날짜 포맷
 function formatDate(iso) {
   if (!iso) return ''
   const d = new Date(iso)
@@ -91,6 +114,10 @@ function formatDate(iso) {
 
 function initial(name) {
   return name?.charAt(0) ?? '?'
+}
+
+const clicked = function(id) {
+  router.push(`/review/edit/${id}`)
 }
 </script>
 <style scoped>
@@ -234,5 +261,16 @@ padding: 10px;
   color: #666;
   margin-left: 4px;
 }
+.edit-btn {
+  margin-left: auto; 
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  font-size: 15px;
+}
 
+.edit-btn:hover {
+  color: #800000;
+}
 </style>

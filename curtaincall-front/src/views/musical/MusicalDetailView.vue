@@ -220,7 +220,7 @@ function toggleLike(review) {
 
 // 이동
 function goWriteReview() {
-  router.push(`/review/new`)
+  router.push(`/review/new/${id}`)
 }
 </script>
 

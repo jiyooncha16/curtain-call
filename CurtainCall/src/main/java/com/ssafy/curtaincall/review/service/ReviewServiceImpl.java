@@ -35,6 +35,8 @@ public class ReviewServiceImpl implements ReviewService {
 	public List<MyReviewDto> getReviewByCondition(ReviewSearchCondition condition) {
 		return mapper.selectReviewByCondition(condition);
 	}
+	
+	
 
 
 	@Override
@@ -46,21 +48,14 @@ public class ReviewServiceImpl implements ReviewService {
 	//create
 	@Override
 	public int createReview(Review review) {
-		// 이 유저가 이 뮤지컬에 대한 리뷰를 작성한적이 없어야 진행
-		if(mapper.selectReview(review) == null) {
-			int result = mapper.insertReview(review);
-			if (result == 1) return review.getReviewId(); // int 값 들어옴
-		}
-		return -1;		
+		int result = mapper.insertReview(review);
+		return result;	
 	}
 	//수정
 	@Override
 	public int updateReview(Review review) {
 		// 이 유저가 이 뮤지컬에 대한 리뷰가 있으면 진행
-		if(mapper.selectReview(review) != null) {
-			return mapper.updateReview(review);
-		}
-		return -1;
+		return mapper.updateReview(review);
 	}
 	
 	//삭제
@@ -100,6 +95,11 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public List<MyReviewDto> getTopReview() {
 		return mapper.selectTopReview();
+	}
+
+	@Override
+	public MyReviewDto getReview(int reviewId) {
+		return mapper.selectReview(reviewId);
 	}
 
 
