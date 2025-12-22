@@ -24,5 +24,6 @@ public class MyReviewDto {
 	private String title;
 	private String image;
 	private String nickname;
+	private int userId;
 	private int likeCount;
 }
