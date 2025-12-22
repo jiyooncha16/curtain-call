@@ -3,10 +3,10 @@
     <div class="hero-section" style="margin-bottom:50px;">
   
   <!-- 로그인 상태 -->
-  <div v-if="isLogin && me" class="hero-user shadow">
+  <div v-if="isLogin && me" class="hero-user">
 
     <!-- 상단 인사 -->
-    <div class="hero-header">
+    <div class="hero-header flex" style="justify-content: space-between;">
       <div class="hello">
         <span class="nickname">{{ me.nickname }}</span>님 안녕하세요 👋
       </div>
@@ -26,7 +26,8 @@
           :obj="{
             title: '최근 본 뮤지컬',
             imgs: me.recentMusicals.map(m => ({
-              src: '/' + m.image
+              src: '/' + m.image,
+              id: m.musicalId
             }))
           }"
         />
@@ -39,7 +40,8 @@
           :obj="{
             title: '자주 본 배우',
             imgs: me.favoriteActors.map(a => ({
-              src: '/' + a.image
+              src: '/' + a.image,
+              id: a.actorId
             }))
           }"
         />
@@ -62,19 +64,19 @@
 
 </div>
 
-    <div class="shadow">
+    <div class="shadow" style="margin-bottom:30px;">
       <div class="title-text">HOT 작품</div>
       <CardSlide :musicalList="hotMusical"/>
     </div>
-    <div class="shadow">
+    <div class="shadow" style="margin-bottom:30px;">
       <div class="title-text">공연 중 작품</div>
       <CardSlide :musicalList="onStageMusical"/>
     </div>
-    <div class="shadow">
+    <div class="shadow" style="margin-bottom:30px;">
       <div class="title-text">당신을 위한 추천</div>
       <CardSlide :musicalList="myMusical"/>
     </div>
-    <div class="shadow">
+    <div class="shadow" style="margin-bottom:30px;">
       <div class="title-text">인기 영상</div>
       <VideoMain :keyword="keyword"/>
     </div>
@@ -118,25 +120,6 @@ const goLogin = () => {
 
 const keyword = "뮤지컬 인기 영상"
 
-// const musical = {
-//   title: "자주 만나는 작품",
-//   imgs: [
-//     { src: new URL('@/assets/데스노트.jpg', import.meta.url).href },
-//     { src: new URL('@/assets/데스노트.jpg', import.meta.url).href },
-//     { src: new URL('@/assets/데스노트.jpg', import.meta.url).href }
-//   ]
-// }
-
-// const actor = {
-//   title: "자주 만나는 배우",
-//   imgs: [
-//     { src: new URL('@/assets/홍광호.jpg', import.meta.url).href },
-//     { src: new URL('@/assets/홍광호.jpg', import.meta.url).href },
-//     { src: new URL('@/assets/홍광호.jpg', import.meta.url).href }
-//   ]
-// }
-
-
 const hotMusical = ref([])
 const onStageMusical = ref([])
 const myMusical = ref([])
@@ -176,7 +159,7 @@ onMounted(async ()=> {
 
     //리뷰
     const reviewRes = await axios.get('/api/reviews/top')
-    console.log('맞춤 작품', reviewRes.data)
+    console.log('리뷰', reviewRes.data)
     reviewList.value = reviewRes.data
 
     // my 정보
@@ -186,7 +169,7 @@ onMounted(async ()=> {
       }
     })
     me.value = res.data
-    console.log('me:', me.value)
+    console.log('내 정보:', me.value)
 
   } catch (e) {
     console.error('API 에러', e)
@@ -240,18 +223,21 @@ const goMyPage = function() {
 
 /* 비로그인 CTA 전체 박스 */
 .login-cta {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 60px 40px;
-  border-radius: 20px;
-  background: linear-gradient(
-  135deg,
-  #1c1f2b,
-  #2a2f45,
-  #1f2a3a
-);
-  color: #f5f5f5;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(201,162,77,0.15),
+      transparent 60%
+    );
+  pointer-events: none;
 }
 
 /* 내부 정렬 */
@@ -305,23 +291,22 @@ const goMyPage = function() {
 
 /* 로그인 후 히어로 전체 */
 .hero-user {
-  margin-bottom: 50px;
-  padding: 32px;
-  border-radius: 22px;
-  background: linear-gradient(
-    135deg,
-    #1b1d24,
-    #232631
-  );
-  color: #f5f5f5;
+  margin-bottom: 60px;
+  padding: 36px 40px;
+  border-radius: 26px;
+
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0)),
+    linear-gradient(135deg, #1b1d24, #232631);
+
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.55);
 }
 
 /* 상단 헤더 */
 .hero-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 26px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  color : white
 }
 
 /* 인사 */
@@ -381,6 +366,67 @@ const goMyPage = function() {
     flex-direction: column;
   }
 }
+.title-text {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
 
+  margin: 6px 0 16px 10px;
+  color: #1e1f26;
+  position: relative;
+}
+
+.title-text::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 4px;
+  width: 4px;
+  height: 20px;
+  border-radius: 2px;
+  background: linear-gradient(#c9a24d, #e0b85c);
+}
+.carousel-wrapper {
+  position: relative;
+  max-width: 1500px;
+  padding: 20px 60px;
+
+  border-radius: 18px;
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.03),
+    rgba(255,255,255,0)
+  );
+}
+.nav {
+  background: rgba(20,20,25,0.9);
+  backdrop-filter: blur(6px);
+
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.15);
+
+  opacity: 0.6;
+}
+
+.nav:not(.disabled):hover {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.05);
+}
+
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 26px;
+  padding: 10px 14px 20px;
+}
+.shadow {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+
+  border: 1px solid #eee;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
 
 </style>

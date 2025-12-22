@@ -70,7 +70,8 @@
           :obj="{
             title: '최근 본 뮤지컬',
             imgs: me.recentMusicals.map(m => ({
-              src: '/' + m.image
+              src: '/' + m.image,
+              musicalId : m.musicalId
             }))
           }"
         />
@@ -188,7 +189,7 @@ onMounted(async () => {
       }
     })
     me.value = res.data
-    console.log('me:', me.value)
+    console.log('me:', me.value.recentMusicals[0])
 
   } catch (e) {
     console.error('리뷰 정보 조회 실패', e)

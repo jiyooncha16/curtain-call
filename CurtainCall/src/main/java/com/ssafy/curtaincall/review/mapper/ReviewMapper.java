@@ -15,10 +15,10 @@ public interface ReviewMapper {
 	
 	//조회
 //	public List<Review> selectAllReview(); // 전체 목록
-	public List<Review> selectReviewByCondition(ReviewSearchCondition condition); // 조건부 목록(검색)
+	public List<MyReviewDto> selectReviewByCondition(ReviewSearchCondition condition); // 조건부 목록(검색)
 	public double selectReviewRate(int musicalId); // 평점 평균 조회
-	public Review selectReview(Review review);
-	public Review selectReviewById(int id);
+	public MyReviewDto selectReview(Review review);
+	public MyReviewDto selectReviewById(int id);
 	public List<ReviewRateDto> selectReviewRateStats(int id);
 	public List<MyReviewDto> selectMyReview(int id);
 	public List<MyReviewDto> selectTopReview();

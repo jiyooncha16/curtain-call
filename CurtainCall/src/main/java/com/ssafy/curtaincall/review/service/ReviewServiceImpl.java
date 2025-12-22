@@ -32,7 +32,7 @@ public class ReviewServiceImpl implements ReviewService {
 	
 	// 조건별 조회
 	@Override
-	public List<Review> getReviewByCondition(ReviewSearchCondition condition) {
+	public List<MyReviewDto> getReviewByCondition(ReviewSearchCondition condition) {
 		return mapper.selectReviewByCondition(condition);
 	}
 

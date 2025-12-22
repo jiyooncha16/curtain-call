@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.ssafy.curtaincall.actor.dto.Actor;
+import com.ssafy.curtaincall.actor.dto.ActorCastingDto;
 import com.ssafy.curtaincall.actor.dto.ActorLikes;
 import com.ssafy.curtaincall.actor.dto.ActorSearchCondition;
 import com.ssafy.curtaincall.actor.dto.Casting;
@@ -19,7 +20,7 @@ public interface ActorMapper {
 	public List<Actor> selectActorByCondition(ActorSearchCondition condition); // 조건부 목록(검색)
 	public Actor selectActor(int id); // 뮤지컬 상세조회
 	public List<Actor> selectActorOfTopFive();
-	public List<Casting> selectMusicalActor(int id);
+	public List<ActorCastingDto> selectMusicalActor(int id);
 	  List<RelatedActorDto> getRelatedActors(
 		        @Param("actorId") int actorId
 		    );

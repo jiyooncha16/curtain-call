@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.curtaincall.actor.dto.Actor;
+import com.ssafy.curtaincall.actor.dto.ActorCastingDto;
 import com.ssafy.curtaincall.actor.dto.ActorLikes;
 import com.ssafy.curtaincall.actor.dto.ActorSearchCondition;
 import com.ssafy.curtaincall.actor.dto.Casting;
@@ -123,8 +124,8 @@ public class ActorController {
 	}
 	
 	@GetMapping("/casting/{id}")
-	public ResponseEntity<List<Casting>> getCasting(@PathVariable int id) {
-		List<Casting> list = service.getCasting(id);
+	public ResponseEntity<List<ActorCastingDto>> getCasting(@PathVariable int id) {
+		List<ActorCastingDto> list = service.getCasting(id);
 		if (list == null || list.size() == 0) return ResponseEntity.noContent().build();
 		else return ResponseEntity.ok(list);
 	}

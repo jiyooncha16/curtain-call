@@ -27,4 +27,6 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   return { token, userInfo, isLogin, userId, login, logout }
+}, {
+  persist: true
 })

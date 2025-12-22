@@ -12,10 +12,11 @@
     <div class="pb-grid">
       <div
         class="pb-img-wrapper"
-        v-for="(img, idx) in obj.imgs"
+        v-for="(item, idx) in obj.imgs"
         :key="idx"
+        @click="detail(item.id, obj.title)"
       >
-        <img :src="img.src" />
+        <img :src="item.src" />
       </div>
     </div>
   </div>
@@ -30,6 +31,14 @@ defineProps({
 
 const clicked = function() {
     router.push('/review/my')
+}
+
+const detail = function(id, title) {
+    if (title=='최근 본 뮤지컬') {
+        router.push(`/musical/${id}`)
+    } else {
+        router.push(`/actor/${id}`)
+    }
 }
 </script>
 
@@ -84,8 +93,8 @@ box-shadow:
 .pb-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  padding: 12px;
+  gap: 18px;
+  padding: 20px;
 }
 
 /* 이미지 wrapper */

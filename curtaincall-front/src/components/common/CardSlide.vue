@@ -35,7 +35,10 @@ const nextEl = ref(null)
 const isBeginning = ref(true)
 const isEnd = ref(false)
 
-const onSwiper = (swiper) => {
+const onSwiper = async (swiper) => {
+  await nextTick()        // DOM 렌더 완료 대기
+  swiper.update()         // 슬라이드 재계산
+
   isBeginning.value = swiper.isBeginning
   isEnd.value = swiper.isEnd
 }
@@ -51,61 +54,73 @@ const props = defineProps({
 </script>
 
 <style scoped>
-
 .swiper-slide {
   width: 140px;
+  height: 210px;
 }
 
-
-/* 전체 래퍼 */
+/* ===== 캐러셀 전체 ===== */
 .carousel-wrapper {
   position: relative;
   max-width: 1500px;
-  padding: 0 60px;
+  padding: 20px 56px;
+
+  border-radius: 18px;
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,0.03),
+    rgba(0,0,0,0)
+  );
 }
 
-/* 버튼들 */
+/* ===== 네비 버튼 ===== */
 .nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 10;
+  z-index: 20;
 
   width: 44px;
   height: 44px;
   border-radius: 50%;
   border: none;
 
-  background: rgba(0,0,0,0.7);
-  color: white;
-  font-size: 22px;
+  background: rgba(20, 20, 25, 0.85);
+  backdrop-filter: blur(6px);
+
+  color: #fff;
+  font-size: 20px;
   cursor: pointer;
-  opacity: 0.4;
-  transition: opacity 0.2s ease;
+
+  box-shadow:
+    0 6px 18px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.15);
+
+  opacity: 0.6;
+  transition: all 0.2s ease;
 }
 
-/* 버튼 위치 */
-.nav.prev {
-  left: 5px;
-}
+/* 위치 */
+.nav.prev { left: 8px; }
+.nav.next { right: 8px; }
 
-.nav.next {
-  right: 5px;
-}
-
-.disabled {
-  opacity: 0.2;          /* 없어지기 */
-  pointer-events: none;  /* 클릭 차단 */
-  cursor: default;
-}
-
+/* hover */
 .nav:not(.disabled):hover {
-  opacity: 0.8;
+  opacity: 1;
+  transform: translateY(-50%) scale(1.05);
 }
 
+/* 비활성화 */
+.disabled {
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+/* 아이콘 중앙 정렬 */
 button {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 </style>

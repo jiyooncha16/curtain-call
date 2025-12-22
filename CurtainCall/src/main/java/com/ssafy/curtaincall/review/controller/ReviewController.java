@@ -80,9 +80,9 @@ public class ReviewController {
 	 * 		(http://localhost:8080/reviews/{musicalId}?likes=true&size=5)
 	 */
 	@GetMapping("/{musicalId}")
-	public ResponseEntity<List<Review>> getlist(@PathVariable int musicalId, @ModelAttribute ReviewSearchCondition condition) {
+	public ResponseEntity<List<MyReviewDto>> getlist(@PathVariable int musicalId, @ModelAttribute ReviewSearchCondition condition) {
 		condition.setMusicalId(musicalId);
-		List<Review> list = service.getReviewByCondition(condition);
+		List<MyReviewDto> list = service.getReviewByCondition(condition);
 		if (list == null || list.size() == 0) return ResponseEntity.noContent().build();
 		return ResponseEntity.ok(list);
 	}

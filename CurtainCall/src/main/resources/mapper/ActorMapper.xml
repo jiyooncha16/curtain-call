@@ -16,8 +16,8 @@
 	</select>
 	
 	<!-- 특정 뮤지컬에 출연한 배우 목록-->
-	<select id="selectMusicalActor" parameterType="int" resultType="Actor">
-		SELECT m.title, c.role_name
+	<select id="selectMusicalActor" parameterType="int" resultType="ActorCastingDto">
+		SELECT c.actor_id, a.name, c.role_name, a.image
 		FROM cast as c
 		LEFT JOIN actor as a ON c.actor_id = a.actor_id
 		LEFT JOIN musical as m ON c.musical_id = m.musical_id
