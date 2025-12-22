@@ -1,4 +1,5 @@
 # 2025. 11. 25
+# 2025. 12. 20
 
 # --------------------------------------------------------
 # --------------------------------------------------------
@@ -15,14 +16,14 @@ USE musical_db;
 # --------------------------------------------------------
 
 
-# 1. 공연장 theater
-CREATE TABLE `theater` (
-	`theater`	VARCHAR(255)	PRIMARY KEY,
-	`address`	VARCHAR(255)	NOT NULL,
-	`parking`	BOOLEAN	NOT NULL,
-	`seats`	INT	NOT NULL,
-	`subway`	VARCHAR(255)	NULL
-);
+-- # 1. 공연장 theater
+-- CREATE TABLE `theater` (
+-- 	`theater`	VARCHAR(255)	PRIMARY KEY,
+-- 	`address`	VARCHAR(255)	NOT NULL,
+-- 	-- `parking`	BOOLEAN	NOT NULL,
+-- 	-- `seats`	INT	NOT NULL,
+-- 	-- `subway`	VARCHAR(255)	NULL
+-- );
 
 
 # --------------------------------------------------------
@@ -35,14 +36,15 @@ CREATE TABLE `musical` (
 	`title`	VARCHAR(255)	NOT NULL,
 	`start_date`	DATE	NOT NULL,
 	`end_date`	DATE	NOT NULL,
-	`description`	TEXT	NOT NULL,
-	`theater`	VARCHAR(255)	NOT NULL -- FK
+	-- `description`	TEXT	NOT NULL, 
+	`theater`	VARCHAR(255)	NOT NULL, -- FK
+	`image`	VARCHAR(255)	NOT NULL
 );
 
-ALTER TABLE musical
-ADD CONSTRAINT FK_musical_theater
-FOREIGN KEY (theater)
-REFERENCES theater(theater);
+-- ALTER TABLE musical
+-- ADD CONSTRAINT FK_musical_theater
+-- FOREIGN KEY (theater)
+-- REFERENCES theater(theater);
 
 
 # --------------------------------------------------------
@@ -91,20 +93,20 @@ ON DELETE CASCADE;
 # --------------------------------------------------------
 
 
-# 5. 영상 video
-CREATE TABLE `video` (
-	`video_id`	INT	PRIMARY KEY AUTO_INCREMENT,
-	`musical_id`	INT	NOT NULL, -- FK
-	`url`	VARCHAR(255)	NOT NULL,
-	`title`	VARCHAR(255)	NOT NULL,
-	`view_cnt`	INT	DEFAULT 0
-);
-ALTER TABLE `video` ADD CONSTRAINT `FK_musical_TO_video_1` FOREIGN KEY (
-	`musical_id`
-)
-REFERENCES `musical` (
-	`musical_id`
-);
+-- # 5. 영상 video
+-- CREATE TABLE `video` (
+-- 	`video_id`	INT	PRIMARY KEY AUTO_INCREMENT,
+-- 	`musical_id`	INT	NOT NULL, -- FK
+-- 	`url`	VARCHAR(255)	NOT NULL,
+-- 	`title`	VARCHAR(255)	NOT NULL,
+-- 	`view_cnt`	INT	DEFAULT 0
+-- );
+-- ALTER TABLE `video` ADD CONSTRAINT `FK_musical_TO_video_1` FOREIGN KEY (
+-- 	`musical_id`
+-- )
+-- REFERENCES `musical` (
+-- 	`musical_id`
+-- );
 
 
 # --------------------------------------------------------
@@ -116,7 +118,15 @@ REFERENCES `musical` (
 CREATE TABLE `actor` (
 	`actor_id`	INT	PRIMARY KEY AUTO_INCREMENT,
 	`name`	VARCHAR(255)	NOT NULL,
-	`description`	TEXT	NOT NULL
+	`birth`	VARCHAR(255),
+	`agency`	VARCHAR(255),
+	`sns`	VARCHAR(255),
+	`image`	VARCHAR(255)	NOT NULL,
+    `work1` TEXT,
+    `work2` TEXT,
+    `work3` TEXT,
+    `work4` TEXT,
+    `work5` TEXT
 );
 
 
@@ -127,13 +137,10 @@ CREATE TABLE `actor` (
 # 7. 캐스트 cast (actor - musical)
 
 CREATE TABLE `cast` (
+	`cast_id`	INT PRIMARY KEY,
 	`musical_id`	INT	NOT NULL, -- FK
 	`actor_id`	INT	NOT NULL, -- FK
 	`role_name`	VARCHAR(255) NOT NULL
-);
-ALTER TABLE `cast` ADD CONSTRAINT `PK_CAST` PRIMARY KEY (
-	`musical_id`,
-	`actor_id`
 );
 ALTER TABLE `cast` ADD CONSTRAINT `FK_actor_TO_cast_1` FOREIGN KEY (
 	`actor_id`
@@ -156,7 +163,7 @@ REFERENCES `musical` (
 
 CREATE TABLE `users` (
 	`user_id`	INT	PRIMARY KEY AUTO_INCREMENT,
-	`username`	VARCHAR(255)	NOT NULL, # 아이디 !!
+	`username`	VARCHAR(255)	NOT NULL UNIQUE, # 아이디 !!
 	`password`	VARCHAR(255)	NOT NULL,
 	`name`	VARCHAR(255)	NOT NULL,
 	`email`	VARCHAR(255)	NOT NULL,
@@ -203,7 +210,7 @@ CREATE TABLE `board` (
     `board_id` INT PRIMARY KEY auto_increment,
     `title` VARCHAR(255),
     `content` TEXT,
-    `category` ENUM('notice', 'free', 'qna', 'review', 'deal') NOT NULL DEFAULT('free'),
+    `category` ENUM('free', 'deal') NOT NULL DEFAULT('free'),
     `create_date` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
     `user_id` INT NOT NULL -- FK
 );

@@ -28,7 +28,7 @@
 
           <!-- 작성자일 때만 --> <!-----------수정하기------------>
           <!-- <div class="owner-actions" v-if="isOwner"> -->
-            <div class="owner-actions">
+            <div class="owner-actions" v-if="isOwner">
             <button class="btn ghost" @click="onEdit">
               <i class="bi bi-pencil-square"></i>
             </button>
@@ -113,9 +113,11 @@
 </template>
 
 <script setup>
-import axios from 'axios'
-import { computed, onMounted, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+  import axios from 'axios'
+  import { computed, onMounted, ref } from 'vue'
+  import { useRoute, useRouter } from 'vue-router'
+  import { useAuthStore } from '@/stores/auth'
+import api from '@/api/axios'
 
 const router = useRouter()
 const route = useRoute()
@@ -165,8 +167,14 @@ const liked = ref(false)
 const likeCount = ref(23)
 const newComment = ref('')
 const commentInput = ref(null)
+const auth = useAuthStore()
 
-// const isOwner = computed(() => post.value.author.id === me.value.id)
+
+const isOwner = computed(() => {
+  return board.value.userId === auth.userId
+})
+
+
 
 const sortedComments = computed(() => {
   const list = [...replyList.value]
@@ -202,7 +210,37 @@ const submitComment = async () => {
 const onEdit = () => {
     router.push(`/community/${board.value.boardId}/edit`)
 }
-const onDelete = () => alert('삭제 확인 모달/API 연결')
+
+const onDelete = async () => {
+  // 1️⃣ 작성자만 삭제 가능 (프론트 1차 방어)
+  if (board.value.userId !== auth.userId) {
+    alert('삭제 권한이 없습니다.')
+    return
+  }
+
+  // 2️⃣ 사용자 확인
+  const ok = confirm('정말 이 게시글을 삭제할까요?')
+  if (!ok) return
+
+  try {
+    // 3️⃣ DELETE 요청
+    await api.delete(`/api/boards/${board.value.boardId}`, {
+      headers: {
+        Authorization: `Bearer ${auth.token}`
+      }
+    })
+
+    alert('게시글이 삭제되었습니다.')
+
+    // 4️⃣ 목록 페이지로 이동
+    router.push('/community')
+
+  } catch (e) {
+    console.error(e)
+    alert('게시글 삭제 실패')
+  }
+}
+
 const onReport = () => alert('신고 모달/API 연결')
 const onCommentEdit = (c) => alert(`댓글 수정: ${c.id}`)
 const onCommentDelete = (c) => alert(`댓글 삭제: ${c.id}`)

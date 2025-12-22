@@ -33,7 +33,7 @@ const goDetail = () => {
 
 <style scoped>
 .img-box {
-    width: 100%;
+    width: 150px;
     aspect-ratio: 3/4; /*비율*/
     /* border-radius: 12px; */
 }
