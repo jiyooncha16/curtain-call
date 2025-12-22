@@ -62,6 +62,31 @@
 		order by count(*) desc
 		limit 5;
 	</select>
+	
+	<!-- 연관 배우 추천 -->
+
+	<select id="getRelatedActors"
+        parameterType="int"
+        resultType="com.ssafy.curtaincall.actor.dto.RelatedActorDto">
+	
+	    SELECT DISTINCT
+	        a.actor_id AS actorId,
+	        a.name,
+	        a.image
+	    FROM actor a
+	    JOIN `cast` c ON a.actor_id = c.actor_id
+	    WHERE c.musical_id IN (
+	        SELECT musical_id
+	        FROM `cast`
+	        WHERE actor_id = #{actorId}
+	    )
+	    AND a.actor_id != #{actorId}
+	    LIMIT 6
+
+	</select>
+
+
+
     
     <!-- 좋아요 있는지 확인 -->
     <select id="checkLike" resultType="int" parameterType="ActorLikes">
@@ -77,5 +102,5 @@
     <delete id="deleteLike" parameterType="ActorLikes">
     		DELETE FROM like_actor WHERE actor_id = #{actorId} AND user_id = #{userId}
     </delete>
-
+    
 </mapper>

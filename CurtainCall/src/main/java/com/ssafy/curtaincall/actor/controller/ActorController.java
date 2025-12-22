@@ -20,6 +20,7 @@ import com.ssafy.curtaincall.actor.dto.Actor;
 import com.ssafy.curtaincall.actor.dto.ActorLikes;
 import com.ssafy.curtaincall.actor.dto.ActorSearchCondition;
 import com.ssafy.curtaincall.actor.dto.Casting;
+import com.ssafy.curtaincall.actor.dto.RelatedActorDto;
 import com.ssafy.curtaincall.actor.service.ActorService;
 
 @RestController
@@ -126,6 +127,15 @@ public class ActorController {
 		List<Casting> list = service.getCasting(id);
 		if (list == null || list.size() == 0) return ResponseEntity.noContent().build();
 		else return ResponseEntity.ok(list);
+	}
+	@GetMapping("/{id}/related")
+	public ResponseEntity<List<RelatedActorDto>> getRelatedActors(@PathVariable int id) {
+	    List<RelatedActorDto> list = service.getRelatedActors(id);
+
+	    if (list == null || list.isEmpty()) {
+	        return ResponseEntity.noContent().build();
+	    }
+	    return ResponseEntity.ok(list);
 	}
 	// 2. 좋아요
 	/* 2-1. 좋아요 등록 - 테스트 완료

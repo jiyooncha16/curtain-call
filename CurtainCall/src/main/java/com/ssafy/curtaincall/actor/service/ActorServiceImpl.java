@@ -9,6 +9,7 @@ import com.ssafy.curtaincall.actor.dto.Actor;
 import com.ssafy.curtaincall.actor.dto.ActorLikes;
 import com.ssafy.curtaincall.actor.dto.ActorSearchCondition;
 import com.ssafy.curtaincall.actor.dto.Casting;
+import com.ssafy.curtaincall.actor.dto.RelatedActorDto;
 import com.ssafy.curtaincall.actor.mapper.ActorMapper;
 
 @Service
@@ -73,7 +74,11 @@ public class ActorServiceImpl implements ActorService {
 	public List<Casting> getCasting(int id) {
 		return mapper.selectMusicalActor(id);
 	}
-	
+
+	@Override
+	public List<RelatedActorDto> getRelatedActors(int id) {
+	    return mapper.getRelatedActors(id);
+	}
 
 }
 
