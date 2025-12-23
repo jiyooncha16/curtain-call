@@ -3,6 +3,7 @@ package com.ssafy.curtaincall.musical.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.ssafy.curtaincall.musical.dto.Musical;
 import com.ssafy.curtaincall.musical.dto.MusicalLikes;
@@ -19,9 +20,11 @@ public interface MusicalMapper {
 	public List<Tag> selectTag(int id);
 	
 	//좋아요
-	public int checkLike(MusicalLikes like); // 좋아요 찍혀있는지 확인 (개수 반환)
-	public void insertLike(MusicalLikes like); // 좋아요 등록
-	public void deleteLike(MusicalLikes like); // 좋아요 해제
-	public int selectLike(int musicalId);
+//	public void insertLike(MusicalLikes like); // 좋아요 등록
+//	public void deleteLike(MusicalLikes like); // 좋아요 해제
+	public int selectLike(int musicalId); // 이 뮤지컬의 좋아요 개수
+	public int existsLike(@Param("userId")int userId, @Param("musicalId")int musicalId); // 내 좋아요
+	public void deleteLike(@Param("userId")int userId, @Param("musicalId")int musicalId);
+	public void insertLike(@Param("userId")int userId, @Param("musicalId")int musicalId);
 	
 }

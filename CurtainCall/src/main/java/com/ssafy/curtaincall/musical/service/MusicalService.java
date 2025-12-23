@@ -8,12 +8,6 @@ import com.ssafy.curtaincall.musical.dto.SearchCondition;
 import com.ssafy.curtaincall.musical.dto.Tag;
 
 public interface MusicalService {
-
-	/*
-	 * 서비스 인터페이스
-	 * - 주석 작성할 것
-	 * 
-	 */
 	
 	//조회
 	List<Musical> getlist(); // 전체 뮤지컬 리스트 반환
@@ -22,9 +16,9 @@ public interface MusicalService {
 	List<Tag> getTag(int id);
 
 	//좋아요
-	void likeOn(MusicalLikes like); // 좋아요 등록
-	void likeOff(MusicalLikes like); // 좋아요 해제
+	boolean toggleLike(int userId, int musicalId); // 좋아요 등록
 	int getLike(int musicalId); // 좋아요 조회
+	boolean isLiked(int userId, int musicalId); // 내 좋아요 확인
 	
 
 }

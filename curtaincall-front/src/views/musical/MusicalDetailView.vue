@@ -10,7 +10,8 @@
       <div class="info-box">
         <div class="title-row">
           <h1 class="musical-title">{{ musical.title }}</h1>
-          <Heart v-if="isLoaded" :like="like" />
+          <!-- 좋아요 -->
+          <HeartMusical v-if="isLoaded" :like="like" />
         </div>
 
         <div class="meta">
@@ -20,6 +21,7 @@
           </div>
         </div>
 
+        <!-- 해시태그 -->
         <Hashtag :tags="tags" :limit="3" />
       </div>
     </div>
@@ -100,7 +102,7 @@
 <script setup>
 import CardItemRadius from '@/components/common/CardItemRadius.vue';
 import Hashtag from '@/components/common/icon/Hashtag.vue';
-import Heart from '@/components/common/icon/Heart.vue';
+// import Heart from '@/components/common/icon/Heart.vue';
 import Rate from '@/components/common/icon/Rate.vue';
 import ReviewList from '@/components/review/ReviewList.vue';
 import ReviewCard from '@/components/ReviewCard.vue';
@@ -194,6 +196,7 @@ watch(theater, (newTheater) => {
 // 평점 계산
 import { computed } from 'vue'
 import router from '@/router';
+import HeartMusical from '@/components/common/icon/HeartMusical.vue';
 
 const avgRate = computed(() => {
   if (!reviews.value || reviews.value.length === 0) return 0

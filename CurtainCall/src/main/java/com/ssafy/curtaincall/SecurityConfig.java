@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -69,9 +70,16 @@ public class SecurityConfig {
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(auth -> auth
-            		.anyRequest().permitAll()
-//                .requestMatchers("/api/auth/**").permitAll()
-//                .anyRequest().authenticated()
+            		
+            		// 마이페이지 접근 제한
+            		.requestMatchers("/api/user/me/**").authenticated()
+            		.requestMatchers("/api/user/tag/**").authenticated()
+            		.requestMatchers("/api/user/taste/**").authenticated()
+            		
+            		// 그 외 전부 허용
+            		// 필요 시 컨트롤러 단에서 막음 : uri 정리가 안 되어있으므로
+            		// 단, id == null 시 return 처리 매번 해야 함 
+                    .anyRequest().permitAll()
             )
             .addFilterBefore( // jwt 검증
                     jwtAuthenticationFilter,

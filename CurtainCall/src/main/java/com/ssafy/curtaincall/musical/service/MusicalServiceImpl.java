@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.curtaincall.musical.dto.Musical;
 import com.ssafy.curtaincall.musical.dto.MusicalLikes;
@@ -47,21 +48,21 @@ public class MusicalServiceImpl implements MusicalService {
 	
 	//// 좋아요
 	
-	// 좋아요 등록 : 좋아요 확인 후 실행
-	@Override
-	public void likeOn(MusicalLikes like) {
-		System.out.println("좋아요 요청 - 이미 있는 좋아요인가? : " + mapper.checkLike(like));
-		if (mapper.checkLike(like) == 0) mapper.insertLike(like);		
-		else System.out.println("이미 있는 좋아요입니다.");
-	}
-	
-	//좋아요 해제 : 좋아요 확인 후 실행
-	@Override
-	public void likeOff(MusicalLikes like) {
-		System.out.println("좋아요 삭제 요청 - 이미 있는 좋아요인가? : " + mapper.checkLike(like));
-		if (mapper.checkLike(like) >= 1) mapper.deleteLike(like);	
-		else System.out.println("삭제할 좋아요가 없습니다.");
-	}
+//	// 좋아요 등록 : 좋아요 확인 후 실행
+//	@Override
+//	public void likeOn(MusicalLikes like) {
+//		System.out.println("좋아요 요청 - 이미 있는 좋아요인가? : " + mapper.checkLike(like));
+//		if (mapper.checkLike(like) == 0) mapper.insertLike(like);		
+//		else System.out.println("이미 있는 좋아요입니다.");
+//	}
+//	
+//	//좋아요 해제 : 좋아요 확인 후 실행
+//	@Override
+//	public void likeOff(MusicalLikes like) {
+//		System.out.println("좋아요 삭제 요청 - 이미 있는 좋아요인가? : " + mapper.checkLike(like));
+//		if (mapper.checkLike(like) >= 1) mapper.deleteLike(like);	
+//		else System.out.println("삭제할 좋아요가 없습니다.");
+//	}
 
 	@Override
 	public int getLike(int musicalId) {
@@ -72,7 +73,27 @@ public class MusicalServiceImpl implements MusicalService {
 	public List<Tag> getTag(int id) {
 		return mapper.selectTag(id);
 	}
-	
+
+	@Override
+	@Transactional
+	public boolean toggleLike(int userId, int musicalId) {
+
+	    int count = mapper.existsLike(userId, musicalId);
+
+        if (count > 0) {
+        	mapper.deleteLike(userId, musicalId); // 눌렀으면 취소
+            return false;
+            
+        } else {
+        	mapper.insertLike(userId, musicalId); // 안 눌렀으면 추가
+            return true;
+        }
+	}
+
+	@Override
+	public boolean isLiked(int userId, int musicalId) {
+		return mapper.existsLike(userId, musicalId) > 0;
+	}
 
 }
 

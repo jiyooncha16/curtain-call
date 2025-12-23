@@ -62,7 +62,6 @@ const router = createRouter({
       name: 'boardDetail',
       component: BoardDetailView,
       props: true,
-      meta: { requiresAuth: true },
     },
     {
       path: '/community/:id/edit',
@@ -109,6 +108,7 @@ const router = createRouter({
       name: 'myInfoModify',
       component: MyInfoModify,
       props: true,
+      meta: { requiresAuth: true },
     },
     {
       path: '/login',

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.curtaincall.actor.dto.Actor;
 import com.ssafy.curtaincall.actor.dto.ActorCastingDto;
@@ -48,24 +49,6 @@ public class ActorServiceImpl implements ActorService {
 	}
 	
 	
-	//// 좋아요
-	
-	// 좋아요 등록 : 좋아요 확인 후 실행
-	@Override
-	public void likeOn(ActorLikes like) {
-		System.out.println("좋아요 요청 - 이미 있는 좋아요인가? : " + mapper.checkLike(like));
-		if (mapper.checkLike(like) == 0) mapper.insertLike(like);		
-		else System.out.println("이미 있는 좋아요입니다.");
-	}
-	
-	//좋아요 해제 : 좋아요 확인 후 실행
-	@Override
-	public void likeOff(ActorLikes like) {
-		System.out.println("좋아요 삭제 요청 - 이미 있는 좋아요인가? : " + mapper.checkLike(like));
-		if (mapper.checkLike(like) >= 1) mapper.deleteLike(like);	
-		else System.out.println("삭제할 좋아요가 없습니다.");
-	}
-
 	@Override
 	public List<Actor> getActorOfTopFive() {
 		return mapper.selectActorOfTopFive();
@@ -79,6 +62,34 @@ public class ActorServiceImpl implements ActorService {
 	@Override
 	public List<RelatedActorDto> getRelatedActors(int id) {
 	    return mapper.getRelatedActors(id);
+	}
+
+
+	//// 좋아요
+	@Override
+	@Transactional
+	public boolean toggleLike(int userId, int actorId) {
+
+	    int count = mapper.existsLike(userId, actorId);
+
+        if (count > 0) {
+        	mapper.deleteLike(userId, actorId); // 눌렀으면 취소
+            return false;
+            
+        } else {
+        	mapper.insertLike(userId, actorId); // 안 눌렀으면 추가
+            return true;
+        }
+	}
+
+	@Override
+	public boolean isLiked(int userId, int actorId) {
+		return mapper.existsLike(userId, actorId) > 0;
+	}
+
+	@Override
+	public int getLike(int actorId) {
+		return mapper.selectLike(actorId);
 	}
 
 }

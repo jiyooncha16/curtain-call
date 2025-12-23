@@ -7,7 +7,7 @@
       </span>
     </div>
 
-    <div class="work-list">
+    <div class="work-list box">
       <ActorWorkCard
         v-for="work in works"
         :key="work.id"
@@ -31,6 +31,10 @@ const currentCount = computed(() =>
 </script>
 
 <style scoped>
+
+.title-text {
+  margin: 0 10px;
+}
 .work-header {
   display: flex;
   justify-content: space-between;
@@ -41,5 +45,22 @@ const currentCount = computed(() =>
 .current-count {
   color: #b11226;
   font-weight: 600;
+}
+
+.box {
+  /* display: flex; */
+  gap: 36px;
+  align-items: flex-start;
+  padding: 32px;
+  border-radius: 20px;
+/* margin-top: 30px; */
+margin-bottom: 50px;
+  background: linear-gradient(
+    180deg,
+    #fafafa 0%,
+    #ffffff 100%
+  );
+
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
 }
 </style>
