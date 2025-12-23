@@ -2,33 +2,29 @@
   <div class="page">
     <!-- 상단 네비 -->
     <div class="topbar">
-      <button class="icon-btn" @click="goBack" title="뒤로">
+      <button class="icon-btn" @click="goBack">
         <i class="bi bi-arrow-left"></i>
       </button>
       <div class="topbar-title">게시글 상세</div>
     </div>
 
-    <!-- 본문 카드 -->
+    <!-- 게시글 카드 -->
     <article class="card">
-      <!-- 헤더 -->
       <header class="post-header">
         <div class="category-chip">{{ board.category }}</div>
         <h1 class="title">{{ board.title }}</h1>
 
         <div class="meta-row">
           <div class="author">
-            <div class="avatar">{{ board.nickname.slice(0, 1) }}</div>
+            <div class="avatar">{{ board.nickname?.slice(0, 1) }}</div>
             <div class="author-info">
               <div class="author-name">{{ board.nickname }}</div>
-              <div class="sub">
-                <span>{{ board.createDate }}</span>
-              </div>
+              <div class="sub">{{ board.createDate }}</div>
             </div>
           </div>
 
-          <!-- 작성자일 때만 --> <!-----------수정하기------------>
-          <!-- <div class="owner-actions" v-if="isOwner"> -->
-            <div class="owner-actions" v-if="isOwner">
+          <!-- 🔥 게시글 작성자만 -->
+          <div class="owner-actions" v-if="isOwner">
             <button class="btn ghost" @click="onEdit">
               <i class="bi bi-pencil-square"></i>
             </button>
@@ -39,47 +35,33 @@
         </div>
       </header>
 
-      <!-- 본문 -->
       <section class="content">
-        <!-- 줄바꿈 유지하려면 pre-line -->
         <p class="content-text">{{ board.content }}</p>
       </section>
-
-      <!-- 액션 바 -->
-      <footer class="actions">
-        <button class="btn like" :class="{ active: liked }" @click="toggleLike">
-          <i class="bi" :class="liked ? 'bi-heart-fill' : 'bi-heart'"></i>
-          <span class="count">{{ likeCount }}</span>
-        </button>
-
-        <button class="btn ghost" @click="focusComment">
-          <i class="bi bi-chat-dots"></i><span class="count">{{ replyList.length }}</span>
-        </button>
-      </footer>
     </article>
 
     <!-- 댓글 카드 -->
     <section class="card">
-      <div class="comment-header">
-        <div class="section-title">
-          댓글 <span class="muted">{{ replyList.length }}</span>
-        </div>
+      <div class="section-title">
+        댓글 <span class="muted">{{ replyList.length }}</span>
       </div>
 
-      <!-- 댓글 입력 -->
+      <!-- 댓글 작성 -->
       <div class="comment-write">
-        <div class="avatar sm">{{ board.nickname.slice(0, 1) }}</div>
+        <div class="avatar sm">{{ auth.nickname?.slice(0, 1) || '?' }}</div>
         <div class="write-box">
           <textarea
-            ref="commentInput"
             v-model="newComment"
             class="textarea"
             rows="3"
             placeholder="댓글을 입력하세요."
           />
           <div class="write-actions">
-            <div class="helper">{{ newComment.length }}/500</div>
-            <button class="btn primary" :disabled="!newComment.trim()" @click="submitComment">
+            <button
+              class="btn primary"
+              :disabled="!newComment.trim()"
+              @click="submitComment"
+            >
               등록
             </button>
           </div>
@@ -89,173 +71,169 @@
       <!-- 댓글 리스트 -->
       <div class="comment-list">
         <div v-if="sortedComments.length === 0" class="empty">
-          아직 댓글이 없어요. 첫 댓글을 남겨보세요!
+          아직 댓글이 없어요.
         </div>
 
-        <div v-for="c in sortedComments" :key="c.id" class="comment-item">
-          <div class="avatar sm">{{ c.nickname.slice(0, 1) }}</div>
+        <div
+          v-for="c in sortedComments"
+          :key="c.replyId"
+          class="comment-item"
+        >
+          <div class="avatar sm">{{ c.nickname?.slice(0, 1) }}</div>
 
           <div class="comment-body">
             <div class="comment-top">
               <div class="comment-name">{{ c.nickname }}</div>
-              <div class="comment-sub">
-                <span>{{ c.createDate }}</span>
+              <div class="comment-sub">{{ c.createDate }}</div>
+
+              <!-- 🔥 본인 댓글만 -->
+              <div class="comment-menu" v-if="String(c.userId) === String(auth.userId)">
+                <button class="mini" @click="startEdit(c)">수정</button>
+                <button class="mini danger" @click="deleteComment(c.replyId)">삭제</button>
               </div>
             </div>
 
-            <div class="comment-text">{{ c.content }}</div>
+            <!-- 일반 보기 -->
+            <div v-if="editingId !== c.replyId" class="comment-text">
+              {{ c.content }}
+            </div>
+
+            <!-- 수정 모드 -->
+            <div v-else>
+              <textarea
+                v-model="editContent"
+                class="textarea"
+                rows="2"
+              />
+              <div class="comment-actions">
+                <button class="mini primary" @click="updateComment(c.replyId)">
+                  저장
+                </button>
+                <button class="mini" @click="cancelEdit">
+                  취소
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
-
   </div>
 </template>
 
 <script setup>
-  import axios from 'axios'
-  import { computed, onMounted, ref } from 'vue'
-  import { useRoute, useRouter } from 'vue-router'
-  import { useAuthStore } from '@/stores/auth'
+import axios from 'axios'
+import { ref, computed, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 import api from '@/api/axios'
 
 const router = useRouter()
 const route = useRoute()
-const id = route.params.id
-
-/** ===== 데모 데이터(연동 시 API 데이터로 교체) ===== */
-// const board = ref({
-//   id: 10,
-//   category: '자유',
-//   title: '오늘 공연 보고 왔는데 너무 좋았어요',
-//   userId: 1,
-//   nickname: "지윤",
-//   createDate: '2025-12-19 10:20:00',
-// //   views: 128,
-//   content:
-//     '1막부터 몰입감 장난 아니고...\n넘버가 진짜 미쳤습니다.\n추천해요!!!'
-// })
-// const reply = ref([
-//   { id: 1, userId: 1, nickname: '민지', createDate: '2025-12-19 12:01:00', content: '헉 나도 보러가야겠다!'},
-//   { id: 2, userId: 2, nickname: '지윤', createDate: '2025-12-19 12:10:00', content: '진짜 추천이야 ㅠㅠ'},
-// ])
-
-// axios!!!!!!!!!!!!!
-const board = ref({
-    boardId : '',
-    title: '',
-    content : '',
-    category: '',
-    createDate:'',
-    userId: '',
-    nickname:''
-})
-const replyList = ref([])
-onMounted(async () => {
-    const boardRes = await axios.get(`/api/boards/${id}`)
-    const replyRes = await axios.get(`/api/reply/board/${id}`)
-
-    board.value = boardRes.data
-    replyList.value = replyRes.data
-
-    console.log(board.value)
-    console.log(replyList.value)
-})
-
-/** ===== 상태 ===== */
-const liked = ref(false)
-const likeCount = ref(23)
-const newComment = ref('')
-const commentInput = ref(null)
 const auth = useAuthStore()
 
+/* 🔥 라우터 param */
+const boardId = Number(route.params.id)
 
-const isOwner = computed(() => {
-  return board.value.userId === auth.userId
+/* ===== 상태 ===== */
+const board = ref({
+  boardId: '',
+  title: '',
+  content: '',
+  category: '',
+  createDate: '',
+  userId: '',
+  nickname: '',
 })
 
+const replyList = ref([])
+const newComment = ref('')
 
+/* 🔥 댓글 수정 상태 */
+const editingId = ref(null)
+const editContent = ref('')
+
+/* ===== 데이터 로딩 ===== */
+onMounted(async () => {
+  const boardRes = await axios.get(`/api/boards/${boardId}`)
+  const replyRes = await axios.get(`/api/reply/board/${boardId}`)
+
+  board.value = boardRes.data
+  replyList.value = replyRes.data
+})
+
+/* ===== 계산 속성 ===== */
+const isOwner = computed(() => {
+  return String(board.value.userId) === String(auth.userId)
+})
 
 const sortedComments = computed(() => {
-  const list = [...replyList.value]
-  return list.sort((a, b) => new Date(b.createDate) - new Date(a.createDate))
+  return [...replyList.value].sort(
+    (a, b) => new Date(b.createDate) - new Date(a.createDate)
+  )
 })
 
-
-/** ===== 이벤트 ===== */
+/* ===== 이벤트 ===== */
 const goBack = () => router.back()
 
-// 좋아요 토글
-const toggleLike = () => {
-  liked.value = !liked.value
-  likeCount.value += liked.value ? 1 : -1
-}
-
-//댓글 등록하기
-const replyUserId = 1; /////////////////////// 수정하기
 const submitComment = async () => {
-  const text = newComment.value.trim()
-  if (!text) return
-  await axios.post(`/api/reply`, {
-        content : text,
-        boardId : board.value.boardId,
-        userId : replyUserId
+  if (!newComment.value.trim()) return
+
+  await api.post('/api/reply', {
+    boardId,
+    content: newComment.value,
+    userId: auth.userId,
   })
+
   newComment.value = ''
-  //갱신
-  const replyRes = await axios.get(`/api/reply/board/${id}`)
-  replyList.value = replyRes.data
+  const res = await axios.get(`/api/reply/board/${boardId}`)
+  replyList.value = res.data
 }
 
+/* 🔥 댓글 수정 */
+const startEdit = (c) => {
+  editingId.value = c.replyId
+  editContent.value = c.content
+}
+
+const cancelEdit = () => {
+  editingId.value = null
+  editContent.value = ''
+}
+
+const updateComment = async (replyId) => {
+  if (!editContent.value.trim()) return
+
+  await api.put(`/api/reply/${replyId}`, {
+    content: editContent.value,
+  })
+
+  cancelEdit()
+  const res = await axios.get(`/api/reply/board/${boardId}`)
+  replyList.value = res.data
+}
+
+/* 🔥 댓글 삭제 */
+const deleteComment = async (replyId) => {
+  if (!confirm('댓글을 삭제하시겠습니까?')) return
+
+  await api.delete(`/api/reply/${replyId}`)
+  const res = await axios.get(`/api/reply/board/${boardId}`)
+  replyList.value = res.data
+}
+
+/* ===== 게시글 수정/삭제 ===== */
 const onEdit = () => {
-    router.push(`/community/${board.value.boardId}/edit`)
+  router.push(`/community/${boardId}/edit`)
 }
 
 const onDelete = async () => {
-  // 1️⃣ 작성자만 삭제 가능 (프론트 1차 방어)
-  if (board.value.userId !== auth.userId) {
-    alert('삭제 권한이 없습니다.')
-    return
-  }
+  if (!confirm('게시글을 삭제하시겠습니까?')) return
 
-  // 2️⃣ 사용자 확인
-  const ok = confirm('정말 이 게시글을 삭제할까요?')
-  if (!ok) return
-
-  try {
-    // 3️⃣ DELETE 요청
-    await api.delete(`/api/boards/${board.value.boardId}`, {
-      headers: {
-        Authorization: `Bearer ${auth.token}`
-      }
-    })
-
-    alert('게시글이 삭제되었습니다.')
-
-    // 4️⃣ 목록 페이지로 이동
-    router.push('/community')
-
-  } catch (e) {
-    console.error(e)
-    alert('게시글 삭제 실패')
-  }
+  await api.delete(`/api/boards/${boardId}`)
+  alert('삭제되었습니다.')
+  router.push('/community')
 }
-
-const onReport = () => alert('신고 모달/API 연결')
-const onCommentEdit = (c) => alert(`댓글 수정: ${c.id}`)
-const onCommentDelete = (c) => alert(`댓글 삭제: ${c.id}`)
-
-/* ===== 유틸 ===== */
-// const formatDate = (iso) => {
-//   const d = new Date(iso)
-//   const yyyy = d.getFullYear()
-//   const mm = String(d.getMonth() + 1).padStart(2, '0')
-//   const dd = String(d.getDate()).padStart(2, '0')
-//   const hh = String(d.getHours()).padStart(2, '0')
-//   const mi = String(d.getMinutes()).padStart(2, '0')
-//   return `${yyyy}.${mm}.${dd} ${hh}:${mi}`
-// }
-
 </script>
 
 <style scoped>

@@ -1,7 +1,7 @@
 <template>
   <div class="reply-item">
     <div class="top">
-      <div class="writer">{{ reply.nickname }}</div> 
+      <div class="writer">{{ reply.nickname }}</div>
       <div class="date">{{ reply.createDate }}</div>
     </div>
 
@@ -14,12 +14,11 @@
     <div v-else class="edit-box">
       <textarea v-model="editContent" />
       <button @click="updateReply">저장</button>
-      <button @click="editing = false">취소</button>
+      <button @click="cancelEdit">취소</button>
     </div>
 
     <!-- 🔥 본인 댓글만 -->
-    <div class="actions">
-        <!-- <div class="actions" v-if="isOwner"> -->
+    <div class="actions" v-if="isOwner">
       <button @click="startEdit">수정</button>
       <button class="danger" @click="deleteReply">삭제</button>
     </div>
@@ -27,8 +26,9 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import axios from 'axios'
+import { ref, computed, watch } from 'vue'
+import { useAuthStore } from '@/stores/auth'
+import api from '@/api/axios'   // 🔥 axios 통일
 
 const props = defineProps({
   reply: {
@@ -39,19 +39,35 @@ const props = defineProps({
 
 const emit = defineEmits(['deleted', 'updated'])
 
+/* ===== 상태 ===== */
 const editing = ref(false)
-const editContent = ref(props.reply.content)
+const editContent = ref('')
 
-// 🔐 로그인 유저 (임시: localStorage / Spring Security 붙이면 UX용)
-const loginUserId = Number(localStorage.getItem('loginUserId'))
+/* 🔥 props 바뀌면 내용 동기화 */
+watch(
+  () => props.reply,
+  (newReply) => {
+    editContent.value = newReply.content
+  },
+  { immediate: true }
+)
 
-// 🔥 내 댓글인지
+/* ===== 로그인 유저 ===== */
+const auth = useAuthStore()
+
+// 🔥 내 댓글인지 판단
 const isOwner = computed(() => {
-  return props.reply.userId === loginUserId
+  return String(props.reply.userId) === String(auth.userId)
 })
 
+/* ===== 이벤트 ===== */
 const startEdit = () => {
   editing.value = true
+  editContent.value = props.reply.content
+}
+
+const cancelEdit = () => {
+  editing.value = false
   editContent.value = props.reply.content
 }
 
@@ -62,12 +78,13 @@ const updateReply = async () => {
   }
 
   try {
-    await axios.put(`/api/reply/${props.reply.replyId}`, {
+    await api.put(`/api/reply/${props.reply.replyId}`, {
       content: editContent.value,
     })
     editing.value = false
     emit('updated')
   } catch (e) {
+    console.error(e)
     alert('댓글 수정 실패')
   }
 }
@@ -76,9 +93,10 @@ const deleteReply = async () => {
   if (!confirm('댓글을 삭제하시겠습니까?')) return
 
   try {
-    await axios.delete(`/api/reply/${props.reply.replyId}`)
+    await api.delete(`/api/reply/${props.reply.replyId}`)
     emit('deleted')
   } catch (e) {
+    console.error(e)
     alert('댓글 삭제 실패')
   }
 }
