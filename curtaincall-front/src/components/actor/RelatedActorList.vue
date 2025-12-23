@@ -25,12 +25,12 @@ defineProps({
 
 <style scoped>
 .related-section {
-  margin-top: 48px;
+  margin-top: 30px;
 }
 
 .related-list {
   display: grid;
-  margin-top: 10px;
+  margin-top: 5px;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 16px;
 }
@@ -59,7 +59,7 @@ defineProps({
   align-items: flex-start;
   padding: 32px;
   border-radius: 20px;
-margin-top: 30px;
+margin-top: 15px;
 margin-bottom: 50px;
   background: linear-gradient(
     180deg,

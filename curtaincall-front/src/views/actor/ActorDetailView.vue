@@ -1,10 +1,15 @@
 <template>
+  <!-- actor 로드 전에는 아무것도 안 그림 -->
   <div v-if="actor">
-    <button class="back-btn" @click="goBack">
-      <i class="bi bi-arrow-left">베우 목록</i>
-    </button>
-    <div class="actor-hero">
 
+    <!-- 뒤로가기 -->
+    <button class="back-btn" @click="goBack">
+      <i class="bi bi-arrow-left"></i>
+      배우 목록
+    </button>
+
+    <!-- ===== Actor Hero ===== -->
+    <div class="actor-hero">
       <!-- 프로필 이미지 -->
       <div class="poster-box">
         <img :src="`/${actor.image}`" :alt="actor.name" />
@@ -14,19 +19,27 @@
       <div class="info-box">
         <div class="title-row">
           <h1 class="actor-name">{{ actor.name }}</h1>
-          <HeartActor @click="heartClicked" />
+          <HeartActor />
         </div>
 
         <div class="meta">
           <div v-if="actor.birth" class="meta-item">
             생년월일 | {{ actor.birth }}
           </div>
+
           <div v-if="actor.agency" class="meta-item">
             소속사 | {{ actor.agency }}
           </div>
 
-          <a v-if="actor.sns" :href="actor.sns" target="_blank" rel="noopener" class="sns-link">
-            <i class="bi bi-instagram"></i> Instagram
+          <a
+            v-if="actor.sns"
+            :href="actor.sns"
+            target="_blank"
+            rel="noopener"
+            class="sns-link"
+          >
+            <i class="bi bi-instagram"></i>
+            Instagram
           </a>
         </div>
 
@@ -36,218 +49,165 @@
       </div>
     </div>
 
-    <!-- 출연 작품 -->
+    
+    
+    <!-- ===== 출연 작품 ===== -->
     <section>
       <ActorWorkList :works="works" />
     </section>
+    
+    <div class="title-text">관련 영상</div>
+    <!-- ===== 인기 영상 ===== -->
+    <div class="shadow" style="margin-bottom: 30px;">
+      <!-- ✅ 유튜브 API는 VideoActor에서만 -->
+      <VideoActor
+        v-if="actor.name"
+        :keyword="`${actor.name} 뮤지컬 배우`"
+      />
+    </div>
+    <!-- ===== 관련 배우 ===== -->
     <RelatedActorList :actors="relatedActors" />
   </div>
 </template>
 
 <script setup>
+import axios from 'axios'
+import { ref, computed, onMounted, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
-import api from '@/api/axios';
-import ActorWorkList from '@/components/actor/ActorWorkList.vue';
-import RelatedActorList from '@/components/actor/RelatedActorList.vue';
-import BackBtn from '@/components/common/icon/BackBtn.vue';
-import HeartActor from '@/components/common/icon/HeartActor.vue';
-import { useAuthStore } from '@/stores/auth';
-// import Heart from '@/components/common/icon/Heart.vue';
-import { parseActorWorks } from '@/utils/workParser';
-import axios from 'axios';
-import { onMounted, ref, computed, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import VideoActor from '@/components/Video/VideoActor.vue'
+import ActorWorkList from '@/components/actor/ActorWorkList.vue'
+import RelatedActorList from '@/components/actor/RelatedActorList.vue'
+import HeartActor from '@/components/common/icon/HeartActor.vue'
+import { parseActorWorks } from '@/utils/workParser'
 
+/* =====================
+   router
+===================== */
 const route = useRoute()
-const id = computed(() => route.params.id)
-const router =useRouter()
+const router = useRouter()
 
-
-//배우 정보 받아오기
+/* =====================
+   state
+===================== */
 const actor = ref(null)
-const name = ref('')
-const description = ref('')
 const relatedActors = ref([])
-const goBack = () => {
-  router.push('/actor')
-}
 
-const fetchActor = async () => {
-  const { data } = await axios.get(`/api/actors/${id.value}`)
+/* =====================
+   api
+===================== */
+const fetchActor = async (actorId) => {
+  const { data } = await axios.get(`/api/actors/${actorId}`)
   actor.value = data
 }
 
-const fetchRelatedActors = async () => {
+const fetchRelatedActors = async (actorId) => {
   try {
-    const { data } = await axios.get(`/api/actors/${id.value}/related`)
+    const { data } = await axios.get(`/api/actors/${actorId}/related`)
     relatedActors.value = data
   } catch (e) {
     console.error('관련 배우 조회 실패', e)
   }
 }
 
+/* =====================
+   lifecycle
+===================== */
 onMounted(() => {
-  fetchActor()
-  fetchRelatedActors()
+  fetchActor(route.params.id)
+  fetchRelatedActors(route.params.id)
 })
+
 watch(
   () => route.params.id,
-  () => {
-    fetchActor()
-    fetchRelatedActors()
+  (newId) => {
+    fetchActor(newId)
+    fetchRelatedActors(newId)
   }
 )
 
-
-
-// 배우 work 위해서
+/* =====================
+   computed
+===================== */
 const works = computed(() => {
   if (!actor.value) return []
   return parseActorWorks(actor.value)
 })
 
-// 하트 처리
-// const auth = useAuthStore()
-// const isHearted = ref(false)
-// const userId = auth.userId
-
-// const heartClicked = async () => {
-//     try {
-//         if (!isHearted.value) { // 하트 안 눌려있었다면 좋아요 post
-//             await api.post(`/api/actors/toggle/like/${id.value}`)
-//             isHearted.value = true
-//         } else {
-//             // 좋아요 취소
-//             await api.delete(`/api/actors/like/${id.value}?userId=${userId}`)
-//             isHearted.value = false
-//         }
-//     } catch (e) {
-//         console.error('하트 처리 실패', e)
-//     }
-// }
-
+/* =====================
+   methods
+===================== */
+const goBack = () => {
+  router.push('/actor')
+}
 </script>
 
 <style scoped>
 .back-btn {
-    background: none;
-    border: none;
-    font-size: 14px;
-    cursor: pointer;
-    color: #666;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: #666;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
 }
 
 .back-btn:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
-.actor-detail {
-  margin-top: 20px;
-}
-
-.profile-wrapper {
-  display: flex;
-  align-items: flex-start;
-  margin: 20px 0;
-}
-
-.img-box {
-  width: 200px;
-  aspect-ratio: 3 / 4;
-  margin-right: 30px;
-}
-
-.img-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.info-box {
-  flex: 1;
-}
-
-.name-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.actor-name {
-  font-size: 35px;
-  margin: 0;
-}
-
-.meta {
-  margin-top: 20px;
-}
-
-.description {
-  margin-top: 10px;
-  white-space: pre-line;
-}
-
-.sns {
-  display: inline-block;
-  margin-top: 8px;
-  font-size: 20px;
-}
-
-/* =========================
-   Actor Hero
-========================= */
+/* ===== Actor Hero ===== */
 .actor-hero {
   display: flex;
   gap: 36px;
   align-items: flex-start;
   padding: 32px;
   border-radius: 20px;
-  margin-top: 30px;
+  margin-top: 20px;
   margin-bottom: 50px;
-  background: linear-gradient(180deg,
-      #fafafa 0%,
-      #ffffff 100%);
-
+  background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
-/* 이미지 영역 */
-.actor-hero .poster-box {
+/* 이미지 */
+.poster-box {
   width: 240px;
   aspect-ratio: 3 / 4;
   border-radius: 16px;
   overflow: hidden;
   flex-shrink: 0;
-
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
 }
 
-.actor-hero .poster-box img {
+.poster-box img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease;
 }
 
-.actor-hero .poster-box:hover img {
+.poster-box:hover img {
   transform: scale(1.05);
 }
 
-/* 정보 영역 */
-.actor-hero .info-box {
+/* 정보 */
+.info-box {
   flex: 1;
-  padding-top: 6px;
 }
 
-/* 이름 + 좋아요 */
+.title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .actor-name {
   font-size: 28px;
   font-weight: 800;
   margin: 0;
-  line-height: 1.3;
 }
 
 .actor-name::after {
@@ -260,22 +220,21 @@ const works = computed(() => {
   border-radius: 2px;
 }
 
-/* 메타 정보 */
-.actor-hero .meta {
+/* 메타 */
+.meta {
   margin: 20px 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.actor-hero .meta-item {
+.meta-item {
   font-size: 15px;
   color: #555;
 }
 
 /* SNS */
 .sns-link {
-  margin-top: 6px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -299,11 +258,5 @@ const works = computed(() => {
   padding: 14px 16px;
   border-radius: 12px;
   border-left: 4px solid #e5e7eb;
-}
-
-.title-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 </style>
