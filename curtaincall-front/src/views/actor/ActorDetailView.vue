@@ -1,50 +1,45 @@
 <template>
-    <div v-if="actor">
-        <div class="actor-hero">
+  <div v-if="actor">
+    <BackBtn label="배우 목록으로" />
+    <div class="actor-hero">
 
-            <!-- 프로필 이미지 -->
-            <div class="poster-box">
-                <img :src="`/${actor.image}`" :alt="actor.name" />
-            </div>
+      <!-- 프로필 이미지 -->
+      <div class="poster-box">
+        <img :src="`/${actor.image}`" :alt="actor.name" />
+      </div>
 
-            <!-- 정보 영역 -->
-            <div class="info-box">
-                <div class="title-row">
-                    <h1 class="actor-name">{{ actor.name }}</h1>
-                    <HeartActor @click="heartClicked" />
-                </div>
-
-                <div class="meta">
-                <div v-if="actor.birth" class="meta-item">
-                    생년월일 | {{ actor.birth }}
-                </div>
-                <div v-if="actor.agency" class="meta-item">
-                    소속사 | {{ actor.agency }}
-                </div>
-
-                <a
-                    v-if="actor.sns"
-                    :href="actor.sns"
-                    target="_blank"
-                    rel="noopener"
-                    class="sns-link"
-                >
-                    <i class="bi bi-instagram"></i> Instagram
-                </a>
-                </div>
-
-                <p v-if="actor.description" class="description">
-                {{ actor.description }}
-                </p>
-            </div>
+      <!-- 정보 영역 -->
+      <div class="info-box">
+        <div class="title-row">
+          <h1 class="actor-name">{{ actor.name }}</h1>
+          <HeartActor @click="heartClicked" />
         </div>
 
-        <!-- 출연 작품 -->
-        <section>
-            <ActorWorkList :works="works" />
-        </section>
-        <RelatedActorList :actors="relatedActors" />
+        <div class="meta">
+          <div v-if="actor.birth" class="meta-item">
+            생년월일 | {{ actor.birth }}
+          </div>
+          <div v-if="actor.agency" class="meta-item">
+            소속사 | {{ actor.agency }}
+          </div>
+
+          <a v-if="actor.sns" :href="actor.sns" target="_blank" rel="noopener" class="sns-link">
+            <i class="bi bi-instagram"></i> Instagram
+          </a>
+        </div>
+
+        <p v-if="actor.description" class="description">
+          {{ actor.description }}
+        </p>
+      </div>
     </div>
+
+    <!-- 출연 작품 -->
+    <section>
+      <ActorWorkList :works="works" />
+    </section>
+    <RelatedActorList :actors="relatedActors" />
+  </div>
 </template>
 
 <script setup>
@@ -52,6 +47,7 @@
 import api from '@/api/axios';
 import ActorWorkList from '@/components/actor/ActorWorkList.vue';
 import RelatedActorList from '@/components/actor/RelatedActorList.vue';
+import BackBtn from '@/components/common/icon/BackBtn.vue';
 import HeartActor from '@/components/common/icon/HeartActor.vue';
 import { useAuthStore } from '@/stores/auth';
 // import Heart from '@/components/common/icon/Heart.vue';
@@ -70,37 +66,37 @@ const description = ref('')
 const relatedActors = ref([])
 
 const fetchActor = async () => {
-    const { data } = await axios.get(`/api/actors/${id.value}`) 
-    actor.value = data
+  const { data } = await axios.get(`/api/actors/${id.value}`)
+  actor.value = data
 }
 
 const fetchRelatedActors = async () => {
-    try {
-        const { data } = await axios.get(`/api/actors/${id.value}/related`) 
-        relatedActors.value = data
-    } catch (e) {
-        console.error('관련 배우 조회 실패', e)
-    }
+  try {
+    const { data } = await axios.get(`/api/actors/${id.value}/related`)
+    relatedActors.value = data
+  } catch (e) {
+    console.error('관련 배우 조회 실패', e)
+  }
 }
 
 onMounted(() => {
-    fetchActor()
-    fetchRelatedActors()
+  fetchActor()
+  fetchRelatedActors()
 })
 watch(
-    () => route.params.id,
-    () => {
-        fetchActor()
-        fetchRelatedActors()
-    }
+  () => route.params.id,
+  () => {
+    fetchActor()
+    fetchRelatedActors()
+  }
 )
 
 
 
 // 배우 work 위해서
 const works = computed(() => {
-    if (!actor.value) return []
-    return parseActorWorks(actor.value)
+  if (!actor.value) return []
+  return parseActorWorks(actor.value)
 })
 
 // 하트 처리
@@ -127,55 +123,55 @@ const works = computed(() => {
 
 <style scoped>
 .actor-detail {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .profile-wrapper {
-    display: flex;
-    align-items: flex-start;
-    margin: 20px 0;
+  display: flex;
+  align-items: flex-start;
+  margin: 20px 0;
 }
 
 .img-box {
-    width: 200px;
-    aspect-ratio: 3 / 4;
-    margin-right: 30px;
+  width: 200px;
+  aspect-ratio: 3 / 4;
+  margin-right: 30px;
 }
 
 .img-box img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .info-box {
-    flex: 1;
+  flex: 1;
 }
 
 .name-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .actor-name {
-    font-size: 35px;
-    margin: 0;
+  font-size: 35px;
+  margin: 0;
 }
 
 .meta {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .description {
-    margin-top: 10px;
-    white-space: pre-line;
+  margin-top: 10px;
+  white-space: pre-line;
 }
 
 .sns {
-    display: inline-block;
-    margin-top: 8px;
-    font-size: 20px;
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 20px;
 }
 
 /* =========================
@@ -187,15 +183,13 @@ const works = computed(() => {
   align-items: flex-start;
   padding: 32px;
   border-radius: 20px;
-margin-top: 30px;
-margin-bottom: 50px;
-  background: linear-gradient(
-    180deg,
-    #fafafa 0%,
-    #ffffff 100%
-  );
+  margin-top: 30px;
+  margin-bottom: 50px;
+  background: linear-gradient(180deg,
+      #fafafa 0%,
+      #ffffff 100%);
 
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 /* 이미지 영역 */
@@ -206,7 +200,7 @@ margin-bottom: 50px;
   overflow: hidden;
   flex-shrink: 0;
 
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
 }
 
 .actor-hero .poster-box img {
@@ -290,5 +284,4 @@ margin-bottom: 50px;
   align-items: center;
   justify-content: space-between;
 }
-
 </style>
