@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.curtaincall.review.dto.MyReviewDto;
 import com.ssafy.curtaincall.review.dto.Review;
@@ -26,7 +27,7 @@ public class ReviewServiceImpl implements ReviewService {
 	
 	// 평점 평균 조회
 	@Override
-	public double getReviewRate(int id) {
+	public Double getReviewRate(int id) {
 		return mapper.selectReviewRate(id);
 	}
 	
@@ -35,6 +36,8 @@ public class ReviewServiceImpl implements ReviewService {
 	public List<MyReviewDto> getReviewByCondition(ReviewSearchCondition condition) {
 		return mapper.selectReviewByCondition(condition);
 	}
+	
+	
 
 
 	@Override
@@ -46,21 +49,14 @@ public class ReviewServiceImpl implements ReviewService {
 	//create
 	@Override
 	public int createReview(Review review) {
-		// 이 유저가 이 뮤지컬에 대한 리뷰를 작성한적이 없어야 진행
-		if(mapper.selectReview(review) == null) {
-			int result = mapper.insertReview(review);
-			if (result == 1) return review.getReviewId(); // int 값 들어옴
-		}
-		return -1;		
+		int result = mapper.insertReview(review);
+		return result;	
 	}
 	//수정
 	@Override
 	public int updateReview(Review review) {
 		// 이 유저가 이 뮤지컬에 대한 리뷰가 있으면 진행
-		if(mapper.selectReview(review) != null) {
-			return mapper.updateReview(review);
-		}
-		return -1;
+		return mapper.updateReview(review);
 	}
 	
 	//삭제
@@ -74,23 +70,34 @@ public class ReviewServiceImpl implements ReviewService {
 		return -1;
 	}
 
-	////좋아요
-	
-	// 좋아요 등록 : 좋아요 확인 후 실행
+	//// 좋아요
 	@Override
-	public void likeOn(ReviewLikes like) {
-		System.out.println("좋아요 요청 - 이미 있는 좋아요인가? : " + mapper.checkLike(like));
-		if (mapper.checkLike(like) == 0) mapper.insertLike(like);		
-		else System.out.println("이미 있는 좋아요입니다.");
+	@Transactional
+	public boolean toggleLike(int userId, int reviewId) {
+
+	    int count = mapper.existsLike(userId, reviewId);
+
+        if (count > 0) {
+        	mapper.deleteLike(userId, reviewId); // 눌렀으면 취소
+            return false;
+            
+        } else {
+        	mapper.insertLike(userId, reviewId); // 안 눌렀으면 추가
+            return true;
+        }
+	}
+
+	@Override
+	public boolean isLiked(int userId, int reviewId) {
+		return mapper.existsLike(userId, reviewId) > 0;
+	}
+
+	@Override
+	public int getLike(int reviewId) {
+		return mapper.selectLike(reviewId);
 	}
 	
-	//좋아요 해제 : 좋아요 확인 후 실행
-	@Override
-	public void likeOff(ReviewLikes like) {
-		System.out.println("좋아요 삭제 요청 - 이미 있는 좋아요인가? : " + mapper.checkLike(like));
-		if (mapper.checkLike(like) >= 1) mapper.deleteLike(like);	
-		else System.out.println("삭제할 좋아요가 없습니다.");
-	}
+	
 
 	@Override
 	public List<MyReviewDto> getMyReview(int id) {
@@ -100,6 +107,11 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public List<MyReviewDto> getTopReview() {
 		return mapper.selectTopReview();
+	}
+
+	@Override
+	public MyReviewDto getReview(int reviewId) {
+		return mapper.selectReview(reviewId);
 	}
 
 

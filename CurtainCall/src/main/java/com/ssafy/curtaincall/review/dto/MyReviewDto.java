@@ -22,7 +22,9 @@ public class MyReviewDto {
 	private int rate;
 	private LocalDate createDate;
 	private String title;
+	private int musicalId;
 	private String image;
 	private String nickname;
+	private int userId;
 	private int likeCount;
 }

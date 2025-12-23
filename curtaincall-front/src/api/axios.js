@@ -14,7 +14,7 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
   const auth = useAuthStore()
-
+console.log('token in interceptor:', auth.token)
   if (auth.token) {
     // ⭐ 핵심: .value 여부
     const token =

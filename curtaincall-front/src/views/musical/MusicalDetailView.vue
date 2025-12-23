@@ -1,106 +1,138 @@
 <template>
-    <!-- 작품 정보 영역 -->
-    <div class="musical-hero">
-      <!-- 포스터 -->
-      <div class="poster-box">
-        <img :src="`/${musical.image}`" />
+  <!-- 작품 정보 영역 -->
+  <BackBtn label="뮤지컬 목록으로" />
+
+  <div class="musical-hero">
+    <!-- 포스터 -->
+    <div class="poster-box">
+      <img :src="`/${musical.image}`" />
+    </div>
+
+    <!-- 정보 -->
+    <div class="info-box">
+      <div class="title-row">
+        <h1 class="musical-title">{{ musical.title }}</h1>
+        <!-- 좋아요 -->
+        <HeartMusical v-if="isLoaded" :like="like" />
       </div>
 
-      <!-- 정보 -->
-      <div class="info-box">
-        <div class="title-row">
-          <h1 class="musical-title">{{ musical.title }}</h1>
-          <Heart v-if="isLoaded" :like="like" />
-        </div>
-
-        <div class="meta">
-          <div class="meta-item">{{ musical.theater }}</div>
-          <div class="meta-item">
-            {{ musical.startDate }} - {{ musical.endDate }}
-          </div>
-        </div>
-
-        <Hashtag :tags="tags" :limit="3" />
-      </div>
-    </div>
-
-    <!-- 출연 배우 영역 -->
-    <div class="title-text">출연 배우</div>
-    <div class="shadow">
-        <div v-if="actors" class="actor-list">
-            <CardItemRadius v-for="(actor, idx) in actors" :actor="actor" :key="idx"/>
-        </div>
-    </div>
-    <!-- 카카오 맵 api -->
-        <div class="title-text">공연장</div>
-        <!-- template -->
-        <div class="map-container shadow">
-            <div class="map-info">
-                <div class="main-text">{{ theater }}</div>
-                <div class="basic-text">{{ theaterAddress }}</div>
-                <div class="basic-text">{{ theaterPhone }}</div>
-                <a :href="theaterUrl" target="_blank" rel="noopener noreferrer" class="map-link-btn">
-                    카카오맵 바로가기
-                </a>
-
-            </div>
-            <div class="map-wrapper">
-                <div id="kakao-map" style="width:100%; height:300px;"></div>
-            </div>
-        </div>
-    <!-- 관련 영상 -->
-    <div class="title-text">관련 영상</div>
-    <div class="container shadow">
-        <VideoMain v-if="musical.title" :keyword="musical.title"/>
-    </div>
-
-    <!-- 리뷰 영역 -->
-    <!-- 🔹 섹션 타이틀 (밖) -->
-    <div class="title-text review-title">리뷰</div>
-
-    <!-- 🔹 리뷰 카드 영역 (안) -->
-    <div class="container shadow">
-      <div class="review-summary">
-        <div class="left">
-          <div class="sub-text">{{ reviews.length }}개의 관람 후기</div>
-        </div>
-
-        <div class="right">
-          <div class="avg-score">{{ avgRate }}</div>
-          <Rate :rate="avgRate" />
-          <!-- ✍ 리뷰 작성 버튼 -->
-          <button class="write-review-btn" @click="goWriteReview">
-            리뷰 작성
-          </button>
+      <div class="meta">
+        <div class="meta-item">{{ musical.theater }}</div>
+        <div class="meta-item">
+          {{ musical.startDate }} - {{ musical.endDate }}
         </div>
       </div>
 
-
-        <div>
-          <section v-if="reviews.length != 0" class="grid">
-            <ReviewCard
-              v-for="review in reviews"
-              :key="review.reviewId"
-              :review="review"
-              @toggle-like="toggleLike"
-            />
-          </section>
-            <!-- empty -->
-            <div v-else class="empty">
-              <div class="empty-icon">🎭</div>
-              <div class="empty-title">
-                리뷰가 없어요. 작성해볼까요?
-              </div>
-            </div>
-      </div>
-         
+      <!-- 해시태그 -->
+      <Hashtag :tags="tags" :limit="3" />
     </div>
+  </div>
+
+  <!-- 출연 배우 영역 -->
+  <div class="title-text">출연 배우</div>
+  <div class="shadow">
+    <div v-if="actors" class="actor-list">
+      <CardItemRadius v-for="(actor, idx) in actors" :actor="actor" :key="idx" />
+    </div>
+  </div>
+  <!-- 카카오 맵 api -->
+  <div class="title-text">공연장</div>
+  <!-- template -->
+  <div class="map-container shadow">
+    <div class="map-info">
+      <div class="main-text">{{ theater }}</div>
+      <div class="basic-text">{{ theaterAddress }}</div>
+      <div class="basic-text">{{ theaterPhone }}</div>
+      <a :href="theaterUrl" target="_blank" rel="noopener noreferrer" class="map-link-btn">
+        카카오맵 바로가기
+      </a>
+
+    </div>
+    <div class="map-wrapper">
+      <div id="kakao-map" style="width:100%; height:300px;"></div>
+    </div>
+  </div>
+  <!-- 관련 영상 -->
+  <div class="title-text">관련 영상</div>
+  <div class="container shadow">
+    <VideoMain v-if="musical.title" :keyword="musical.title" />
+  </div>
+
+  <!-- 리뷰 영역 -->
+  <!-- 🔹 섹션 타이틀 (밖) -->
+  <!-- 🔹 리뷰 섹션 타이틀 -->
+<div class="title-text review-title">리뷰</div>
+
+<!-- 🔹 리뷰 카드 영역 -->
+<div class="container shadow">
+
+  <!-- 상단 헤더 영역 -->
+  <div class="review-header">
+    <!-- 요약 -->
+    <div class="review-summary">
+      <div class="left">
+        <div class="sub-text">{{ reviews.length }}개의 관람 후기</div>
+      </div>
+
+      <div class="right">
+        <div class="avg-score">{{ avgRate }}</div>
+        <Rate :rate="avgRate" />
+        <button class="write-review-btn" @click="goWriteReview">
+          리뷰 작성
+        </button>
+      </div>
+    </div>
+
+    <!-- ⭐ 평점 필터 -->
+    <div class="rating-filter-wrapper">
+      <div class="rating-filter">
+        <button
+          class="rating-btn"
+          :class="{ active: selectedRating === null }"
+          @click="resetRating"
+        >
+          전체보기
+        </button>
+
+        <button
+          v-for="n in 5"
+          :key="n"
+          class="rating-btn"
+          :class="{ active: selectedRating === n }"
+          @click="selectRating(n)"
+        >
+          {{ n }}점
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 리뷰 리스트 -->
+  <section v-if="filteredReviews.length !== 0" class="grid">
+    <ReviewCard
+      v-for="review in filteredReviews"
+      :key="review.reviewId"
+      :review="review"
+      @toggle-like="toggleLike"
+    />
+  </section>
+
+  <!-- empty -->
+  <div v-else class="empty">
+    <div class="empty-icon">🎭</div>
+    <div class="empty-title">
+      해당 평점의 리뷰가 없어요.
+    </div>
+  </div>
+
+</div>
+
 </template>
 
 <script setup>
 import CardItemRadius from '@/components/common/CardItemRadius.vue';
 import Hashtag from '@/components/common/icon/Hashtag.vue';
-import Heart from '@/components/common/icon/Heart.vue';
+// import Heart from '@/components/common/icon/Heart.vue';
 import Rate from '@/components/common/icon/Rate.vue';
 import ReviewList from '@/components/review/ReviewList.vue';
 import ReviewCard from '@/components/ReviewCard.vue';
@@ -120,6 +152,8 @@ const actors = ref([])
 const tags = ref([])
 const like = ref('')
 const isLoaded = ref(false)
+const selectedRating = ref(null) // null = 전체보기
+
 
 // 카카오맵
 const theaterAddress = ref('')
@@ -133,26 +167,46 @@ onMounted(async () => {
   const res = await axios.get(`/api/musicals/${id}`)
   musical.value = res.data
   theater.value = res.data.theater
-  console.log("musical : " , musical.value)
+  console.log("musical : ", musical.value)
 
   const tagRes = await axios.get(`/api/musicals/tag/${id}`)
   tags.value = tagRes.data
-  console.log("tags : " , tags.value)
+  console.log("tags : ", tags.value)
 
   const likeRes = await axios.get(`/api/musicals/like/${id}`)
   like.value = likeRes.data
   isLoaded.value = true
-  console.log("like : " , like.value)
+  console.log("like : ", like.value)
 
   const reviewRes = await axios.get(`/api/reviews/${id}`)
   reviews.value = reviewRes.data
-  console.log("review : " , reviews.value)
+  console.log("review : ", reviews.value)
 
   const actorRes = await axios.get(`/api/actors/casting/${id}`)
   actors.value = actorRes.data
-  console.log("actor : " , actors.value)
-  
+  console.log("actor : ", actors.value)
+
 })
+
+//리뷰 필터링
+const filteredReviews = computed(() => {
+  if (selectedRating.value === null) {
+    return reviews.value
+  }
+  return reviews.value.filter(
+    review => review.rate === selectedRating.value
+  )
+})
+
+function selectRating(rating) {
+  selectedRating.value = rating
+}
+
+function resetRating() {
+  selectedRating.value = null
+}
+
+
 
 // ----------------- theater 값이 생기면 카카오맵 실행
 watch(theater, (newTheater) => {
@@ -194,6 +248,8 @@ watch(theater, (newTheater) => {
 // 평점 계산
 import { computed } from 'vue'
 import router from '@/router';
+import HeartMusical from '@/components/common/icon/HeartMusical.vue';
+import BackBtn from '@/components/common/icon/BackBtn.vue';
 
 const avgRate = computed(() => {
   if (!reviews.value || reviews.value.length === 0) return 0
@@ -220,57 +276,60 @@ function toggleLike(review) {
 
 // 이동
 function goWriteReview() {
-  router.push(`/review/new`)
+  router.push(`/review/new/${id}`)
 }
 </script>
 
 <style scoped>
 .img-box {
-    width: 30%;
-    aspect-ratio: 3/4;
-    /*비율*/
-    margin-right: 30px;
+  width: 30%;
+  aspect-ratio: 3/4;
+  /*비율*/
+  margin-right: 30px;
 }
 
 img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .center {
-    gap: 10px;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
+  gap: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 
 .text {
-    white-space: pre-line;
+  white-space: pre-line;
 }
 
 .actor-list {
-    margin-top: 10px;
-    padding : 0;
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 5px;
-    align-items: center;
-    justify-content: start;
+  margin-top: 10px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 5px;
+  align-items: center;
+  justify-content: start;
 }
 
 .map-container {
   display: flex;
-  gap: 20px;              /* 설명-지도 사이 간격 */
+  gap: 20px;
+  /* 설명-지도 사이 간격 */
   align-items: stretch;
 }
 
 .map-info {
-  flex: 3;                /* 3할 */
+  flex: 3;
+  /* 3할 */
 }
 
 .map-wrapper {
-  flex: 7;                /* 7할 */
+  flex: 7;
+  /* 7할 */
 }
 
 #kakao-map {
@@ -283,7 +342,8 @@ img {
   padding: 8px 14px;
   margin-top: 8px;
   border-radius: 8px;
-  background-color: #fee500; /* 카카오 옐로우 */
+  background-color: #fee500;
+  /* 카카오 옐로우 */
   color: #000;
   font-weight: 600;
   text-decoration: none;
@@ -354,7 +414,7 @@ img {
   left: 8px;
   right: 8px;
   color: #fff;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 .musical-name {
@@ -466,7 +526,7 @@ img {
   padding: 40px;
   border-radius: 14px;
   text-align: center;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
 }
 
 /* rating */
@@ -499,12 +559,14 @@ img {
   background: linear-gradient(135deg, #fafafa, #f3f4f6);
   margin-bottom: 20px;
 }
+
 .review-summary .left {
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 20px;
 }
+
 .review-summary .left .sub-text {
   font-size: 18px;
   color: #777;
@@ -521,14 +583,16 @@ img {
   font-weight: 800;
   color: #111;
 }
+
 .review-content {
-  background: #f9fafb;   /* 기존보다 더 연하게 */
+  background: #f9fafb;
+  /* 기존보다 더 연하게 */
   border-left: 4px solid #e5e7eb;
 }
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 22px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.1);
 }
 
 .title-text {
@@ -539,11 +603,9 @@ img {
   display: inline-block;
   font-weight: 700;
 
-  background: linear-gradient(
-    to top,
-    #f692943b 40%,
-    transparent 40%
-  );
+  background: linear-gradient(to top,
+      #f692943b 40%,
+      transparent 40%);
 }
 
 
@@ -566,33 +628,35 @@ img {
 
 /* 강조용 (empty 상태) */
 .write-review-btn.primary {
-  margin-top: 14px;.write-review-btn {
-  margin-left: 12px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  border: 1px solid #ddd;
-  background: #fff;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.write-review-btn:hover {
-  background: #f3f4f6;
-}
-
-/* 강조용 (empty 상태) */
-.write-review-btn.primary {
   margin-top: 14px;
-  background: #4f46e5;
-  color: #fff;
-  border: none;
-}
 
-.write-review-btn.primary:hover {
-  background: #4338ca;
-}
+  .write-review-btn {
+    margin-left: 12px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid #ddd;
+    background: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .write-review-btn:hover {
+    background: #f3f4f6;
+  }
+
+  /* 강조용 (empty 상태) */
+  .write-review-btn.primary {
+    margin-top: 14px;
+    background: #4f46e5;
+    color: #fff;
+    border: none;
+  }
+
+  .write-review-btn.primary:hover {
+    background: #4338ca;
+  }
 
   background: #4f46e5;
   color: #fff;
@@ -610,14 +674,12 @@ img {
   padding: 32px;
   border-radius: 20px;
 
-  background: linear-gradient(
-    180deg,
-    #fafafa 0%,
-    #ffffff 100%
-  );
+  background: linear-gradient(180deg,
+      #fafafa 0%,
+      #ffffff 100%);
 
   box-shadow:
-    0 8px 24px rgba(0,0,0,0.12);
+    0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 /* 포스터 */
@@ -628,7 +690,7 @@ img {
   overflow: hidden;
   flex-shrink: 0;
 
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
 }
 
 .poster-box img {
@@ -671,6 +733,7 @@ img {
   font-size: 15px;
   color: #555;
 }
+
 .musical-title::after {
   content: '';
   display: block;
@@ -684,8 +747,12 @@ img {
 .poster-box img {
   transition: transform 0.3s ease;
 }
+
 .poster-box:hover img {
   transform: scale(1.05);
 }
 
+.rating-filter-wrapper {
+  margin : 20px 5px;
+}
 </style>

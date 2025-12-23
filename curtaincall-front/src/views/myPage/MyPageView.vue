@@ -1,12 +1,17 @@
 <template>
-  <div v-if="user">
-    <div class=" title-text">마이페이지</div>
+  <!-- 🔥 1. 로딩 중 -->
+  <div v-if="loading" class="loading-wrapper">
+    <div class="spinner"></div>
+    <p>마이페이지 불러오는 중...</p>
+  </div>
+
+  <!-- 🔥 2. 로딩 끝 + 데이터 있음 -->
+  <div v-else-if="user">
+    <BackButton label="뮤지컬 목록으로" />
+    <div class="title-text">마이페이지</div>
     <!-- 상단 프로필 영역 -->
     <div class="flex">
-      <div
-        class="container flex"
-        style="justify-content: space-around; width: 100%"
-      >
+      <div class="container flex" style="justify-content: space-around; width: 100%">
         <!-- 왼쪽 프로필 -->
         <div class="container profile">
           <div class="circle-img-wrapper">
@@ -21,16 +26,16 @@
           </div>
 
           <div class="info-row">
-            <div class="nickname-text">{{user.user.nickname}}</div>
+            <div class="nickname-text">{{ user.user.nickname }}</div>
           </div>
         </div>
         <!-- 오른쪽 내 정보 -->
         <div class="container my-info">
           <!--해시태그-->
           <div class="container">
-            <div class="basic-text">{{user.user.nickname}} 님은</div>
+            <div class="basic-text">{{ user.user.nickname }} 님은</div>
             <div class="title-text">{{ user.taste }}</div>
-            <HashtagForMypage :tags="user.tags"/>
+            <HashtagForMypage :tags="user.tags" />
             <hr />
           </div>
 
@@ -59,78 +64,91 @@
 
     <!--자주 만나는 작품, 자주 만나는 배우 -->
     <!-- 로그인 상태 -->
-  <div v-if="me" class="hero-user">
-    <!-- 개인화 콘텐츠 -->
-    <div class="hero-content">
+    <div v-if="me" class="hero-user">
+      <!-- 개인화 콘텐츠 -->
+      <div class="hero-content">
 
-      <!-- 최근 본 뮤지컬 -->
-      <div class="photo-wrapper">
-        <PhotoBoard
-          v-if="me.recentMusicals?.length"
-          :obj="{
+        <!-- 최근 본 뮤지컬 -->
+        <div class="photo-wrapper">
+          <PhotoBoard :obj="{
             title: '최근 본 뮤지컬',
             imgs: me.recentMusicals.map(m => ({
-              src: '/' + m.image,
-              musicalId : m.musicalId
+              id: m.musicalId,          // ✅ id 통일
+              src: '/' + m.image
             }))
-          }"
-        />
-      </div>
+          }" />
 
-      <!-- 자주 본 배우 -->
-      <div class="photo-wrapper">
-        <PhotoBoard
-          v-if="me.favoriteActors?.length"
-          :obj="{
+        </div>
+
+        <!-- 자주 본 배우 -->
+        <div class="photo-wrapper">
+          <PhotoBoard :obj="{
             title: '자주 본 배우',
             imgs: me.favoriteActors.map(a => ({
+              id: a.actorId,            // ✅ id 통일
               src: '/' + a.image
             }))
-          }"
-        />
+          }" />
+
+        </div>
       </div>
-    </div>
-    <div class="flex-center" style="margin-bottom :50px; gap:10px" v-if="false">
+      <div class="flex-center" style="margin-bottom :50px; gap:10px" v-if="false">
         <div class="shadow">
-            <PhotoBoard :obj="musical" />
+          <PhotoBoard :obj="musical" />
         </div>
         <div class="shadow">
-            <PhotoBoard :obj="actor" />
+          <PhotoBoard :obj="actor" />
         </div>
-    </div>
+      </div>
     </div>
 
     <!-- 평점 통계 -->
-    <div   @click="goMyReview">
+    <div @click="goMyReview">
       <!-- 제목 줄 -->
       <div class="rate-header">
         <div class="title-text">평점 통계</div>
 
         <!-- ⭐ 내 리뷰 보기 -->
-        <button class="my-review-btn" @click.stop="goMyReview" >
+        <button class="my-review-btn" @click.stop="goMyReview">
           내 리뷰 보기 →
         </button>
       </div>
       <div class="rate-wrapper">
-        <div class="rate-avg-wrapper">
-            <div class=" rate-box center" style="width: 30%">
-                <div class="title-text" style="font-size: 35px;">{{ rate }}</div> <!-- 받아와야 함-->
-                <Rate :rate="rate" />
-                <div class="basic-text" >내 리뷰 {{ user.counts.reviewCount }}개</div>
-            </div>
-            <!-- 평점 통계 연결해야함 -->
-            <div style="width: 70%;padding:10px 0">
-                <RateStats :stats="stats"/>
-            </div>
-        </div>
-        </div>
+  <!-- 블러 대상 -->
+  <div
+    class="rate-avg-wrapper"
+    :class="{ blurred: rate == 0 }"
+  >
+    <div class="rate-box center" style="width: 30%">
+      <div class="title-text" style="font-size: 35px;">
+        {{ rate }}
+      </div>
+      <Rate :rate="rate" />
+      <div class="basic-text">
+        내 리뷰 {{ user.counts.reviewCount }}개
+      </div>
     </div>
-    
+
+    <div style="width: 70%; padding:10px 0">
+      <RateStats :stats="stats" />
+    </div>
+  </div>
+
+  <!-- 오버레이 -->
+  <div v-if="rate === 0" class="rate-overlay" @click="overlayClicked">
+    <div class="overlay-text">
+      리뷰를 입력해보세요!
+    </div>
+  </div>
+</div>
+
+    </div>
+
     <!-- 캘린더 -->
-    <div class="container">
-      <div class="title-text">캘린더</div>
+    <div style="margin-top: 50px;">
+      <div class="title-text">나의 캘린더</div>
       <div class="calendar-wrapper">
-        <Calendar/>
+        <Calendar />
       </div>
     </div>
   </div>
@@ -147,6 +165,7 @@ import RateStats from "@/components/common/RateStats.vue";
 import Rate from "@/components/common/icon/Rate.vue";
 import { useAuthStore } from "@/stores/auth";
 import api from "@/api/axios";
+const loading = ref(true)
 
 // const monthNow = emit.month
 // const emit = defineEmits({
@@ -156,15 +175,39 @@ import api from "@/api/axios";
 const auth = useAuthStore()
 const user = ref(null)
 
+
 onMounted(async () => {
   try {
-    const res = await api.get('/api/user/me')
-    user.value = res.data
-    console.log("유저 : ", res.data)
+    loading.value = true
+
+    // 1️⃣ 유저 기본 정보
+    const userRes = await api.get('/api/user/me')
+    user.value = userRes.data
+
+    // 2️⃣ 평점 평균
+    const rateRes = await api.get('/api/reviews/rating/me')
+    console.log(rateRes.data)
+    rate.value = rateRes.data
+
+    // 3️⃣ 평점 통계
+    const statsRes = await api.get('/api/reviews/rating/stats/me')
+    stats.value = statsRes.data
+
+    // 4️⃣ 메인 마이페이지 데이터
+    const meRes = await api.get('/api/user/main', {
+      headers: {
+        Authorization: `Bearer ${auth.token}`
+      }
+    })
+    me.value = meRes.data
+
   } catch (e) {
-    console.error('유저 정보 조회 실패', e)
+    console.error('마이페이지 로딩 실패', e)
+  } finally {
+    loading.value = false   // 🔥 여기서 한 번만 끈다
   }
 })
+
 // const route = useRoute();
 // const id = route.params.id;
 // console.log("id : " + id);
@@ -173,29 +216,6 @@ onMounted(async () => {
 const rate = ref('');
 const stats = ref('');
 const me = ref([])
-onMounted(async () => {
-  try {
-    const rateRes = await api.get('/api/reviews/rating/me')
-    rate.value = rateRes.data
-    console.log("rate : ", rate.value)
-    const statsRes = await api.get('/api/reviews/rating/stats/me')
-    stats.value = statsRes.data
-    console.log("stats : ", stats.value)
-
-    // my 정보
-    const res = await api.get('/api/user/main', {
-      headers: {
-        Authorization: `Bearer ${auth.token}`
-      }
-    })
-    me.value = res.data
-    console.log('me:', me.value.recentMusicals[0])
-
-  } catch (e) {
-    console.error('리뷰 정보 조회 실패', e)
-  }
-})
-
 
 // // 페이지 이동하기 - 내 리뷰로
 const router = useRouter()
@@ -206,6 +226,30 @@ function goMyReview() {
 </script>
 
 <style scoped>
+.loading-wrapper {
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #eee;
+  border-top: 5px solid #800000;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+  margin-bottom: 14px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* 프로필 */
 .profile {
   display: flex;
@@ -214,11 +258,13 @@ function goMyReview() {
   justify-content: center;
   gap: 8px;
 }
+
 .circle-img-wrapper {
   position: relative;
   width: 300px;
   aspect-ratio: 1/1;
 }
+
 .circle-img {
   width: 100%;
   height: 100%;
@@ -255,6 +301,7 @@ function goMyReview() {
 .icon-box i {
   font-size: 20px;
 }
+
 .nickname-text {
   font-weight: bold;
   font-size: 25px;
@@ -329,15 +376,18 @@ function goMyReview() {
   display: flex;
 
 }
+
 .rate-wrapper {
-    border-radius: 15px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-radius: 15px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
+
 .rate-box {
-    border-radius: 15px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    margin : 20px;
+  border-radius: 15px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  margin: 20px;
 }
+
 /*
 .rate-wrapper canvas {
   width: 100% !important;
@@ -355,10 +405,11 @@ function goMyReview() {
     height: 500px;
 
 } */
- .title-text {
-    margin: 10px 0;
- }
- .rate-header {
+.title-text {
+  margin: 10px 0;
+}
+
+.rate-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -372,7 +423,7 @@ function goMyReview() {
   cursor: pointer;
   padding: 4px 6px;
   font-weight: 300;
-  color : gray
+  color: gray
 }
 
 .my-review-btn:hover {
@@ -391,7 +442,7 @@ function goMyReview() {
   );
   color: #f5f5f5;
 } */
- .hero-user {
+.hero-user {
   margin-bottom: 50px;
   padding: 32px;
   border-radius: 22px;
@@ -413,7 +464,8 @@ function goMyReview() {
 }
 
 .nickname {
-  color: #c9a24d; /* 골드 포인트 */
+  color: #c9a24d;
+  /* 골드 포인트 */
   font-weight: 700;
 }
 
@@ -463,4 +515,35 @@ function goMyReview() {
     flex-direction: column;
   }
 }
+
+.rate-wrapper {
+  position: relative;
+}
+
+/* 블러 처리 */
+.blurred {
+  filter: blur(4px);
+  opacity: 0.6;
+  pointer-events: none; /* 클릭 막기 */
+}
+
+/* 오버레이 */
+.rate-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.overlay-text {
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
 </style>

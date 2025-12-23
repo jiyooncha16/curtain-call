@@ -1,27 +1,43 @@
 <template>
-    <div>
-        <div class="carousel-wrapper">
-            <button ref="nextEl" class="nav prev" :class="{disabled : isBeginning}"><i class="bi bi-arrow-left"></i></button>
-            <button ref="prevEl" class="nav next" :class="{disabled : isEnd}" ><i class="bi bi-arrow-right"></i></button>
-            <Swiper
-                :modules="[Navigation]"
-                :navigation="{
-                    prevEl: '.prev',
-                    nextEl: '.next'
-                    }"
-                :slides-per-view="'auto'"
-                :space-between="16"
-                @swiper="onSwiper"
-                @slideChange="onSlideChange"
-            >
-            <!-- <SwiperSlide v-for="movie in movies" :key="movie.id">
-                <img :src="movie.poster" class="poster" /> -->
-            <SwiperSlide v-for="video in videoList" :key="video.channelId">
-                    <VideoCard :video="video"/>
-            </SwiperSlide>
-            </Swiper>
-        </div>
+  <div class="video-section">
+    <div class="carousel-wrapper">
+
+      <!-- 이전 / 다음 -->
+      <button
+        ref="prevEl"
+        class="nav prev"
+        :class="{ disabled: isBeginning }"
+      >
+        <i class="bi bi-chevron-left"></i>
+      </button>
+
+      <button
+        ref="nextEl"
+        class="nav next"
+        :class="{ disabled: isEnd }"
+      >
+        <i class="bi bi-chevron-right"></i>
+      </button>
+
+      <Swiper
+        :modules="[Navigation]"
+        :navigation="{ prevEl, nextEl }"
+        :slides-per-view="'auto'"
+        :space-between="20"
+        @swiper="onSwiper"
+        @slideChange="onSlideChange"
+      >
+        <SwiperSlide
+          v-for="video in videoList"
+          :key="video.id.videoId"
+          class="video-slide"
+        >
+          <VideoCard :video="video" />
+        </SwiperSlide>
+      </Swiper>
+
     </div>
+  </div>
 </template>
 
 <script setup>
@@ -77,51 +93,84 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* 슬라이드 크기 */
 .swiper-slide {
-  width:350px;
+  width: 320px;
 }
 
-/* 전체 래퍼 */
+/* 섹션 */
+.video-section {
+  margin-top: 20px;
+}
+
+/* 캐러셀 */
 .carousel-wrapper {
   position: relative;
+  padding: 20px 56px;
 }
 
-/* 버튼들 */
+/* ===== 네비 버튼 ===== */
 .nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   z-index: 10;
 
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   border: none;
 
-  background: rgba(0,0,0,0.7);
-  color: white;
-  font-size: 22px;
+  background: rgba(255,255,255,0.95);
+  color: #333;
+  font-size: 20px;
+
   cursor: pointer;
-  opacity: 0.4;
-  transition: opacity 0.2s ease;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transition: all 0.2s ease;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* 버튼 위치 */
-.nav.prev {
-  left: -50px;
+.nav {
+  opacity: 0.85;
 }
-
-.nav.next {
-  right: -50px;
-}
-
-.disabled {
-  opacity: 0;          /* 없어지기 */
-  pointer-events: none;  /* 클릭 차단 */
-  cursor: default;
-}
-
 .nav:not(.disabled):hover {
-  opacity: 0.8;
+  opacity: 1;
+}
+
+/* 위치 */
+.nav.prev {
+  left: 10px;
+}
+.nav.next {
+  right: 10px;
+}
+
+/* hover */
+.nav:not(.disabled):hover {
+  transform: translateY(-50%) scale(1.08);
+}
+
+/* 비활성 */
+.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* ===== VideoCard 공통 추천 ===== */
+:deep(.video-card) {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.1);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+}
+
+:deep(.video-card:hover) {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 36px rgba(0,0,0,0.14);
 }
 </style>

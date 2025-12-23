@@ -75,17 +75,17 @@
     </select>
     
     <!-- 좋아요 있는지 확인 -->
-    <select id="checkLike" resultType="int" parameterType="MusicalLikes">
+    <select id="existsLike" resultType="int">
     		SELECT count(*) FROM like_musical WHERE musical_id = #{musicalId} AND user_id = #{userId}
     </select>
     
     <!-- 좋아요 등록 -->
-    <insert id="insertLike" parameterType="MusicalLikes">
+    <insert id="insertLike">
     		INSERT INTO like_musical VALUES (#{userId}, #{musicalId})
     </insert>
     
     <!-- 좋아요 삭제 -->
-    <delete id="deleteLike" parameterType="com.ssafy.curtaincall.musical.dto.MusicalLikes">
+    <delete id="deleteLike">
     		DELETE FROM like_musical WHERE musical_id = #{musicalId} AND user_id = #{userId}
     </delete>
     

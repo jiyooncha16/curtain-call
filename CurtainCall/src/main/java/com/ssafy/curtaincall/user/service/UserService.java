@@ -20,6 +20,7 @@ public interface UserService {
 	MyPageResponseDto getMyPage(int userId);
 	UserMeResponse getMyInfo(int userId);
 
+
 	//회원 CUD
 	int signup(User user); // 회원등록 (가입)
 //	int modifyPassword(String password); // 비밀번호 변경 : 추후 암호화

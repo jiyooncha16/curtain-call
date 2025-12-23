@@ -62,7 +62,6 @@ const router = createRouter({
       name: 'boardDetail',
       component: BoardDetailView,
       props: true,
-      meta: { requiresAuth: true },
     },
     {
       path: '/community/:id/edit',
@@ -78,13 +77,13 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: '/review/new',
+      path: '/review/new/:id',
       name: 'reviewCreate',
       component: ReviewCreateView,
       meta: { requiresAuth: true },
     },
     {
-      path: '/review/edit',
+      path: '/review/edit/:id',
       name: 'reviewModify',
       component: ReviewModifyView,
       props: true,
@@ -109,6 +108,7 @@ const router = createRouter({
       name: 'myInfoModify',
       component: MyInfoModify,
       props: true,
+      meta: { requiresAuth: true },
     },
     {
       path: '/login',
@@ -136,6 +136,15 @@ const router = createRouter({
       component: SubView,
     },
   ],
+  
+  scrollBehavior(to, from, savedPosition) {
+    // 뒤로가기면 원래 위치
+    if (savedPosition) {
+      return savedPosition
+    }
+    // 그 외에는 항상 맨 위
+    return { top: 0 }
+  }
 })
 
 // requires Auth 인 페이지인데 로그인 안 되었다면 로그인 페이지로 이동

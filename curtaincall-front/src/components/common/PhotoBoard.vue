@@ -1,5 +1,5 @@
 <template>
-  <div class="photo-board" >
+  <div class="photo-board">
     <!-- 헤더 -->
     <div class="pb-header">
       <div class="pb-title">{{ obj.title }}</div>
@@ -8,42 +8,56 @@
       </div>
     </div>
 
-    <!-- 이미지 그리드 -->
+    <!-- 이미지 영역 -->
     <div class="pb-grid">
-      <div
-        class="pb-img-wrapper"
-        v-for="(item, idx) in obj.imgs"
-        :key="idx"
-        @click="detail(item.id, obj.title)"
-      >
-        <img :src="item.src" />
+      <!-- ✅ 이미지 있을 때 -->
+      <template v-if="obj.imgs && obj.imgs.length">
+        <div class="pb-img-wrapper" v-for="(item, idx) in obj.imgs" :key="idx" @click="detail(item.id, obj.title)">
+          <img :src="item.src" />
+        </div>
+      </template>
+
+      <!-- ✅ 이미지 없을 때 (틀 유지) -->
+      <div v-else class="pb-empty">
+        <i class="bi bi-image"></i>
+        <p>아직 표시할 항목이 없습니다.</p>
+        <p>리뷰를 작성해볼까요?</p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import router from '@/router';
+import router from '@/router'
 
 defineProps({
-  obj: Object
+  obj: {
+    type: Object,
+    required: true,
+  },
 })
 
-const clicked = function() {
-    router.push('/review/my')
+const clicked = () => {
+  // 필요하면 조건 분기 가능
+  router.push('/review/my')
 }
 
-const detail = function(id, title) {
-    if (title=='최근 본 뮤지컬') {
-        router.push(`/musical/${id}`)
-    } else {
-        router.push(`/actor/${id}`)
-    }
+const detail = (id, title) => {
+  if (title === '최근 본 뮤지컬') {
+    router.push(`/musical/${id}`)
+  } else {
+    router.push(`/actor/${id}`)
+  }
 }
 </script>
 
 <style scoped>
-    /* 전체 카드 */
+
+p {
+  margin: 0;
+  padding: 0;
+}
+/* 전체 카드 */
 .photo-board {
   width: 100%;
   max-width: 900px;
@@ -51,10 +65,9 @@ const detail = function(id, title) {
   border-radius: 18px;
   overflow: hidden;
   background: #3a3f52;
-box-shadow:
+  box-shadow:
     0 10px 10px rgba(0, 0, 0, 0.35),
     0 0 0 1px rgba(0, 0, 0, 0.25);
-
 }
 
 /* 헤더 */
@@ -65,7 +78,7 @@ box-shadow:
   padding: 12px 16px;
   box-shadow:
     0 20px 50px rgba(0, 0, 0, 0.55),
-    0 0 0 1px rgba(255, 255, 255, 0.06), /* ⭐ */
+    0 0 0 1px rgba(255, 255, 255, 0.06),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
@@ -76,9 +89,9 @@ box-shadow:
   color: #f5f5f5;
 }
 
-/* 더보기 아이콘 */
+/* 더보기 */
 .pb-more {
-  color: #c9a24d; /* 골드 */
+  color: #c9a24d;
   font-size: 18px;
   cursor: pointer;
   transition: transform 0.2s ease, opacity 0.2s ease;
@@ -93,14 +106,15 @@ box-shadow:
 .pb-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
+  gap: 10px;
   padding: 20px;
+  height: 220px;
 }
 
 /* 이미지 wrapper */
 .pb-img-wrapper {
   width: 100%;
-  aspect-ratio: 2 / 3;
+  /* aspect-ratio: 2 / 3; */
   overflow: hidden;
   border-radius: 12px;
   cursor: pointer;
@@ -116,12 +130,11 @@ box-shadow:
   transition: transform 0.35s ease;
 }
 
-/* hover 효과 */
 .pb-img-wrapper:hover img {
   transform: scale(1.08);
 }
 
-/* 이미지 위 살짝 어두운 오버레이 */
+/* hover overlay */
 .pb-img-wrapper::after {
   content: '';
   position: absolute;
@@ -135,11 +148,32 @@ box-shadow:
   opacity: 1;
 }
 
+/* ✅ 비어있을 때 */
+.pb-empty {
+  grid-column: 1 / -1;
+  height: 180px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  gap: 8px;
+}
+
+.pb-empty i {
+  font-size: 36px;
+  opacity: 0.7;
+}
+
 /* 반응형 */
 @media (max-width: 700px) {
   .pb-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
 </style>

@@ -1,7 +1,7 @@
 <template>
   <article class="card">
     <!-- 포스터 -->
-    <div class="poster-wrap">
+    <div class="poster-wrap" @click="posterClicked">
       <img
         class="poster"
         :src="`/${review.image}`"
@@ -41,12 +41,12 @@
 
         <button
           class="like-btn"
-          :class="{ active: review.liked }"
-          @click="$emit('toggle-like', review)"
+          :class="{ active: isLiked }"
+          @click="likeBtnClicked(review.reviewId)"
           type="button"
         >
-          <i :class="review.liked ? 'bi bi-heart-fill' : 'bi bi-heart'"></i>
-          <span>{{ review.likeCount }}</span>
+          <i :class="icon"></i>
+          <span>{{ likeCount }}</span>
         </button>
       </div>
 
@@ -67,20 +67,43 @@
           <span class="sep"> | </span>
           <b>{{ review.title }}</b>
         </div>
+
+        <!-- 수정 버튼 @click="$emit('edit', review)"-->
+        <button
+          v-if="isMine"
+          class="edit-btn"
+          @click="clicked(review.reviewId)"
+          type="button"
+          title="리뷰 수정"
+        >
+          <i class="bi bi-pencil-square"></i>
+        </button>
       </div>
     </div>
   </article>
 </template>
 
 <script setup>
-defineProps({
-  review: {
-    type: Object,
-  },
+import api from '@/api/axios'
+import router from '@/router'
+import { useAuthStore } from '@/stores/auth'
+import { computed, onMounted, ref } from 'vue'
+
+const props = defineProps({
+  review: Object,
 })
+const id = props.review.reviewId
 
-defineEmits(['toggle-like'])
+// 내 리뷰인지 확인하기
+const authStore = useAuthStore()
+const isMine = computed(() => {
+  return authStore.userId === props.review.userId
+})
+console.log('auth userId =', authStore.userId)
+console.log('review userId =', props.review.userId)
 
+
+// 날짜 포맷
 function formatDate(iso) {
   if (!iso) return ''
   const d = new Date(iso)
@@ -91,6 +114,39 @@ function formatDate(iso) {
 
 function initial(name) {
   return name?.charAt(0) ?? '?'
+}
+
+const clicked = function(id) {
+  router.push(`/review/edit/${id}`)
+}
+
+const posterClicked = function() {
+  router.push(`/musical/${props.review.musicalId}`)
+}
+
+const likeCount = ref('')
+const isLiked = ref(false)
+const icon = computed(() =>
+  isLiked.value ? 'bi bi-heart-fill' : 'bi bi-heart'
+)
+
+onMounted(async () => {
+  const resCnt = await api.get(`/api/reviews/like/${id}`) // 현재 개수
+  likeCount.value = resCnt.data
+
+  const res = await api.get(`/api/reviews/like/me/${id}`) // 내가 눌렀는지?
+  isLiked.value = res.data
+
+})
+
+const likeBtnClicked = async function(id) {
+
+  const res = await api.post(`/api/reviews/like/toggle/${id}`) // 토글하기
+  isLiked.value = res.data   // true / false
+
+  const cntRes = await api.get(`/api/reviews/like/${id}`) // 개수 받기
+  likeCount.value = cntRes.data
+
 }
 </script>
 <style scoped>
@@ -234,5 +290,57 @@ padding: 10px;
   color: #666;
   margin-left: 4px;
 }
+.edit-btn {
+  margin-left: auto; 
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  font-size: 15px;
+}
 
+.edit-btn:hover {
+  color: #800000;
+}
+
+/* =============================
+   하트
+============================= */
+button {
+  border: 1px solid #800000;
+  border-radius: 10px;
+
+  color: #800000;
+  background: transparent;
+
+  font-size: 16px;
+  font-weight: bold;
+  width: 60px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  transition: 
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+
+/* 눌렸을 때 */
+button.active {
+  background-color: #800000;
+  color: #ffffff;
+  border-color: #800000;
+}
+
+/* 살짝 눌리는 느낌 */
+button:active {
+  transform: scale(0.95);
+}
+button:hover {
+  background: rgba(128, 0, 0, 0.68);
+}
 </style>

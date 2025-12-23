@@ -6,7 +6,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.curtaincall.CustomUserDetails;
 import com.ssafy.curtaincall.musical.dto.Musical;
 import com.ssafy.curtaincall.musical.dto.MusicalLikes;
 import com.ssafy.curtaincall.musical.dto.SearchCondition;
@@ -124,39 +128,37 @@ public class MusicalController {
 	}
 	
 	// 2. 좋아요
-	/* 2-1. 좋아요 등록 - 테스트 완료
-	 * 
-	 *  메서드 : POST
-	 *  엔드포인트 : /musicals/like
-	 *  파라미터
-	 *   - pathVariable(url) : 없음
-	 *   - RequestBody(json) : ActorLikes(userId, actorId)
-	 *  리턴 : 없음
-	 */
-	@PostMapping("/like")
-	public void likeOn(@RequestBody MusicalLikes like) {
-		service.likeOn(like);
-	}
-	
-	/* 2-2. 좋아요 해제 - 테스트 완료
-	 * 
-	 *  메서드 : DELETE
-	 *  엔드포인트 : /musicals/like
-	 *  파라미터
-	 *   - pathVariable(url) : musicalId
-	 *   - RequestBody(json) : userId
-	 *  리턴 : 없음
-	 */
-	@DeleteMapping("/like/{musicalId}")
-	public void likeOff(@PathVariable int musicalId, @RequestParam int userId) {
-		//빨간줄 무시 : 지금 명시적으로 생성자가 없어서 생기는 이슈. 롬복에서 생성자 만들어주니 괜찮음
-		MusicalLikes like = new MusicalLikes(userId, musicalId);
-		service.likeOff(like);
+	@PostMapping("/like/toggle/{musicalId}")
+	public ResponseEntity<?> toggleLike(
+	        @PathVariable int musicalId,
+	        @AuthenticationPrincipal CustomUserDetails user) {
+		
+	    if (user == null) {
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+	    }
+
+	    int userId = user.getUserId();
+
+	    boolean liked = service.toggleLike(userId, musicalId);
+	    return ResponseEntity.ok(liked);
 	}
 
-	// 2-3. 좋아요 조회
+
+	// 2-1. 좋아요 개수 조회
 	@GetMapping("/like/{musicalId}")
 	public int getLike(@PathVariable int musicalId) {
 		return service.getLike(musicalId);
+	}
+	
+	// 2-2. 내가 좋아요 눌렀는지 조회
+	@GetMapping("/like/me/{musicalId}")
+	public ResponseEntity<?> detail(
+	        @PathVariable int musicalId,
+	        @AuthenticationPrincipal CustomUserDetails user) {
+		if (user == null) return ResponseEntity.ok(false); // 로그인 안 했으면 false 반환
+
+	    boolean liked = service.isLiked(user.getUserId(), musicalId);
+
+	    return ResponseEntity.ok(liked);
 	}
 }

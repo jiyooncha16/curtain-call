@@ -1,4 +1,3 @@
--- 201~300
 
 INSERT INTO actor
 (name, birth, agency, sns, image, work1, work2, work3, work4, work5)
@@ -57,13 +56,8 @@ VALUES
  '맘마미아! 2026.01.16~2026.01.18 대전 소피 역',
  '맘마미아! 2025.12.26~2025.12.28 안산 소피 역',
  '맘마미아! 2025.12.19~2025.12.21 고양 소피 역',
- '맘마미아! 2025.12.12~2025.12.14 부산 소피 역');
- 
- -- 210
- 
- INSERT INTO actor
-(name,birth,agency,sns,image,work1,work2,work3,work4,work5)
-VALUES
+ '맘마미아! 2025.12.12~2025.12.14 부산 소피 역'),
+
 ('송영미','1993.10.13',NULL,NULL,'actor_images/40909.gif',
  '아몬드 2025.11.15~2025.11.16 NOL 유니플렉스 도라 역',
  '앤 ANNE 10th Anniversary 2025.11.15~2026.02.15 앤1 역',
@@ -106,7 +100,7 @@ VALUES
  '베어 더 2022.06.22~2022.09.18 루카스 역',
  '베어 더 2020.05.29~2020.08.23 잭 역'),
 
-('임찬민',NULL,NULL,'http://www.instagram.com/charm__insta | http://www.youtube.com/c/luckywithcharm','actor_images/30495.gif',
+('임찬민',NULL,NULL,'http://www.instagram.com/charm__insta ','actor_images/30495.gif',
  '앤 ANNE 10th Anniversary 2025.11.15~2026.02.15 앤3 역',
  '보도지침 2025.07.05~2025.08.17',
  '관저의 100시간 2025.06.20~2025.06.29',
@@ -132,13 +126,8 @@ VALUES
  '앤 ANNE 10th Anniversary 2025.11.15~2026.02.15 앤1 역',
  '소년x소녀x백서 2025.10.16~2025.10.22',
  '보도지침 2025.07.05~2025.08.17',
- '흑백다방1991 2025.03.04~2025.03.30');
+ '흑백다방1991 2025.03.04~2025.03.30'),
 
--- 220
-
-INSERT INTO actor
-(name, birth, agency, sns, image, work1, work2, work3, work4, work5)
-VALUES
 ('신이나', NULL, NULL, NULL, 'actor_images/56383.gif',
  '〈앤ANNE〉 10th Anniversary 2025.11.15 ~ 2026.02.15 대학로 자유극장 마릴라 역',
  NULL, NULL, NULL, NULL),
@@ -151,7 +140,7 @@ VALUES
  '페스트 2022.05.17 ~ 2022.05.22 삼일로 창고극장 공무원 그랑 역'),
 
 ('김채윤', '2017.04.10', NULL,
- 'http://www.instagram.com/chaeninkle | https://youtube.com/@chaeninkle?si=G8M8Z_K4EyakBfUb',
+ 'http://www.instagram.com/chaeninkle',
  'actor_images/56275.gif',
  '〈미세스 다웃파이어〉 - 진주 2026.01.31 ~ 2026.02.01 경상남도문화예술회관 대공연장 나탈리 역',
  '〈미세스 다웃파이어〉 - 여수 2026.01.24 ~ 2026.01.25 GS칼텍스 예울마루 대극장 나탈리 역',
@@ -203,13 +192,8 @@ VALUES
 
 ('강동철', '1990.02.08', NULL, 'http://www.instagram.com/popera_dongchul', 'actor_images/56225.gif',
  '〈어서 오세요, 휴남동 서점입니다〉 - 서울 2025.04.01 ~ 2026.01.31 루미나아트홀 정서 역',
- NULL, NULL, NULL, NULL);
+ NULL, NULL, NULL, NULL),
 
--- 230
-
-INSERT INTO actor
-(name, birth, agency, sns, image, work1, work2, work3, work4, work5)
-VALUES
 ('공민규','1990.11.27',NULL,'http://www.instagram.com/ithingboy','actor_images/55344.gif',
  '〈어서 오세요, 휴남동 서점입니다〉 - 서울 2025.04.01 ~ 2026.01.31 루미나아트홀 정서 역',
  '어서 오세요, 휴남동 서점입니다 2025.03.01 ~ 2025.03.31 루미나아트홀 승우 역',
@@ -272,13 +256,8 @@ VALUES
 ('김도경','1988.04.04',NULL,'http://www.instagram.com/act_dk_88','actor_images/55234.gif',
  '〈어서 오세요, 휴남동 서점입니다〉 - 서울 2025.04.01 ~ 2026.01.31 루미나아트홀 승우 역',
  '어서 오세요, 휴남동 서점입니다 2025.03.01 ~ 2025.03.31 루미나아트홀 승우 역',
- NULL,NULL,NULL);
+ NULL,NULL,NULL);,
 
--- 240
-
-INSERT INTO actor
-(name, birth, agency, sns, image, work1, work2, work3, work4, work5)
-VALUES
 ('지강혁',NULL,NULL,NULL,'actor_images/51174.gif',
  '〈어서 오세요, 휴남동 서점입니다〉 - 서울 2025.04.01 ~ 2026.01.31 루미나아트홀 승우 역',
  '〈연남동 빙굴빙굴 빨래방〉 2024.06.01 ~ 오픈런 대학로 스타시티 후암씨어터 대주 역',
@@ -312,7 +291,7 @@ VALUES
  '6시 퇴근 2025.04.05 ~ 2025.06.29 링크아트센터드림 최다연 역',
  NULL,NULL),
 
-('이든','1980.05.09',NULL,'http://www.facebook.com/jongun.lee | http://twitter.com/mooindo10','actor_images/26114.gif',
+('이든','1980.05.09',NULL,'http://www.facebook.com/jongun.lee ','actor_images/26114.gif',
  '〈테이크 오프〉 2025.11.14 ~ 2026.02.01 대학로 스타시티 나지원 역',
  '6시 퇴근 2025.04.05 ~ 2025.06.29 링크아트센터드림 안성준 역',
  '6시 퇴근 2024.05.17 ~ 2024.08.11 대학로 SH 아트홀 안성준 역',
@@ -338,14 +317,8 @@ VALUES
  '〈테이크 오프〉 2025.11.14 ~ 2026.02.01 대학로 스타시티 나여라 역',
  '6시 퇴근 2025.04.05 ~ 2025.06.29 링크아트센터드림 최다연 역',
  '매직 어드벤처 2018.01.12 ~ 2018.02.18 소월아트홀 올리비아 역',
- NULL,NULL);
+ NULL,NULL),
 
-
--- 250
-
-INSERT INTO actor
-(name, birth, agency, sns, image, work1, work2, work3, work4, work5)
-VALUES
 ('김록현',NULL,NULL,NULL,'actor_images/42607.gif',
  '〈테이크 오프〉 2025.11.14 ~ 2026.02.01 대학로 스타시티 나지원 역',
  '어서 오세요, 휴남동 서점입니다 2025.03.01 ~ 2025.03.31 루미나아트홀 승우 역',
@@ -413,13 +386,8 @@ VALUES
  '정글북 2025.07.08 ~ 2025.08.24 올림픽공원 우리금융아트홀',
  '정글북 2024.07.16 ~ 2024.08.25 올림픽공원 우리금융아트홀 몽키몽 역',
  '이상한 과자가게 전천당 2023.01.19 ~ 2023.03.01 성균관대학교 새천년홀 재섭의사 역',
- '용의자 X의 헌신 2018.05.15 ~ 2018.08.12 예스24스테이지 1관 토가시/쿠도 역');
+ '용의자 X의 헌신 2018.05.15 ~ 2018.08.12 예스24스테이지 1관 토가시/쿠도 역'),
 
-
--- 260
-INSERT INTO actor
-(name, birth, agency, sns, image, work1, work2, work3, work4, work5)
-VALUES
 ('장경원','1981.06.28',NULL,NULL,'actor_images/27139.gif',
  '송승환의 가족 〈호두까기인형〉 2025.12.06 ~ 2026.01.25 올림픽공원 우리금융아트홀',
  '정글북 2025.07.08 ~ 2025.08.24 올림픽공원 우리금융아트홀',
@@ -480,13 +448,8 @@ VALUES
  '정글북 2024.07.16 ~ 2024.08.25 올림픽공원 우리금융아트홀 곰 발루 역',
  '템플 2023.12.15 ~ 2024.02.18 NOL 서경스퀘어 스콘 1관 의사 외 역',
  '1인용 식탁 2019.12.11 ~ 2019.12.22 대학로 드림시어터',
- NULL);
+ NULL),
 
--- 270
-
-INSERT INTO actor
-(name, birth, agency, sns, image, work1, work2, work3, work4, work5)
-VALUES
 ('최병수','1995.07.06',NULL,NULL,'actor_images/48170.gif',
  '송승환의 가족 〈호두까기인형〉 2025.12.06 ~ 2026.01.25 올림픽공원 우리금융아트홀',
  '정글북 2025.07.08 ~ 2025.08.24 올림픽공원 우리금융아트홀',
@@ -554,14 +517,8 @@ VALUES
  '〈스트라빈스키〉 2025.07.28 ~ 2025.10.12 대학로 TOM 슘 역',
  '〈등등곡〉 2025.06.24 ~ 2025.09.14 예스24스테이지 최윤 역',
  '모리스 2025.03.07 ~ 2025.05.25 NOL 서경스퀘어 모리스 역',
- '더 픽션 2024.12.14 ~ 2025.03.09 예스24스테이지 와이트 히스만 역');
+ '더 픽션 2024.12.14 ~ 2025.03.09 예스24스테이지 와이트 히스만 역'),
 
-
--- 280
-
-INSERT INTO actor
-(name, birth, agency, sns, image, work1, work2, work3, work4, work5)
-VALUES
 ('김하엘','2013.05.10',NULL,'http://www.instagram.com/hael0510','actor_images/56451.gif',
  '가족 〈산타와 빈양말〉 2025.11.22 ~ 2025.12.25 나루아트센터 샘 역',
  '빼밀리 - 서울(도봉) 2025.06.07 ~ 2025.06.08 도봉구민회관 현빈 역',
@@ -577,7 +534,7 @@ VALUES
  '브로드웨이 42번가 2022.11.05 ~ 2023.01.15 예술의전당 CJ토월극장 버트 베리 역'),
 
 ('정서우','1994.07.01',NULL,
- 'http://www.instagram.com/07pika_nos | http://www.youtube.com/@07pika_nos',
+ 'http://www.instagram.com/07pika_nos ',
  'actor_images/56473.gif',
  '가족 〈산타와 빈양말〉 2025.11.22 ~ 2025.12.25 나루아트센터 큐피드 역',
  '가방 들어주는 아이들 2025.07.19 ~ 2025.08.31 코바코홀 민준 역',
@@ -593,7 +550,7 @@ VALUES
  NULL),
 
 ('홍예지','2013.11.17',NULL,
- 'http://www.instagram.com/hong.yj1117 | https://www.youtube.com/@mimiya1117',
+ 'http://www.instagram.com/hong.yj1117 ',
  'actor_images/54973.gif',
  '가족 〈산타와 빈양말〉 2025.11.22 ~ 2025.12.25 나루아트센터 샘 역',
  '할머니의 여름휴가 2025.07.05 ~ 2025.08.31 국립중앙박물관 소라바다친구 역',
@@ -626,17 +583,11 @@ VALUES
  '오감도 2024.04.26 ~ 2024.05.06 아이들극장 아해 역'),
 
 ('권나예','2013.10.09',NULL,
- 'http://www.instagram.com/ming_cecilia8188 | http://www.youtube.com/@8025knight',
+ 'http://www.instagram.com/ming_cecilia8188 ',
  'actor_images/56448.gif',
  '가족 〈산타와 빈양말〉 2025.11.22 ~ 2025.12.25 나루아트센터 찰리 역',
- NULL,NULL,NULL,NULL);
+ NULL,NULL,NULL,NULL),
 
-
--- 290
-
-INSERT INTO actor
-(name, birth, agency, sns, image, work1, work2, work3, work4, work5)
-VALUES
 ('권민수',NULL,NULL,NULL,'actor_images/23662.gif',
  '〈푸른 사자 와니니〉 2026.01.03 ~ 2026.01.25 노원문화예술회관 아산테 역',
  '가족 〈산타와 빈양말〉 2025.11.22 ~ 2025.12.25 나루아트센터 산타 역',
@@ -708,18 +659,8 @@ VALUES
  '베어 더 (bare the musical) 2025.06.03 ~ 2025.09.14 두산아트센터 연강홀 맷 역',
  '〈뱀프 X 헌터〉 2024.04.12 ~ 오픈런 JS 아트홀 김준홍 역',
  NULL,
- NULL);
+ NULL),
  
- /* ------------------------------------------------------------------- */
- /* ------------------------------------------------------------------- */
- /* ------------------------------------------------------------------- */
- /* ----------------------------301~310------------------------------- */
- /* ------------------------------------------------------------------- */
- /* ------------------------------------------------------------------- */
- 
- INSERT INTO actor
-(name, birth, agency, sns, image, work1, work2, work3, work4, work5)
-VALUES
 ('조성태','1994.05.26',NULL,NULL,'actor_images/49337.gif',
  '〈집이 없어〉 2025.11.26 ~ 2025.12.28 서울숲 씨어터 2관 백은영 역',
  '〈이름 없는 약속들로부터〉 2025.10.10 ~ 2025.12.28 극장 온 이우현 역',
@@ -780,12 +721,8 @@ VALUES
 
 ('양채현','2002.04.08',NULL,'http://www.instagram.com/cogusdid','actor_images/55789.gif',
  '〈김종욱 찾기〉 2024.01.01 ~ 2026.01.31 브릭스씨어터 그 여자 역',
- NULL,NULL,NULL,NULL);
- 
- -- 311
- INSERT INTO actor
-(name, birth, agency, sns, image, work1, work2, work3, work4, work5)
-VALUES
+ NULL,NULL,NULL,NULL),
+
 ('박지연','1998.07.13',NULL,'http://www.instagram.com/park.___.jiyeon','actor_images/50194.gif',
  '〈김종욱 찾기〉 2024.01.01 ~ 2026.01.31 브릭스씨어터 그 여자 역',
  '로맨틱톡 2023.05.12 ~ 2023.07.16 씨어터 앤 펍 맥거핀 오연아 역',
@@ -844,12 +781,8 @@ VALUES
 ('이영현','1999.06.24',NULL,NULL,'actor_images/51075.gif',
  '장수탕 선녀님 - 서울숲 2025.03.15 ~ 2026.03.02 서울숲 씨어터 2관 앙상블2 역',
  '더 킹 2022.09.20 ~ 2022.12.30 대학로 스타시티 7층 후암씨어터 고해빈 역',
- NULL,NULL,NULL);
- 
- -- 321
- INSERT INTO actor
-(name, birth, agency, sns, image, work1, work2, work3, work4, work5)
-VALUES
+ NULL,NULL,NULL),
+
 ('박나연',NULL,NULL,NULL,'actor_images/34153.gif',
  '장수탕 선녀님 - 서울숲 2025.03.15 ~ 2026.03.02 서울숲 씨어터 2관 앙상블2 역',
  '어서 오세요, 휴남동 서점입니다 2025.03.01 ~ 2025.03.31 루미나아트홀 희주 역',
@@ -890,7 +823,7 @@ VALUES
  '〈맘마미아〉 - 고양 2025.12.19 ~ 2025.12.21 고양아람누리 아람극장 도나 역',
  '〈맘마미아!〉 - 부산 2025.12.12 ~ 2025.12.14 부산시민회관 대극장 도나 역'),
 
-('김정민','1970.08.23',NULL,'http://m.blog.naver.com/rumiko_life | http://twitter.com/jake82054','actor_images/13485.gif',
+('김정민','1970.08.23',NULL,'http://m.blog.naver.com/rumiko_life ','actor_images/13485.gif',
  '〈맘마미아!〉 - 용인 2026.01.23 ~ 2026.01.25 용인포은아트홀 샘 역',
  '〈맘마미아!〉 - 대전 2026.01.16 ~ 2026.01.18 대전예술의전당 아트홀 샘 역',
  '〈맘마미아!〉 - 안산 2025.12.26 ~ 2025.12.28 안산문화예술의전당 해돋이극장 샘 역',
@@ -909,13 +842,8 @@ VALUES
  '〈맘마미아!〉 - 대전 2026.01.16 ~ 2026.01.18 대전예술의전당 아트홀 해리 역',
  '〈맘마미아!〉 - 안산 2025.12.26 ~ 2025.12.28 안산문화예술의전당 해돋이극장 해리 역',
  '〈맘마미아〉 - 고양 2025.12.19 ~ 2025.12.21 고양아람누리 아람극장 해리 역',
- '〈맘마미아!〉 - 부산 2025.12.12 ~ 2025.12.14 부산시민회관 대극장 해리 역');
+ '〈맘마미아!〉 - 부산 2025.12.12 ~ 2025.12.14 부산시민회관 대극장 해리 역'),
 
-
- -- 331
- INSERT INTO actor
-(name, birth, agency, sns, image, work1, work2, work3, work4, work5)
-VALUES
 ('김진수',NULL,NULL,NULL,'actor_images/379.gif',
  '〈몽유도원〉 2026.01.27 ~ 2026.02.22 국립극장 해오름극장 해수 역',
  '〈맘마미아!〉 - 안산 2025.12.26 ~ 2025.12.28 안산문화예술의전당 해돋이극장 빌 역',
@@ -975,13 +903,8 @@ VALUES
 ('박주연','1998.08.01',NULL,'http://www.instagram.com/starring_fleur/','actor_images/55072.gif',
  '런던레코드 2024.08.15 ~ 2025.12.31 엠스테이지 스칼렛 역',
  '언제는 행복하지 않은 순간이 있었나요 2023.03.14 ~ 2024.06.29 M스테이지 두나 역',
- NULL,NULL,NULL);
+ NULL,NULL,NULL),
 
-
- -- 341
- INSERT INTO actor
-(name, birth, agency, sns, image, work1, work2, work3, work4, work5)
-VALUES
 ('이나영','2000.10.23',NULL,NULL,'actor_images/55197.gif',
  '드림스쿨 2025.12.18 ~ 2025.12.28 후암스테이지 1관 예린 역',
  '두여자 - 대구 2025.01.10 ~ 2025.12.31 대구 하모니아 아트홀 2관 주명희 역',
@@ -1031,12 +954,8 @@ VALUES
 
 ('김호수',NULL,NULL,'http://www.instagram.com/kim_lake_ | https://www.youtube.com/@lakekim','actor_images/56028.gif',
  '스크루테이프의 편지 2024.01.12 ~ 2026.01.31 북촌나래홀 웜우드 역',
- NULL,NULL,NULL,NULL);
+ NULL,NULL,NULL,NULL),
 
- -- 351
- INSERT INTO actor
-(name, birth, agency, sns, image, work1, work2, work3, work4, work5)
-VALUES
 ('봉경복',NULL,NULL,NULL,'actor_images/29159.gif',
  '헬로카봇 시즌9 2025.07.26 ~ 2025.08.24 백암아트홀 블랙위저드/차탄3 역',
  '함께 날 수 있기를 : 잇다 - 인천 2025.01.14 ~ 2025.01.15 인천 중구문화회관 물류팀장/전무 역',
@@ -1044,14 +963,14 @@ VALUES
  '탐정케이：수인마을 살인 사건 2024.11.09 ~ 2025.02.02 예그린씨어터 제이 역',
  '앤서니브라운의 고릴라 2024.03.01 ~ 2024.07.14 상상나라극장 아빠/고릴라 역'),
 
-('길하윤','1997.12.08',NULL,'http://www.instagram.com/tosiri_/ | https://youtu.be/Z3WCx8ikiNI?si=A7pmizAPqGEZneLi','actor_images/54645.gif',
+('길하윤','1997.12.08',NULL,'http://www.instagram.com/tosiri_/ =','actor_images/54645.gif',
  '어린이 〈피요피요〉 - 연천 2025.10.02 ~ 2025.10.02 연천수레울아트홀 대공연장 희수 역',
  '〈팬텀〉 10주년 기념 공연 2025.05.31 ~ 2025.08.11 세종문화회관 대극장 앙상블',
  '오페레타 판타지아3 오케스트라 챔피언십 2025.01.18 ~ 2025.02.23 국립중앙박물관 극장 용 크랄라 역',
  '오페레타 판타지아 시즌 1 산타마을을 구하라 2024.12.07 ~ 2025.01.12 국립중앙박물관 극장 용 크랄라 역',
  '마침내,독립 2024.08.13 ~ 2024.08.13 청라블루노바홀 신관빈 역'),
 
-('서하임','1995.03.19',NULL,'http://www.instagram.com/hiimhaim | http://m.cafe.naver.com/suhadaum.cafe?','actor_images/45079.gif',
+('서하임','1995.03.19',NULL,'http://www.instagram.com/hiimhaim ','actor_images/45079.gif',
  '나의 연애코치 2025.04.09 ~ 2025.06.29 명륜아트홀 문사랑 역',
  '스크루테이프의 편지 2024.01.12 ~ 2026.01.31 북촌나래홀 블랙엔젤 역',
  '더페인팅 2023.09.06 ~ 2023.09.17 대학로 SH 아트홀 영서 역',
@@ -1093,13 +1012,8 @@ VALUES
 ('권은서','1999.11.08',NULL,'http://www.instagram.com/rlowest99','actor_images/50570.gif',
  '인어의 손 2025.05.29 ~ 2025.06.08 대학로 소극장 혜화당 로빈 역',
  '댄싱피버 2022.04.25 ~ 오픈런 해당공연 공연장 안유연 역',
- NULL,NULL,NULL);
+ NULL,NULL,NULL),
 
-
- -- 361
- INSERT INTO actor
-(name, birth, agency, sns, image, work1, work2, work3, work4, work5)
-VALUES
 ('황지민','1996.05.31',NULL,'http://www.instagram.com/ziminic','actor_images/50564.gif',
  '댄싱피버 2022.04.25 ~ 오픈런 해당공연 공연장 추태양 역',
  NULL,NULL,NULL,NULL),
@@ -1156,13 +1070,8 @@ VALUES
 
 ('홍성욱','2001.11.20',NULL,'http://www.instagram.com/h_s___uk','actor_images/50576.gif',
  '댄싱피버 2022.04.25 ~ 오픈런 해당공연 공연장 럭키 역',
- NULL,NULL,NULL,NULL);
+ NULL,NULL,NULL,NULL),
 
- 
- -- 371
- INSERT INTO actor
-(name, birth, agency, sns, image, work1, work2, work3, work4, work5)
-VALUES
 ('황경석','1986.08.05',NULL,'http://www.instagram.com/kyeongseokh','actor_images/56060.gif',
  '천로역정 2023.12.09 ~ 2026.03.02 명륜아트홀 아볼루온 역',
  NULL,NULL,NULL,NULL),
@@ -1220,12 +1129,8 @@ VALUES
  '나인오브소드 2024.11.12 ~ 2024.11.17 달밤엔씨어터 승객3 역',
  '오렌지스카이 2023.12.21 ~ 2024.09.29 달밤엔씨어터 이건 역',
  '안녕 달아 2021.05.01 ~ 2021.08.15 달밤엔씨어터 달이 역',
- '언플러그드 2020.08.28 ~ 2023.08.31 달밤엔씨어터 이건 역');
+ '언플러그드 2020.08.28 ~ 2023.08.31 달밤엔씨어터 이건 역'),
 
- -- 381
- INSERT INTO actor
-(name, birth, agency, sns, image, work1, work2, work3, work4, work5)
-VALUES
 ('김나온','1987.03.01',NULL,NULL,'actor_images/45371.gif',
  '‘오렌지 스카이’ 2025.12.18 ~ 2026.01.04 달밤엔씨어터 구실장 외 역',
  '［서울 대학로］연극 라면 2024.02.01 ~ 2026.01.31 해피씨어터 이경필 역',

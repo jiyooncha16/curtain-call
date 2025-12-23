@@ -22,7 +22,8 @@ public interface ReviewService {
 	
 	//조회
 //	List<Review> getlist(); // 전체 뮤지컬 리스트 반환
-	double getReviewRate(int id); // 평점 평균 조회
+	Double getReviewRate(int id); // 평점 평균 조회
+	MyReviewDto getReview(int reviewId);
 	List<MyReviewDto> getReviewByCondition(ReviewSearchCondition condition); // 조건부 리스트 반환
 	List<ReviewRateDto> getReviewRateStats(int id); //평점 통계
 	List<MyReviewDto> getMyReview(int id); // 내 리뷰
@@ -34,8 +35,10 @@ public interface ReviewService {
     int deleteReview(int id);                  // 삭제
 	
 	//좋아요
-	void likeOn(ReviewLikes like); // 좋아요 등록
-	void likeOff(ReviewLikes like); // 좋아요 해제
+
+	boolean toggleLike(int userId, int reviewId); // 좋아요 등록
+	int getLike(int reviewId); // 좋아요 조회
+	boolean isLiked(int userId, int reviewId); // 내 좋아요 확인
 	
 
 }

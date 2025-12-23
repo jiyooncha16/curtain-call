@@ -31,6 +31,8 @@ import com.ssafy.curtaincall.review.dto.ReviewRateDto;
 import com.ssafy.curtaincall.review.dto.ReviewSearchCondition;
 import com.ssafy.curtaincall.review.service.ReviewService;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/reviews")
 @CrossOrigin("*")
@@ -102,11 +104,9 @@ public class ReviewController {
 	        @AuthenticationPrincipal CustomUserDetails userDetails
 	) {
 	    int userId = userDetails.getUserId();
-	    double rate = service.getReviewRate(userId);
-
-	    if (rate == 0.0) {
-	        return ResponseEntity.noContent().build();
-	    }
+	    Double rate = service.getReviewRate(userId);
+	    if (rate == null) rate = 0.0;
+	    System.out.println("!!!!!!!!!!!!!!!!!!rate : " + rate);
 	    return ResponseEntity.ok(rate);
 	}
 	
@@ -158,6 +158,13 @@ public class ReviewController {
 		return ResponseEntity.ok(list);
 	}
 	
+	// 1-6. 특정 리뷰 조회
+	@GetMapping("/review/{reviewId}")
+	public ResponseEntity<MyReviewDto> getReview(@PathVariable int reviewId) {
+		MyReviewDto review = service.getReview(reviewId);
+		if (review == null) return ResponseEntity.noContent().build();
+		return ResponseEntity.ok(review);
+	}
 	
 
 	// 2. CUD 
@@ -169,14 +176,17 @@ public class ReviewController {
 	 * 리턴 : 게시글 생성 결과 메시지(ResponseEntity)
 	 */
 	@PostMapping("/{musicalId}")
-	public ResponseEntity<?> createReview(@PathVariable int musicalId, @RequestBody Review review) {
+	public ResponseEntity<?> createReview(
+	    @PathVariable int musicalId,
+	    @RequestBody Review review,
+	    @AuthenticationPrincipal CustomUserDetails user
+	) {
 	    review.setMusicalId(musicalId);
-		int id = service.createReview(review);
-	    if (id != -1) {
-	        return ResponseEntity.ok(id);
-	    }
-	    return ResponseEntity.badRequest().body("리뷰 생성 실패 : 이미 해당 뮤지컬에 대한 리뷰를 작성하셨니다.");
+	    review.setUserId(user.getUserId());
+
+	    return ResponseEntity.ok(service.createReview(review));
 	}
+
 
 	
 
@@ -189,13 +199,34 @@ public class ReviewController {
 	 *   - RequestBody(json) : review (수정할 정보)
 	 * 리턴 : 수정 결과(ResponseEntity)
      */
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateReview(@PathVariable int id, @RequestBody Review review) {
-    	review.setReviewId(id);
-        int result = service.updateReview(review);
-        if (result == 1) return ResponseEntity.ok(id);
-        else return ResponseEntity.badRequest().body("리뷰 수정 실패 : 없는 리뷰입니다.");
-    }  
+	@PutMapping("/{id}")
+	public ResponseEntity<?> updateReview(
+	        @PathVariable int id,
+	        @RequestBody Review review,
+	        @AuthenticationPrincipal CustomUserDetails user
+	) {
+	    if (user == null) {
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+	                .body("로그인이 필요합니다.");
+	    }
+
+	    // 서버에서 신뢰할 값 세팅
+	    review.setReviewId(id);
+	    review.setUserId(user.getUserId());
+
+	    int result = service.updateReview(review);
+
+	    if (result == 1) {
+	        return ResponseEntity.ok(id);
+	    } else if (result == 0) {
+	        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+	                .body("본인의 리뷰만 수정할 수 있습니다.");
+	    } else {
+	        return ResponseEntity.badRequest()
+	                .body("리뷰 수정 실패 : 없는 리뷰입니다.");
+	    }
+	}
+
     /*
      * 2-3. 리뷰 삭제
      * 메서드 : DELETE
@@ -214,35 +245,40 @@ public class ReviewController {
     
     
     
-    
-	// 3. 좋아요
-	/* 3-1. 좋아요 등록
-	 * 
-	 *  메서드 : POST
-	 *  엔드포인트 : /reviews/like
-	 *  파라미터
-	 *   - pathVariable(url) : 없음
-	 *   - RequestBody(json) : ReviewLikes(userId, reviewId)
-	 *  리턴 : 없음
-	 */
-	@PostMapping("/like")
-	public void likeOn(@RequestBody ReviewLikes like) {
-		service.likeOn(like);
+
+	// 2. 좋아요
+	@PostMapping("/like/toggle/{reviewId}")
+	public ResponseEntity<?> toggleLike(
+	        @PathVariable int reviewId,
+	        @AuthenticationPrincipal CustomUserDetails user) {
+		
+	    if (user == null) {
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+	    }
+
+	    int userId = user.getUserId();
+
+	    boolean liked = service.toggleLike(userId, reviewId);
+	    return ResponseEntity.ok(liked);
+	}
+
+
+	// 2-1. 좋아요 개수 조회
+	@GetMapping("/like/{reviewId}")
+	public int getLike(@PathVariable int reviewId) {
+		return service.getLike(reviewId);
 	}
 	
-	/* 3-2. 좋아요 해제
-	 *
-	 * 메서드 : DELETE
-	 * 엔드포인트 : /reviews/like/{reviewId}
-	 * 파라미터
-	 *   - PathVariable(reviewId) : 좋아요 취소할 리뷰 번호
-	 *   - RequestParam(userId) : 취소 요청 사용자 번호
-	 * 리턴 : 없음
-	 */
-	@DeleteMapping("/like/{reviewId}")
-	public void likeOff(@PathVariable int reviewId, @RequestParam int userId) {
-		ReviewLikes like = new ReviewLikes(userId, reviewId);
-		service.likeOff(like);
+	// 2-2. 내가 좋아요 눌렀는지 조회
+	@GetMapping("/like/me/{reviewId}")
+	public ResponseEntity<?> detail(
+	        @PathVariable int reviewId,
+	        @AuthenticationPrincipal CustomUserDetails user) {
+		if (user == null) return ResponseEntity.ok(false); // 로그인 안 했으면 false 반환
+
+	    boolean liked = service.isLiked(user.getUserId(), reviewId);
+
+	    return ResponseEntity.ok(liked);
 	}
 
 }

@@ -27,7 +27,6 @@
       <!-- 최근 본 뮤지컬 -->
       <div class="photo-wrapper">
         <PhotoBoard
-          v-if="me.recentMusicals?.length"
           :obj="{
             title: '최근 본 뮤지컬',
             imgs: me.recentMusicals.map(m => ({
@@ -41,7 +40,6 @@
       <!-- 자주 본 배우 -->
       <div class="photo-wrapper">
         <PhotoBoard
-          v-if="me.favoriteActors?.length"
           :obj="{
             title: '자주 본 배우',
             imgs: me.favoriteActors.map(a => ({
@@ -130,7 +128,11 @@ const onStageMusical = ref([])
 const myMusical = ref([])
 const reviewList = ref([])
 const toggleLike = ref('')
-const me = ref([])
+const me = ref({
+  nickname: '',
+  recentMusicals: [],
+  favoriteActors: []
+})
 
 onMounted(async ()=> {
   try {
