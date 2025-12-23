@@ -1,7 +1,8 @@
 <template>
   <!-- 작품 정보 영역 -->
-  <BackBtn label="뮤지컬 목록으로" />
-
+  <button class="back-btn" @click="goBack">
+    <i class="bi bi-arrow-left">뮤지컬 목록</i>
+  </button>
   <div class="musical-hero">
     <!-- 포스터 -->
     <div class="poster-box">
@@ -61,76 +62,66 @@
   <!-- 리뷰 영역 -->
   <!-- 🔹 섹션 타이틀 (밖) -->
   <!-- 🔹 리뷰 섹션 타이틀 -->
-<div class="title-text review-title">리뷰</div>
+  <div class="title-text review-title">리뷰</div>
 
-<!-- 🔹 리뷰 카드 영역 -->
-<div class="container shadow">
+  <!-- 🔹 리뷰 카드 영역 -->
+  <div class="container shadow">
 
-  <!-- 상단 헤더 영역 -->
-  <div class="review-header">
-    <!-- 요약 -->
-    <div class="review-summary">
-      <div class="left">
-        <div class="sub-text">{{ reviews.length }}개의 관람 후기</div>
+    <!-- 상단 헤더 영역 -->
+    <div class="review-header">
+      <!-- 요약 -->
+      <div class="review-summary">
+        <div class="left">
+          <div class="sub-text">{{ reviews.length }}개의 관람 후기</div>
+        </div>
+
+        <div class="right">
+          <div class="avg-score">{{ avgRate }}</div>
+          <Rate :rate="avgRate" />
+          <button class="write-review-btn" @click="goWriteReview">
+            리뷰 작성
+          </button>
+        </div>
       </div>
 
-      <div class="right">
-        <div class="avg-score">{{ avgRate }}</div>
-        <Rate :rate="avgRate" />
-        <button class="write-review-btn" @click="goWriteReview">
-          리뷰 작성
-        </button>
+      <!-- ⭐ 평점 필터 -->
+      <div class="rating-filter-wrapper">
+        <div class="rating-filter">
+          <button class="rating-btn" :class="{ active: selectedRating === null }" @click="resetRating">
+            전체보기
+          </button>
+
+          <button v-for="n in 5" :key="n" class="rating-btn" :class="{ active: selectedRating === n }"
+            @click="selectRating(n)">
+            {{ n }}점
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 리뷰 리스트 -->
+    <section v-if="filteredReviews.length !== 0" class="grid">
+      <ReviewCard v-for="review in filteredReviews" :key="review.reviewId" :review="review" @toggle-like="toggleLike" />
+    </section>
+
+    <!-- empty -->
+    <div v-else class="empty">
+      <div class="empty-icon">🎭</div>
+      <div class="empty-title">
+        해당 평점의 리뷰가 없어요.
       </div>
     </div>
 
-    <!-- ⭐ 평점 필터 -->
-    <div class="rating-filter-wrapper">
-      <div class="rating-filter">
-        <button
-          class="rating-btn"
-          :class="{ active: selectedRating === null }"
-          @click="resetRating"
-        >
-          전체보기
-        </button>
-
-        <button
-          v-for="n in 5"
-          :key="n"
-          class="rating-btn"
-          :class="{ active: selectedRating === n }"
-          @click="selectRating(n)"
-        >
-          {{ n }}점
-        </button>
-      </div>
-    </div>
   </div>
-
-  <!-- 리뷰 리스트 -->
-  <section v-if="filteredReviews.length !== 0" class="grid">
-    <ReviewCard
-      v-for="review in filteredReviews"
-      :key="review.reviewId"
-      :review="review"
-      @toggle-like="toggleLike"
-    />
-  </section>
-
-  <!-- empty -->
-  <div v-else class="empty">
-    <div class="empty-icon">🎭</div>
-    <div class="empty-title">
-      해당 평점의 리뷰가 없어요.
-    </div>
-  </div>
-
-</div>
 
 </template>
 
 <script setup>
 import CardItemRadius from '@/components/common/CardItemRadius.vue';
+import { computed } from 'vue'
+import router from '@/router';
+import HeartMusical from '@/components/common/icon/HeartMusical.vue';
+import BackBtn from '@/components/common/icon/BackBtn.vue';
 import Hashtag from '@/components/common/icon/Hashtag.vue';
 // import Heart from '@/components/common/icon/Heart.vue';
 import Rate from '@/components/common/icon/Rate.vue';
@@ -144,6 +135,11 @@ import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
 
 const route = useRoute()
 const id = route.params.id
+
+const goBack = () => {
+  router.push('/musical')
+
+}
 
 const musical = ref({})
 const theater = ref('')
@@ -246,10 +242,6 @@ watch(theater, (newTheater) => {
 })
 
 // 평점 계산
-import { computed } from 'vue'
-import router from '@/router';
-import HeartMusical from '@/components/common/icon/HeartMusical.vue';
-import BackBtn from '@/components/common/icon/BackBtn.vue';
 
 const avgRate = computed(() => {
   if (!reviews.value || reviews.value.length === 0) return 0
@@ -281,6 +273,21 @@ function goWriteReview() {
 </script>
 
 <style scoped>
+.back-btn {
+    background: none;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    color: #666;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.back-btn:hover {
+    text-decoration: underline;
+}
+
 .img-box {
   width: 30%;
   aspect-ratio: 3/4;
@@ -753,6 +760,6 @@ img {
 }
 
 .rating-filter-wrapper {
-  margin : 20px 5px;
+  margin: 20px 5px;
 }
 </style>

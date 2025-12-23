@@ -1,6 +1,8 @@
 <template>
   <div v-if="actor">
-    <BackBtn label="배우 목록으로" />
+    <button class="back-btn" @click="goBack">
+      <i class="bi bi-arrow-left">베우 목록</i>
+    </button>
     <div class="actor-hero">
 
       <!-- 프로필 이미지 -->
@@ -54,16 +56,21 @@ import { useAuthStore } from '@/stores/auth';
 import { parseActorWorks } from '@/utils/workParser';
 import axios from 'axios';
 import { onMounted, ref, computed, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute()
 const id = computed(() => route.params.id)
+const router =useRouter()
+
 
 //배우 정보 받아오기
 const actor = ref(null)
 const name = ref('')
 const description = ref('')
 const relatedActors = ref([])
+const goBack = () => {
+  router.push('/actor')
+}
 
 const fetchActor = async () => {
   const { data } = await axios.get(`/api/actors/${id.value}`)
@@ -122,6 +129,21 @@ const works = computed(() => {
 </script>
 
 <style scoped>
+.back-btn {
+    background: none;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    color: #666;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.back-btn:hover {
+    text-decoration: underline;
+}
+
 .actor-detail {
   margin-top: 20px;
 }

@@ -154,9 +154,10 @@ function toggleLike(review) {
 }
 
 .rating-btn.active {
-  background: #4f46e5;
+  background: #ff5454;
+;
   color: #fff;
-  border-color: #4f46e5;
+  border-color: #ff5454;
 }
 
 /* =============================

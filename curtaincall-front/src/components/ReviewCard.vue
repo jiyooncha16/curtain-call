@@ -215,7 +215,7 @@ padding: 10px;
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #4f46e5;
+  background: #ff5454;
   color: #fff;
   display: flex;
   align-items: center;
