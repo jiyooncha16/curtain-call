@@ -1,209 +1,210 @@
 <template>
   <div class="search-wrapper">
-    <div class="search-row flex">
-      <div class="main-text title">검색</div>
 
-      <div class="search-bar">
-        <input v-model="keyword" @keyup.enter="onSearch" />
+    <!-- ===== 상단 검색바 ===== -->
+    <div class="search-row">
+      <div class="search-input">
+        <i class="bi bi-search"></i>
+        <input
+          v-model="keyword"
+          placeholder="배우명을 입력하세요."
+          @keyup.enter="onSearch"
+        />
       </div>
 
-      <div class="search-btn secondary" @click="toggleDetail">
-        상세 <i :class="isOpen ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
-      </div>
+      <button class="btn ghost" @click="toggleDetail">
+        상세
+        <i :class="isOpen ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
+      </button>
 
-      <div class="search-btn" @click="onSearch">검색</div>
+      <button class="btn primary" @click="onSearch">
+        검색
+      </button>
     </div>
-    <!--상세검색-->
-    <div v-if="isOpen" class="detail-panel" style="border:3px lightgray solid; padding: 10px;">
 
-      <div class="flex basic-text box">
-        <div class="title">정렬</div>
+    <!-- ===== 상세 필터 ===== -->
+    <transition name="slide">
+      <div v-if="isOpen" class="detail-panel">
 
-        <label class="radio">
-          <input type="radio" name="sort" value="likes" v-model="sortType" />
-          좋아요 순
-        </label>
+        <!-- 정렬 -->
+        <div class="filter-row">
+          <div class="label">정렬</div>
+          <label class="radio">
+            <input type="radio" value="latest" v-model="sortType" />
+            최신순
+          </label>
+          <label class="radio">
+            <input type="radio" value="likes" v-model="sortType" />
+            좋아요순
+          </label>
+          <label class="radio">
+            <input type="radio" value="name" v-model="sortType" />
+            가나다순
+          </label>
+        </div>
 
-        <label class="radio">
-          <input type="radio" name="sort" value="name" v-model="sortType" />
-          가나다 순
-        </label>
+        <!-- 순서 -->
+        <div class="filter-row">
+          <div class="label">순서</div>
+          <label class="radio">
+            <input type="radio" value="desc" v-model="orderType" />
+            기본
+          </label>
+          <label class="radio">
+            <input type="radio" value="asc" v-model="orderType" />
+            오름차순
+          </label>
+        </div>
 
-        <label class="radio">
-          <input type="radio" name="sort" value="latest" v-model="sortType" />
-          최신 순(기본)
-        </label>
       </div>
+    </transition>
 
-      <div class="flex basic-text box">
-        <div class="title">순서</div>
-        <label class="radio">
-          <input type="radio" name="order" value="asc" v-model="orderType" />
-          순서대로
-        </label>
-
-        <label class="radio">
-          <input type="radio" name="order" value="desc" v-model="orderType" />
-          반대로(기본)
-        </label>
-      </div>
-    </div>
   </div>
 </template>
 
-
 <script setup>
-import { ref, watch, nextTick } from 'vue'
-import flatpickr from 'flatpickr'
-import 'flatpickr/dist/flatpickr.css'
-import { Korean } from 'flatpickr/dist/l10n/ko'
+import { ref } from 'vue'
 import axios from 'axios'
 
+/* ===== 상태 ===== */
 const isOpen = ref(false)
-
-const startInput = ref(null)
-const endInput = ref(null)
 const keyword = ref('')
-
 const sortType = ref('latest')
 const orderType = ref('desc')
 
+/* ===== emit ===== */
+const emit = defineEmits(['search'])
+
+/* ===== 상세 토글 ===== */
 const toggleDetail = () => {
   isOpen.value = !isOpen.value
 }
 
-//결과 부모로 올려보내기
-const emit = defineEmits(['search'])
-
-//검색하기 버튼 눌렀을 때
-const searchResult = ref([])
+/* ===== 검색 ===== */
 const onSearch = async () => {
-  console.log("눌렀다")
-  console.log({
-    keyword: keyword.value,
-    orderBy: sortType.value,
-    order: orderType.value
-  })
-  axios.get('/api/actors/search', {
-        params: { 
-          keyword: keyword.value,
-          order: orderType.value,
-          orderBy: sortType.value,
-          page: 0, 
-          size: 10 }
+  try {
+    const res = await axios.get('/api/actors/search', {
+      params: {
+        keyword: keyword.value,
+        orderBy: sortType.value,
+        order: orderType.value,
+        page: 0,
+        size: 1000,
+      },
     })
-    .then((result)=> {
-      console.log('검색 결과', result.data)
-      emit('search', result.data)
-      searchResult.value = result.data
-    })
+
+    emit('search', res.data)
+  } catch (e) {
+    console.error('Actor search error', e)
+  }
 }
-
-// //결과 부모로 올려보내기
-// const emit = defineEmits(['search'])
-// emit('search', searchResult.value)
-
 </script>
 
-
 <style scoped>
-.search-bar {
+/* ===== Top Row ===== */
+.search-row {
   display: flex;
+  gap: 10px;
   align-items: center;
-  width: 70%;
-  height: 30px;
-  margin-left: 10px;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
 }
 
-.search-bar input {
+/* 검색 입력 */
+.search-input {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  height: 44px;
+  border-radius: 999px;
+  background: #f5f6f8;
+}
+
+.search-input i {
+  color: #888;
+  font-size: 16px;
+}
+
+.search-input input {
   flex: 1;
   border: none;
   outline: none;
+  background: transparent;
   font-size: 15px;
 }
 
-/* 공연/뮤지컬 느낌 */
-.search-bar {
-  font-family: "IBM Plex Sans KR", sans-serif;
-}
-
-.search-btn {
+/* 버튼 공통 */
+.btn {
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: auto;
-  height: 30px;
-  margin-left: 10px;
-  padding: 0 16px;
-  border-radius: 8px;
-  background-color: #800000;
-  color: white;
+  gap: 6px;
 }
 
-.search-btn:hover {
-  background-color: #800000a8;
+/* Primary */
+.btn.primary {
+  background: #7b0000;
+  color: #fff;
 }
 
-.search-btn.secondary {
-  background: #eee;
+.btn.primary:hover {
+  background: #7b0000cc;
+}
+
+/* Ghost */
+.btn.ghost {
+  background: #f0f1f3;
   color: #333;
 }
 
+/* ===== Detail Panel ===== */
 .detail-panel {
-  background: #fff;
-  border-radius: 12px;
-  border: none;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
 }
 
-.date {
-  width: 130px;
-  height: 32px;
-  padding: 0 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+/* 필터 행 */
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
 }
 
-.flatpickr-calendar {
-  z-index: 9999;
+.label {
+  width: 60px;
+  font-weight: 700;
+  color: #444;
 }
 
-
-.title {
-  font-weight: bold;
-  margin-right: 10px;
-}
+/* 라디오 */
 .radio {
   display: flex;
   align-items: center;
-  gap: 4px;
-  margin-right: 12px;
+  gap: 6px;
   cursor: pointer;
+  color: #333;
 }
 
 .radio input {
-  cursor: pointer;
+  accent-color: #7b0000;
 }
 
-.box {
-  margin: 10px;
-  display:flex;
-  align-items: center;
+/* ===== Transition ===== */
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.25s ease;
 }
 
-.search-wrapper {
-    border: 2px lightgray solid;
-    padding: 10px;
-    margin: 10px 0;
-    background: #fff;
-    border-radius: 12px;
-    padding: 24px;
-}
-.search-row {
-  align-items: center;
+.slide-enter-from,
+.slide-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
 }
 </style>

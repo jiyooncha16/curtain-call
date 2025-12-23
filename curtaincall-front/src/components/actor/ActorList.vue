@@ -1,22 +1,47 @@
 <template>
-    <div class="wrapper">
-        <CardItemActor v-for="actor in searchResult" :actor=actor :key="actor.actorId"/>
-    </div>
+  <div class="actor-grid">
+    <CardItemActor
+      v-for="actor in searchResult"
+      :key="actor.actorId"
+      :actor="actor"
+    />
+  </div>
 </template>
 
+
 <script setup>
-import CardItemActor from '../common/CardItemActor.vue';
+import CardItemActor from '../common/CardItemActor.vue'
 
-const props = defineProps ({
-    searchResult : Array
+defineProps({
+  searchResult: {
+    type: Array,
+    required: true
+  }
 })
-
 </script>
-
 <style scoped>
-.wrapper {
-    display:grid;
-    grid-template-columns: repeat(160px, 1fr);
-    gap: 10px;
+.actor-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 기본: 5개 */
+  gap: 24px;
+}
+
+/* ===== 반응형 ===== */
+@media (max-width: 1200px) {
+  .actor-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .actor-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .actor-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 </style>
