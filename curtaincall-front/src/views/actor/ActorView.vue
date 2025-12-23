@@ -13,7 +13,7 @@
 
           <div class="hero-stats">
             <div class="stat">
-              <span class="num">{{ totalCount }}</span>
+              <span class="num">{{ animatedTotal  }}</span>
               <span class="label">전체 배우</span>
             </div>
           </div>
@@ -178,6 +178,39 @@ watch(page, async () => {
   await nextTick()
   listTop.value?.scrollIntoView({ behavior: 'smooth' })
 })
+
+/* ====== 애니메이션 효과 줍시다 ===== */
+
+const animatedTotal = ref(0)
+
+/* ===== 카운트업 함수 ===== */
+const animateCount = (target) => {
+  animatedTotal.value = 0
+
+  const duration = 800            // 전체 애니메이션 시간(ms)
+  const frameRate = 60          // 약 60fps
+  const totalFrames = duration / frameRate
+  const increment = target / totalFrames
+
+  let current = 0
+
+  const timer = setInterval(() => {
+    current += increment
+
+    if (current >= target) {
+      animatedTotal.value = target
+      clearInterval(timer)
+    } else {
+      animatedTotal.value = Math.floor(current)
+    }
+  }, frameRate)
+}
+watch(totalCount, (newVal) => {
+  if (newVal > 0) {
+    animateCount(newVal)
+  }
+}, { immediate: true })
+
 </script>
 
 

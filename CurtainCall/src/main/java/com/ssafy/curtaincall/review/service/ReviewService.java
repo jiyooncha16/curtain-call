@@ -22,7 +22,7 @@ public interface ReviewService {
 	
 	//조회
 //	List<Review> getlist(); // 전체 뮤지컬 리스트 반환
-	double getReviewRate(int id); // 평점 평균 조회
+	Double getReviewRate(int id); // 평점 평균 조회
 	MyReviewDto getReview(int reviewId);
 	List<MyReviewDto> getReviewByCondition(ReviewSearchCondition condition); // 조건부 리스트 반환
 	List<ReviewRateDto> getReviewRateStats(int id); //평점 통계

@@ -27,7 +27,7 @@ public class ReviewServiceImpl implements ReviewService {
 	
 	// 평점 평균 조회
 	@Override
-	public double getReviewRate(int id) {
+	public Double getReviewRate(int id) {
 		return mapper.selectReviewRate(id);
 	}
 	

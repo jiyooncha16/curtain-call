@@ -17,7 +17,7 @@ public interface ReviewMapper {
 	//조회
 //	public List<Review> selectAllReview(); // 전체 목록
 	public List<MyReviewDto> selectReviewByCondition(ReviewSearchCondition condition); // 조건부 목록(검색)
-	public double selectReviewRate(int musicalId); // 평점 평균 조회
+	public Double selectReviewRate(int musicalId); // 평점 평균 조회
 	public MyReviewDto selectReview(int reviewId);
 	public MyReviewDto selectReviewById(int id);
 	public List<ReviewRateDto> selectReviewRateStats(int id);

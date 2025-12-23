@@ -45,11 +45,13 @@ public class AiServiceImpl implements AiService{
 		prompt.append("6. 높은 빈도의 태그 1~2개만 반영해.\n");
 		prompt.append("7. 욕설, 비하, 부정적인 표현은 사용하지 마.\n");
 		prompt.append("8. 15자 이내로만 출력해.\n");
+		prompt.append("9. 만약 태그 목록이 null이거나 tag 리스트에 정보가 없다면 다음의 문장을 출력해. '아직 취향을 찾는 중인 뮤덕' \n");
 		
 		prompt.append("예시:\n");
 		prompt.append("- 태그: 로맨스, 드라마 -> 감정선에 깊이 몰입하는 뮤덕\n");
 		prompt.append("- 태그: 판타지, 대서사 -> 서사에 빠져드는 상상력 풍부한 뮤덕\n");
 		prompt.append("- 태그: 코미디, 가족 -> 웃음과 온기를 즐기는 뮤덕\n");
+		prompt.append("- 태그 목록이 비어있음 -> 아직 취향을 찾는 중인 뮤덕\n");
 
 		prompt.append("아래는 유저가 관람한 뮤지컬의 태그 목록과 그 빈도수야.\n");
 		for (HashtagDTO tag : list) {

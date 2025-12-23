@@ -20,7 +20,8 @@
       <!-- ✅ 이미지 없을 때 (틀 유지) -->
       <div v-else class="pb-empty">
         <i class="bi bi-image"></i>
-        <p>아직 표시할 항목이 없습니다</p>
+        <p>아직 표시할 항목이 없습니다.</p>
+        <p>리뷰를 작성해볼까요?</p>
       </div>
     </div>
   </div>
@@ -51,6 +52,11 @@ const detail = (id, title) => {
 </script>
 
 <style scoped>
+
+p {
+  margin: 0;
+  padding: 0;
+}
 /* 전체 카드 */
 .photo-board {
   width: 100%;
@@ -100,7 +106,7 @@ const detail = (id, title) => {
 .pb-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
+  gap: 10px;
   padding: 20px;
   height: 220px;
 }
@@ -108,7 +114,7 @@ const detail = (id, title) => {
 /* 이미지 wrapper */
 .pb-img-wrapper {
   width: 100%;
-  aspect-ratio: 2 / 3;
+  /* aspect-ratio: 2 / 3; */
   overflow: hidden;
   border-radius: 12px;
   cursor: pointer;
@@ -145,7 +151,7 @@ const detail = (id, title) => {
 /* ✅ 비어있을 때 */
 .pb-empty {
   grid-column: 1 / -1;
-  height: 220px;
+  height: 180px;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.08);
 

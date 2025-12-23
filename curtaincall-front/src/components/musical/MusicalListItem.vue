@@ -1,5 +1,5 @@
 <template>
-  <article class="card">
+  <article class="card" @click="goDetail">
     <!-- 포스터 -->
     <div class="poster">
       <img :src="`/${musical.image}`" :alt="musical.title" />
@@ -17,9 +17,17 @@
 </template>
 
 <script setup>
-defineProps({
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
+const props = defineProps({
   musical: Object
 })
+
+const goDetail = function() {
+  console.log("클릭됨")
+  router.push(`/musical/${props.musical.musicalId}`)
+}
 </script>
 
 

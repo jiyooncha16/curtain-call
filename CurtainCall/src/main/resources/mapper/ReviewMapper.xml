@@ -80,9 +80,9 @@
     </select>
     
     <!-- 평점 조회 -->
-    <select id="selectReviewRate" parameterType="int" resultType="double">
+    <select id="selectReviewRate" parameterType="int" resultType="java.lang.Double">
 	    SELECT ROUND(AVG(rate), 1) FROM review
-		WHERE musical_id = #{musicalId};
+		WHERE user_id = #{userId};
 	</select>
 	
 	<!-- 평점 통계 -->

@@ -13,11 +13,11 @@
 
           <div class="hero-stats">
             <div class="stat">
-              <span class="num">{{ onStageMusical.length }}</span>
+              <span class="num">{{ animatedOnStage }}</span>
               <span class="label">공연 중</span>
             </div>
             <div class="stat">
-              <span class="num">{{ totalCount }}</span>
+              <span class="num">{{ animatedTotal }}</span>
               <span class="label">전체 작품</span>
             </div>
           </div>
@@ -161,6 +161,52 @@ watch(page, async () => { // 페이지 탑으로 이동
     block: 'start'
   })
 })
+
+/* ====== 카운트 업 애니메이션 효과 줍시다 ===== */
+
+
+const animatedTotal = ref(0)
+const animatedOnStage = ref(0)
+
+const animateCount = (target, animatedRef) => {
+  animatedRef.value = 0
+
+  const duration = 600
+  const frameRate = 60
+  const totalFrames = duration / frameRate
+  let frame = 0
+
+  const timer = setInterval(() => {
+    frame++
+
+    const progress = frame / totalFrames
+    const eased = target * (1 - Math.pow(1 - progress, 3))
+
+    if (progress >= 1) {
+      animatedRef.value = target
+      clearInterval(timer)
+    } else {
+      animatedRef.value = Math.floor(eased)
+    }
+  }, frameRate)
+}
+
+watch(totalCount, (newVal) => {
+  if (newVal > 0) {
+    animateCount(newVal, animatedTotal)
+  }
+}, { immediate: true })
+
+watch(
+  () => onStageMusical.value.length,
+  (newVal) => {
+    if (newVal > 0) {
+      animateCount(newVal, animatedOnStage)
+    }
+  },
+  { immediate: true }
+)
+
 </script>
 
 <style scoped>

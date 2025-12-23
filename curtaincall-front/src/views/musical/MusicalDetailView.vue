@@ -60,10 +60,15 @@
 
   <!-- 리뷰 영역 -->
   <!-- 🔹 섹션 타이틀 (밖) -->
-  <div class="title-text review-title">리뷰</div>
+  <!-- 🔹 리뷰 섹션 타이틀 -->
+<div class="title-text review-title">리뷰</div>
 
-  <!-- 🔹 리뷰 카드 영역 (안) -->
-  <div class="container shadow">
+<!-- 🔹 리뷰 카드 영역 -->
+<div class="container shadow">
+
+  <!-- 상단 헤더 영역 -->
+  <div class="review-header">
+    <!-- 요약 -->
     <div class="review-summary">
       <div class="left">
         <div class="sub-text">{{ reviews.length }}개의 관람 후기</div>
@@ -72,28 +77,56 @@
       <div class="right">
         <div class="avg-score">{{ avgRate }}</div>
         <Rate :rate="avgRate" />
-        <!-- ✍ 리뷰 작성 버튼 -->
         <button class="write-review-btn" @click="goWriteReview">
           리뷰 작성
         </button>
       </div>
     </div>
 
+    <!-- ⭐ 평점 필터 -->
+    <div class="rating-filter-wrapper">
+      <div class="rating-filter">
+        <button
+          class="rating-btn"
+          :class="{ active: selectedRating === null }"
+          @click="resetRating"
+        >
+          전체보기
+        </button>
 
-    <div>
-      <section v-if="reviews.length != 0" class="grid">
-        <ReviewCard v-for="review in reviews" :key="review.reviewId" :review="review" @toggle-like="toggleLike" />
-      </section>
-      <!-- empty -->
-      <div v-else class="empty">
-        <div class="empty-icon">🎭</div>
-        <div class="empty-title">
-          리뷰가 없어요. 작성해볼까요?
-        </div>
+        <button
+          v-for="n in 5"
+          :key="n"
+          class="rating-btn"
+          :class="{ active: selectedRating === n }"
+          @click="selectRating(n)"
+        >
+          {{ n }}점
+        </button>
       </div>
     </div>
-
   </div>
+
+  <!-- 리뷰 리스트 -->
+  <section v-if="filteredReviews.length !== 0" class="grid">
+    <ReviewCard
+      v-for="review in filteredReviews"
+      :key="review.reviewId"
+      :review="review"
+      @toggle-like="toggleLike"
+    />
+  </section>
+
+  <!-- empty -->
+  <div v-else class="empty">
+    <div class="empty-icon">🎭</div>
+    <div class="empty-title">
+      해당 평점의 리뷰가 없어요.
+    </div>
+  </div>
+
+</div>
+
 </template>
 
 <script setup>
@@ -119,6 +152,8 @@ const actors = ref([])
 const tags = ref([])
 const like = ref('')
 const isLoaded = ref(false)
+const selectedRating = ref(null) // null = 전체보기
+
 
 // 카카오맵
 const theaterAddress = ref('')
@@ -152,6 +187,26 @@ onMounted(async () => {
   console.log("actor : ", actors.value)
 
 })
+
+//리뷰 필터링
+const filteredReviews = computed(() => {
+  if (selectedRating.value === null) {
+    return reviews.value
+  }
+  return reviews.value.filter(
+    review => review.rate === selectedRating.value
+  )
+})
+
+function selectRating(rating) {
+  selectedRating.value = rating
+}
+
+function resetRating() {
+  selectedRating.value = null
+}
+
+
 
 // ----------------- theater 값이 생기면 카카오맵 실행
 watch(theater, (newTheater) => {
@@ -695,5 +750,9 @@ img {
 
 .poster-box:hover img {
   transform: scale(1.05);
+}
+
+.rating-filter-wrapper {
+  margin : 20px 5px;
 }
 </style>

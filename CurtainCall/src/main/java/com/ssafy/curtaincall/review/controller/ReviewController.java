@@ -104,11 +104,9 @@ public class ReviewController {
 	        @AuthenticationPrincipal CustomUserDetails userDetails
 	) {
 	    int userId = userDetails.getUserId();
-	    double rate = service.getReviewRate(userId);
-
-	    if (rate == 0.0) {
-	        return ResponseEntity.noContent().build();
-	    }
+	    Double rate = service.getReviewRate(userId);
+	    if (rate == null) rate = 0.0;
+	    System.out.println("!!!!!!!!!!!!!!!!!!rate : " + rate);
 	    return ResponseEntity.ok(rate);
 	}
 	

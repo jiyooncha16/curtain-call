@@ -70,7 +70,7 @@
 
         <!-- 최근 본 뮤지컬 -->
         <div class="photo-wrapper">
-          <PhotoBoard v-if="me.recentMusicals?.length" :obj="{
+          <PhotoBoard :obj="{
             title: '최근 본 뮤지컬',
             imgs: me.recentMusicals.map(m => ({
               id: m.musicalId,          // ✅ id 통일
@@ -114,23 +114,39 @@
         </button>
       </div>
       <div class="rate-wrapper">
-        <div class="rate-avg-wrapper">
-          <div class=" rate-box center" style="width: 30%">
-            <div class="title-text" style="font-size: 35px;">{{ rate }}</div> <!-- 받아와야 함-->
-            <Rate :rate="rate" />
-            <div class="basic-text">내 리뷰 {{ user.counts.reviewCount }}개</div>
-          </div>
-          <!-- 평점 통계 연결해야함 -->
-          <div style="width: 70%;padding:10px 0">
-            <RateStats :stats="stats" />
-          </div>
-        </div>
+  <!-- 블러 대상 -->
+  <div
+    class="rate-avg-wrapper"
+    :class="{ blurred: rate == 0 }"
+  >
+    <div class="rate-box center" style="width: 30%">
+      <div class="title-text" style="font-size: 35px;">
+        {{ rate }}
+      </div>
+      <Rate :rate="rate" />
+      <div class="basic-text">
+        내 리뷰 {{ user.counts.reviewCount }}개
       </div>
     </div>
 
+    <div style="width: 70%; padding:10px 0">
+      <RateStats :stats="stats" />
+    </div>
+  </div>
+
+  <!-- 오버레이 -->
+  <div v-if="rate === 0" class="rate-overlay" @click="overlayClicked">
+    <div class="overlay-text">
+      리뷰를 입력해보세요!
+    </div>
+  </div>
+</div>
+
+    </div>
+
     <!-- 캘린더 -->
-    <div class="container">
-      <div class="title-text">캘린더</div>
+    <div style="margin-top: 50px;">
+      <div class="title-text">나의 캘린더</div>
       <div class="calendar-wrapper">
         <Calendar />
       </div>
@@ -170,6 +186,7 @@ onMounted(async () => {
 
     // 2️⃣ 평점 평균
     const rateRes = await api.get('/api/reviews/rating/me')
+    console.log(rateRes.data)
     rate.value = rateRes.data
 
     // 3️⃣ 평점 통계
@@ -498,4 +515,35 @@ function goMyReview() {
     flex-direction: column;
   }
 }
+
+.rate-wrapper {
+  position: relative;
+}
+
+/* 블러 처리 */
+.blurred {
+  filter: blur(4px);
+  opacity: 0.6;
+  pointer-events: none; /* 클릭 막기 */
+}
+
+/* 오버레이 */
+.rate-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.overlay-text {
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
 </style>
