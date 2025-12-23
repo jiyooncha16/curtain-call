@@ -3,7 +3,7 @@
     <!-- 헤더 -->
     <div class="pb-header">
       <div class="pb-title">{{ obj.title }}</div>
-      <div class="pb-more" @click="clicked">
+      <div class="pb-more" @click="clicked(obj.title)">
         <i class="bi bi-arrow-right"></i>
       </div>
     </div>
@@ -37,11 +37,17 @@ defineProps({
   },
 })
 
-const clicked = () => {
-  // 필요하면 조건 분기 가능
-  router.push('/review/my')
+// 최근 본 뮤지컬, 자주 본 배우 클릭
+const clicked = (title) => {
+  console.log("클릭됨")
+  if (title === '최근 본 뮤지컬') {
+    router.push(`/review/my`)
+  } else {
+    router.push('/myPage/actors')
+  }
 }
 
+// 배우/뮤지컬 클릭
 const detail = (id, title) => {
   if (title === '최근 본 뮤지컬') {
     router.push(`/musical/${id}`)

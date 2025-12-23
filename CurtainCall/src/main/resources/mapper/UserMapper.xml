@@ -48,14 +48,15 @@
     </select>
 
     <!-- 자주 본 배우 -->
-    <select id="selectFavoriteActors" parameterType="int" resultType="Actor">
-        SELECT a.*
-	    FROM like_actor la
-	    JOIN actor a ON la.actor_id = a.actor_id
-	    WHERE la.user_id = #{userId}
-	    GROUP BY a.actor_id
-	    ORDER BY COUNT(*) DESC
-	    LIMIT 3
+    <select id="selectFavoriteActors" parameterType="int" resultType="ActorMeetDto">
+        SELECT a.*, count(*) as count FROM users as u
+		join review as r ON u.user_id = r.user_id
+		join musical as m on m.musical_id = r.musical_id
+		join cast as c on c.musical_id = m.musical_id
+		join actor as a on c.actor_id = a.actor_id
+		where u.user_id = #{userId}
+		group by a.actor_id
+		order by count(*) desc;
     </select>
 	
 	<!-- 이메일 조회

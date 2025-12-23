@@ -73,7 +73,7 @@
           <PhotoBoard :obj="{
             title: '최근 본 뮤지컬',
             imgs: me.recentMusicals.map(m => ({
-              id: m.musicalId,          // ✅ id 통일
+              id: m.musicalId,
               src: '/' + m.image
             }))
           }" />
@@ -84,10 +84,12 @@
         <div class="photo-wrapper">
           <PhotoBoard :obj="{
             title: '자주 본 배우',
-            imgs: me.favoriteActors.map(a => ({
-              id: a.actorId,            // ✅ id 통일
-              src: '/' + a.image
-            }))
+            imgs: me.favoriteActors
+              .slice(0, 3)
+              .map(a => ({
+                id: a.actorId,
+                src: '/' + a.image
+              }))
           }" />
 
         </div>

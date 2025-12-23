@@ -42,10 +42,12 @@
         <PhotoBoard
           :obj="{
             title: '자주 본 배우',
-            imgs: me.favoriteActors.map(a => ({
-              src: '/' + a.image,
-              id: a.actorId
-            }))
+            imgs: me.favoriteActors
+              .slice(0, 3)
+              .map(a => ({
+                src: '/' + a.image,
+                id: a.actorId
+              }))
           }"
         />
       </div>
