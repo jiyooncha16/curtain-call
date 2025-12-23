@@ -118,21 +118,24 @@ const onSearch = async () => {
     startDate: startDate.value,
     endDate: endDate.value,
   })
-  axios.get('/api/musicals/search', {
-        params: { 
-          keyword: keyword.value,
-          order: orderType.value,
-          orderBy: sortType.value,
-          startDate: startDate.value,
-          endDate: endDate.value,
-          page: 0, 
-          size: 10 }
-    })
-    .then((result)=> {
-      console.log('맞춤 작품', result.data)
-      emit('search', result.data)
-      // searchResult.value = result.data
-    })
+  if (keyword.value == null || keyword.value == '' || keyword.value == " ") {
+    const res = await axios.get('/api/musicals')
+    emit('search', res.data)
+  } else {
+    axios.get('/api/musicals/search', {
+          params: { 
+            keyword: keyword.value,
+            order: orderType.value,
+            orderBy: sortType.value,
+            startDate: startDate.value,
+            endDate: endDate.value }
+      })
+      .then((result)=> {
+        console.log('맞춤 작품', result.data)
+        emit('search', result.data)
+        // searchResult.value = result.data
+      })
+  }
 }
 
 //결과 부모로 올려보내기

@@ -58,19 +58,22 @@
         <MusicalList v-else :musicalList="displayList" />
 
         <!-- 페이지네이션 -->
+        <!-- ===== 페이지네이션 ===== -->
         <div class="pagination" v-if="totalPages > 1">
-          <button :disabled="page === 1" @click="prevPage">이전</button>
+          <button class="nav" :disabled="page === 1" @click="goFirst">««</button>
+          <button class="nav" :disabled="page === 1" @click="prevPage">«</button>
 
           <button
-            v-for="p in totalPages"
+            v-for="p in endPage - startPage + 1"
             :key="p"
-            :class="{ active: page === p }"
-            @click="page = p"
+            @click="goPage(startPage + p - 1)"
+            :class="{ active: page === startPage + p - 1 }"
           >
-            {{ p }}
+            {{ startPage + p - 1 }}
           </button>
 
-          <button :disabled="page === totalPages" @click="nextPage">다음</button>
+          <button class="nav" :disabled="page === totalPages" @click="nextPage">»</button>
+          <button class="nav" :disabled="page === totalPages" @click="goLast">»»</button>
         </div>
       </div>
     </section>
@@ -94,6 +97,7 @@ const searchResult = ref([])
 /* ===== 페이지네이션 ===== */
 const page = ref(1)
 const pageSize = 9
+const pageWindowSize = 5
 const listTop = ref(null) // 페이지 이동 후 이동할 리스트의 탑 위치
 
 /* ===== 검색 여부 ===== */
@@ -105,7 +109,7 @@ const searchCount = computed(() => searchResult.value.length)
 
 /* ===== 총 페이지 수 ===== */
 const totalPages = computed(() => {
-  if (!isSearchMode.value) return 1
+  if (!isSearchMode.value) return Math.ceil(totalCount.value / pageSize)
   return Math.ceil(searchCount.value / pageSize)
 })
 
@@ -113,7 +117,9 @@ const totalPages = computed(() => {
 const displayList = computed(() => {
   // 검색 안 했으면 전체 다
   if (!isSearchMode.value) {
-    return fullList.value
+    const start = (page.value - 1) * pageSize
+    const end = start + pageSize
+    return fullList.value.slice(start, end)
   }
 
   // 검색했을 때만 페이징
@@ -121,6 +127,8 @@ const displayList = computed(() => {
   const end = start + pageSize
   return searchResult.value.slice(start, end)
 })
+
+
 
 /* ===== API ===== */
 onMounted(async () => {
@@ -130,9 +138,7 @@ onMounted(async () => {
     })
     onStageMusical.value = onStageRes.data
 
-    const allRes = await axios.get('/api/musicals/search', {
-      params: { order: 'desc', page: 0, size: 1000 },
-    })
+    const allRes = await axios.get('/api/musicals')
     fullList.value = allRes.data
   } catch (e) {
     console.error('API 에러', e)
@@ -147,12 +153,12 @@ const onSearchResult = (result) => {
 }
 
 /* ===== 페이지 이동 ===== */
-const prevPage = () => {
-  if (page.value > 1) page.value--
-}
-const nextPage = () => {
-  if (page.value < totalPages.value) page.value++
-}
+const goPage = (p) => (page.value = p)
+const prevPage = () => page.value > 1 && page.value--
+const nextPage = () => page.value < totalPages.value && page.value++
+const goFirst = () => (page.value = 1)
+const goLast = () => (page.value = totalPages.value)
+
 watch(page, async () => { // 페이지 탑으로 이동
   await nextTick()
 
@@ -161,6 +167,29 @@ watch(page, async () => { // 페이지 탑으로 이동
     block: 'start'
   })
 })
+
+
+/* ===== 페이지 윈도우 ===== */
+const startPage = computed(() => {
+  const half = Math.floor(pageWindowSize / 2)
+  let start = page.value - half
+
+  if (start < 1) start = 1
+
+  const maxStart = totalPages.value - pageWindowSize + 1
+  if (start > maxStart) start = Math.max(1, maxStart)
+
+  return start
+})
+
+const endPage = computed(() => {
+  return Math.min(
+    startPage.value + pageWindowSize - 1,
+    totalPages.value
+  )
+})
+
+
 
 /* ====== 카운트 업 애니메이션 효과 줍시다 ===== */
 
@@ -357,5 +386,11 @@ watch(
 
 .pagination button:disabled {
   opacity: 0.4;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
