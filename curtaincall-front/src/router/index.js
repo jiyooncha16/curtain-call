@@ -136,6 +136,15 @@ const router = createRouter({
       component: SubView,
     },
   ],
+  
+  scrollBehavior(to, from, savedPosition) {
+    // 뒤로가기면 원래 위치
+    if (savedPosition) {
+      return savedPosition
+    }
+    // 그 외에는 항상 맨 위
+    return { top: 0 }
+  }
 })
 
 // requires Auth 인 페이지인데 로그인 안 되었다면 로그인 페이지로 이동
