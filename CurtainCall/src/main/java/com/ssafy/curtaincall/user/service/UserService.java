@@ -19,7 +19,6 @@ public interface UserService {
 	Optional<User> getUserById(int userId);
 	MyPageResponseDto getMyPage(int userId);
 	UserMeResponse getMyInfo(int userId);
-	int getUserIdByUsername(String username);
 
 
 	//회원 CUD
