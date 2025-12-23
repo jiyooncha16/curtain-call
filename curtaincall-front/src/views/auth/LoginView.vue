@@ -1,19 +1,19 @@
 <template>
   <div class="login-wrapper">
-    <div class="login-box">
+    <form class="login-box" @submit.prevent="login">
       <h2 class="title">로그인</h2>
 
       <div class="input-group">
         <label>아이디</label>
-        <input type="text" v-model="username" placeholder="아이디를 입력하세요"  />
+        <input type="text" v-model="username" placeholder="아이디를 입력하세요" />
       </div>
 
       <div class="input-group">
         <label>비밀번호</label>
-        <input type="password"  v-model="password" placeholder="비밀번호를 입력하세요"  />
+        <input type="password" v-model="password" placeholder="비밀번호를 입력하세요" />
       </div>
 
-      <button class="login-btn" @click="login">
+      <button class="login-btn" type="submit">
         로그인
       </button>
 
@@ -24,7 +24,7 @@
         <span class="divider">|</span>
         <span @click="goChangePassword">비밀번호 재설정</span>
       </div>
-    </div>
+    </form>
   </div>
 </template>
 
@@ -56,20 +56,20 @@ const login = () => {
     username: username.value,
     password: password.value
   })
-  .then((res) => {
-    console.log(res.data)
-    alert("로그인에 성공했습니다.")
-    const token = res.data.accessToken
-    auth.login(token)
-    router.push('/')
-  })
-  .catch((err)=> {
-    alert("아이디, 비밀번호가 잘못되었습니다.")
-  })
-  .finally(() => {
-    username.value = ''
-    password.value = ''
-  })
+    .then((res) => {
+      console.log(res.data)
+      alert("로그인에 성공했습니다.")
+      const token = res.data.accessToken
+      auth.login(token)
+      router.push('/')
+    })
+    .catch((err) => {
+      alert("아이디, 비밀번호가 잘못되었습니다.")
+    })
+    .finally(() => {
+      username.value = ''
+      password.value = ''
+    })
 }
 
 const goSignup = () => {
@@ -138,7 +138,7 @@ const goChangePassword = () => {
 }
 
 .login-btn:hover {
-  background-color: var( --bg-dark);
+  background-color: var(--bg-dark);
 }
 
 .extra {
@@ -155,6 +155,7 @@ const goChangePassword = () => {
 .divider {
   margin: 0 6px;
 }
+
 .input-group input {
   border: none;
   outline: none;
