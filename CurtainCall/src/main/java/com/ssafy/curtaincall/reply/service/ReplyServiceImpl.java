@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.curtaincall.reply.dto.Reply;
+import com.ssafy.curtaincall.reply.dto.ReplyResponse;
 import com.ssafy.curtaincall.reply.mapper.ReplyMapper;
 
 @Service
@@ -15,8 +16,8 @@ public class ReplyServiceImpl implements ReplyService {
     ReplyMapper mapper;
 	
 	@Override
-	public List<Reply> getlist(int boardId) {
-		return mapper.selectAllReply(boardId);
+	public List<ReplyResponse> getlist(int boardId) {
+	    return mapper.selectAllReply(boardId);
 	}
 
 	@Override

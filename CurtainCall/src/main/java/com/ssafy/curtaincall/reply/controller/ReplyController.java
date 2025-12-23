@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.curtaincall.reply.dto.Reply;
+import com.ssafy.curtaincall.reply.dto.ReplyResponse;
 import com.ssafy.curtaincall.reply.service.ReplyService;
 
 @RestController
@@ -60,13 +61,14 @@ public class ReplyController {
 	 * 리턴 : 해당 게시글의 댓글 목록
 	 */
 	@GetMapping("/board/{boardId}")
-	public ResponseEntity<List<Reply>> getlist(@PathVariable int boardId) {
-	    List<Reply> list = service.getlist(boardId);
+	public ResponseEntity<List<ReplyResponse>> getlist(@PathVariable int boardId) {
+	    List<ReplyResponse> list = service.getlist(boardId);
 	    if (list == null || list.isEmpty()) {
 	        return ResponseEntity.noContent().build();
 	    }
 	    return ResponseEntity.ok(list);
 	}
+
 
 	
 	/* 1-2. 게시글 등록 

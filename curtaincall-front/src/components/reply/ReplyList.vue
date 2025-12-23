@@ -30,8 +30,11 @@
 
 <script setup>
 import { ref, onMounted, watch } from 'vue'
-import axios from 'axios'
 import ReplyItem from '@/components/reply/ReplyItem.vue'
+import { useAuthStore } from '@/stores/auth'
+import api from '@/api/axios'     // 🔥 axios 통일
+
+const auth = useAuthStore()
 
 const props = defineProps({
   boardId: {
@@ -40,15 +43,17 @@ const props = defineProps({
   },
 })
 
+/* ===== 상태 ===== */
 const replies = ref([])
 const newContent = ref('')
 const loading = ref(false)
 
+/* ===== 댓글 조회 ===== */
 const fetchReplies = async () => {
   loading.value = true
   try {
-    const { data } = await axios.get(`/api/reply/board/${props.boardId}`)
-    replies.value = data
+    const { data } = await api.get(`/api/reply/board/${props.boardId}`)
+    replies.value = data || []
   } catch (e) {
     console.error('댓글 조회 실패', e)
   } finally {
@@ -56,7 +61,7 @@ const fetchReplies = async () => {
   }
 }
 
-const tempUserId =1 // 임시 아이디!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/* ===== 댓글 등록 ===== */
 const createReply = async () => {
   if (!newContent.value.trim()) {
     alert('댓글 내용을 입력하세요')
@@ -64,23 +69,24 @@ const createReply = async () => {
   }
 
   try {
-    await axios.post('/api/reply', {
+    await api.post('/api/reply', {
       boardId: props.boardId,
       content: newContent.value,
-      userId: tempUserId,
-    //   임시아이이디!!!!!!!!!!!!!!
+      userId: Number(auth.userId),
     })
+
     newContent.value = ''
     fetchReplies()
   } catch (e) {
+    console.error(e)
     alert('댓글 등록 실패')
   }
 }
 
-// 최초 진입
+/* ===== 라이프사이클 ===== */
 onMounted(fetchReplies)
 
-// 게시글 바뀔 때(라우트 이동) 댓글 다시 불러오기
+/* 게시글 변경 시 댓글 재조회 */
 watch(() => props.boardId, fetchReplies)
 </script>
 
