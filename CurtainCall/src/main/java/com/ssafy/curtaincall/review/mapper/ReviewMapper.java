@@ -3,6 +3,7 @@ package com.ssafy.curtaincall.review.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.ssafy.curtaincall.review.dto.MyReviewDto;
 import com.ssafy.curtaincall.review.dto.Review;
@@ -29,8 +30,9 @@ public interface ReviewMapper {
     int deleteReview(int reviewId);
 	
 	//좋아요
-	public int checkLike(ReviewLikes like); // 좋아요 찍혀있는지 확인 (개수 반환)
-	public void insertLike(ReviewLikes like); // 좋아요 등록
-	public void deleteLike(ReviewLikes like); // 좋아요 해제
-	
+    public int selectLike(int reviewId); // 이 뮤지컬의 좋아요 개수
+	public int existsLike(@Param("userId")int userId, @Param("reviewId")int reviewId); // 내 좋아요
+	public void deleteLike(@Param("userId")int userId, @Param("reviewId")int reviewId);
+	public void insertLike(@Param("userId")int userId, @Param("reviewId")int reviewId);
+
 }

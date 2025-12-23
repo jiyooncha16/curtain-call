@@ -5,12 +5,17 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import api from '@/api/axios';
+import axios from 'axios';
+// import axios from 'axios';
+import { computed, onMounted, ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
 const props = defineProps ({
     like : Number,
 })
 
-// const likeCnt = ref(like)
+const route = useRoute()
+const id = route.params.id
 
 // 좋아요 처리
 const isLiked = ref(false)
@@ -19,10 +24,22 @@ const icon = computed(() =>
 )
 
 // 좋아요 숫자
-const likeCnt = ref(props.like)
-const heartClicked = () => {
-  isLiked.value = !isLiked.value
-  likeCnt.value += isLiked.value ? 1 : -1
+const likeCnt = ref('')
+onMounted(async () => {
+  const resCnt = await api.get(`/api/actors/like/${id}`) // 현재 개수
+  likeCnt.value = resCnt.data
+
+  const res = await api.get(`/api/actors/like/me/${id}`) // 내가 눌렀는지?
+  isLiked.value = res.data
+
+})
+const heartClicked = async () => {
+  console.log("actorID", id)
+  const res = await api.post(`/api/actors/like/toggle/${id}`) // 토글하기
+  isLiked.value = res.data   // true / false
+
+  const cntRes = await api.get(`/api/actors/like/${id}`) // 개수 받기
+  likeCnt.value = cntRes.data
 }
 
 </script>

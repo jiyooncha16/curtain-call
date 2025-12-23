@@ -247,35 +247,40 @@ public class ReviewController {
     
     
     
-    
-	// 3. 좋아요
-	/* 3-1. 좋아요 등록
-	 * 
-	 *  메서드 : POST
-	 *  엔드포인트 : /reviews/like
-	 *  파라미터
-	 *   - pathVariable(url) : 없음
-	 *   - RequestBody(json) : ReviewLikes(userId, reviewId)
-	 *  리턴 : 없음
-	 */
-	@PostMapping("/like")
-	public void likeOn(@RequestBody ReviewLikes like) {
-		service.likeOn(like);
+
+	// 2. 좋아요
+	@PostMapping("/like/toggle/{reviewId}")
+	public ResponseEntity<?> toggleLike(
+	        @PathVariable int reviewId,
+	        @AuthenticationPrincipal CustomUserDetails user) {
+		
+	    if (user == null) {
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+	    }
+
+	    int userId = user.getUserId();
+
+	    boolean liked = service.toggleLike(userId, reviewId);
+	    return ResponseEntity.ok(liked);
+	}
+
+
+	// 2-1. 좋아요 개수 조회
+	@GetMapping("/like/{reviewId}")
+	public int getLike(@PathVariable int reviewId) {
+		return service.getLike(reviewId);
 	}
 	
-	/* 3-2. 좋아요 해제
-	 *
-	 * 메서드 : DELETE
-	 * 엔드포인트 : /reviews/like/{reviewId}
-	 * 파라미터
-	 *   - PathVariable(reviewId) : 좋아요 취소할 리뷰 번호
-	 *   - RequestParam(userId) : 취소 요청 사용자 번호
-	 * 리턴 : 없음
-	 */
-	@DeleteMapping("/like/{reviewId}")
-	public void likeOff(@PathVariable int reviewId, @RequestParam int userId) {
-		ReviewLikes like = new ReviewLikes(userId, reviewId);
-		service.likeOff(like);
+	// 2-2. 내가 좋아요 눌렀는지 조회
+	@GetMapping("/like/me/{reviewId}")
+	public ResponseEntity<?> detail(
+	        @PathVariable int reviewId,
+	        @AuthenticationPrincipal CustomUserDetails user) {
+		if (user == null) return ResponseEntity.ok(false); // 로그인 안 했으면 false 반환
+
+	    boolean liked = service.isLiked(user.getUserId(), reviewId);
+
+	    return ResponseEntity.ok(liked);
 	}
 
 }

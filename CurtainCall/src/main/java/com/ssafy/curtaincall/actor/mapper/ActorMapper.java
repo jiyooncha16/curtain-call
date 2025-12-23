@@ -26,8 +26,10 @@ public interface ActorMapper {
 		    );
 	
 	//좋아요
-	public int checkLike(ActorLikes like); // 좋아요 찍혀있는지 확인 (개수 반환)
-	public void insertLike(ActorLikes like); // 좋아요 등록
-	public void deleteLike(ActorLikes like); // 좋아요 해제
+
+		public int selectLike(int actorId); // 이 뮤지컬의 좋아요 개수
+		public int existsLike(@Param("userId")int userId, @Param("actorId")int actorId); // 내 좋아요
+		public void deleteLike(@Param("userId")int userId, @Param("actorId")int actorId);
+		public void insertLike(@Param("userId")int userId, @Param("actorId")int actorId);
 	
 }

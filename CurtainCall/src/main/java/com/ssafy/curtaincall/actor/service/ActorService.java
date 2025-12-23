@@ -20,8 +20,9 @@ public interface ActorService {
 	List<RelatedActorDto> getRelatedActors(int id);
 
 	//좋아요
-	void likeOn(ActorLikes like); // 좋아요 등록
-	void likeOff(ActorLikes like); // 좋아요 해제
+	boolean toggleLike(int userId, int actorId); // 좋아요 등록
+	int getLike(int actorId); // 좋아요 조회
+	boolean isLiked(int userId, int actorId); // 내 좋아요 확인
 	
 
 }

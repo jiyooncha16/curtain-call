@@ -35,8 +35,10 @@ public interface ReviewService {
     int deleteReview(int id);                  // 삭제
 	
 	//좋아요
-	void likeOn(ReviewLikes like); // 좋아요 등록
-	void likeOff(ReviewLikes like); // 좋아요 해제
+
+	boolean toggleLike(int userId, int reviewId); // 좋아요 등록
+	int getLike(int reviewId); // 좋아요 조회
+	boolean isLiked(int userId, int reviewId); // 내 좋아요 확인
 	
 
 }
