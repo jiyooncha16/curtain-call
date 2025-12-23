@@ -33,7 +33,8 @@
   <div class="title-text">출연 배우</div>
   <div class="shadow">
     <div v-if="actors" class="actor-list">
-      <CardItemRadius v-for="(actor, idx) in actors" :actor="actor" :key="idx" />
+      <CardItemRadius v-for="actor in actors" :key="actor.actorId" :actor="actor" />
+
     </div>
   </div>
   <!-- 카카오 맵 api -->
@@ -274,18 +275,18 @@ function goWriteReview() {
 
 <style scoped>
 .back-btn {
-    background: none;
-    border: none;
-    font-size: 14px;
-    cursor: pointer;
-    color: #666;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: #666;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .back-btn:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .img-box {
