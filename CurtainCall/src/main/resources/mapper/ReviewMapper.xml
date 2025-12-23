@@ -12,7 +12,7 @@
     
     <!-- 개별항목조회  -->
    	<select id="selectReview" parameterType="int" resultType="MyReviewDto">
-		SELECT r.review_id, r.content, r.rate, r.create_date,
+		SELECT r.review_id, r.content, r.rate, r.create_date, m.musical_id,
 	        m.title AS title, m.image AS image,
 			u.user_id, u.nickname AS nickname,
 			(
@@ -48,7 +48,7 @@
 	</select>
 	
 	<select id="selectTopReview" parameterType="int" resultType="MyReviewDto">
-		SELECT r.review_id, r.content, r.rate, r.create_date,
+		SELECT r.review_id, r.content, r.rate, r.create_date, m.musical_id,
 	        m.title AS title, m.image AS image,
 			u.user_id, u.nickname AS nickname,
 			(
@@ -65,7 +65,7 @@
 	
 	<!--조건부 게시글 조회 (검색, 카테고리, 페이징) -->
     <select id="selectReviewByCondition" parameterType="ReviewSearchCondition" resultType="MyReviewDto">
-        SELECT r.review_id, r.content, r.rate, r.create_date,
+        SELECT r.review_id, r.content, r.rate, r.create_date, m.musical_id,
 	        m.title AS title, m.image AS image,
 			u.user_id, u.nickname AS nickname,
 			(
