@@ -13,6 +13,18 @@
       <section class="card form-card">
         <form @submit.prevent="submit">
 
+          <!-- 프로필 이미지 선택 -->
+          <div class="form-group">
+            <label>프로필 이미지</label>
+
+            <div class="profile-select">
+              <img v-for="img in profileImages" :key="img" :src="`/profile/${img}`"
+                :class="{ selected: form.profileImage === `/profile/${img}` }"
+                @click="form.profileImage = `/profile/${img}`" />
+            </div>
+          </div>
+
+
           <!-- 아이디 -->
           <div class="form-group">
             <label>아이디</label>
@@ -40,21 +52,13 @@
           <!-- 비밀번호 -->
           <div class="form-group">
             <label>새 비밀번호</label>
-            <input
-              type="password"
-              v-model="form.password"
-              placeholder="변경 시에만 입력"
-            />
+            <input type="password" v-model="form.password" placeholder="변경 시에만 입력" />
           </div>
 
           <!-- 비밀번호 확인 -->
           <div class="form-group">
             <label>비밀번호 확인</label>
-            <input
-              type="password"
-              v-model="form.passwordConfirm"
-              placeholder="비밀번호 재입력"
-            />
+            <input type="password" v-model="form.passwordConfirm" placeholder="비밀번호 재입력" />
           </div>
 
           <!-- 버튼 -->
@@ -71,10 +75,12 @@
 
 <script setup>
 import api from '@/api/axios'
+import { useUserProfileStore } from '@/stores/userProfile'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+const userProfile = useUserProfileStore()
 
 const form = ref({
   username: '',
@@ -82,11 +88,20 @@ const form = ref({
   nickname: '',
   email: '',
   password: '',
-  passwordConfirm: ''
+  passwordConfirm: '',
+  profileImage: ''
 })
+const profileImages = [
+  'default.jpg',
+  'profile1.jpg',
+  'profile2.jpg',
+  'profile3.jpg',
+  'profile4.jpg'
+]
+
 
 onMounted(async () => {
-    console.log("실행됨")
+  console.log("실행됨")
   const res = await api.get('/api/user/me')
   const u = res.data.user
 
@@ -94,6 +109,8 @@ onMounted(async () => {
   form.value.name = u.name
   form.value.nickname = u.nickname
   form.value.email = u.email
+  form.value.profileImage = u.profileImage || '/profile/default.png'
+
 })
 
 async function submit() {
@@ -108,12 +125,19 @@ async function submit() {
     name: form.value.name,
     nickname: form.value.nickname,
     email: form.value.email,
+    profileImage: form.value.profileImage,
+
     ...(form.value.password && { password: form.value.password })
   }
 
   await api.put('/api/user/me', payload)
+
+  // 🔥 store 즉시 갱신
+  await userProfile.fetchMe()
+
   alert('회원 정보가 수정되었습니다.')
-  router.back()
+  router.push('/myPage')
+
 }
 
 function cancel() {
@@ -162,7 +186,7 @@ function cancel() {
 .card {
   background: #fff;
   border-radius: 18px;
-  box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
 }
 
 .form-group {
@@ -211,5 +235,27 @@ input:disabled {
 
 .btn.primary:hover {
   opacity: 0.9;
+}
+
+.profile-select {
+  display: flex;
+  gap: 12px;
+}
+
+.profile-select img {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.profile-select img:hover {
+  transform: scale(1.05);
+}
+
+.profile-select img.selected {
+  border-color: #800000;
 }
 </style>

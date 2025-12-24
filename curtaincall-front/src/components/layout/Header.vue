@@ -6,18 +6,12 @@
         <img src="../../assets/curtaincall.png" width="100px" />
       </router-link>
 
-      <router-link :to="{ name: 'musical' }" class="headerText">
-        뮤지컬
-      </router-link>
-      <router-link :to="{ name: 'actor' }" class="headerText">
-        배우
-      </router-link>
-      <router-link :to="{ name: 'community' }" class="headerText">
-        커뮤니티
-      </router-link>
+      <router-link :to="{ name: 'musical' }" class="headerText">뮤지컬</router-link>
+      <router-link :to="{ name: 'actor' }" class="headerText">배우</router-link>
+      <router-link :to="{ name: 'community' }" class="headerText">커뮤니티</router-link>
     </div>
 
-    <!-- 🔹 오른쪽: 인증 / 마이페이지 -->
+    <!-- 🔹 오른쪽 -->
     <div class="board-row right">
       <!-- ❌ 비로그인 -->
       <template v-if="!isLogin">
@@ -30,28 +24,21 @@
       </template>
 
       <!-- ✅ 로그인 -->
-
       <template v-else>
-        <!-- 로그아웃은 상단에 그대로 -->
         <button class="headerText auth-btn logout-btn" @click="logout">
           로그아웃
         </button>
 
-        <!-- 마이페이지 드롭다운 -->
+        <!-- 🔥 내 정보 드롭다운 -->
         <div class="dropdown hover-dropdown">
-          <button class="btn p-0 border-0" type="button">
+          <button class="btn p-0 border-0" type="button" @click="goMyPage">
             <i class="bi bi-person-fill"></i>
           </button>
 
-
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li>
-              <router-link class="dropdown-item" :to="{ name: 'myPage', params: { id: userId } }">
-                내 정보
-              </router-link>
-
-            </li>
-          </ul>
+          <div class="dropdown-menu dropdown-menu-end">
+            <UserSummaryPanel v-if="dropdownUser" :user="dropdownUser" :profileImg="userProfile.profileImage"
+              @goReview="goMyReview" />
+          </div>
         </div>
       </template>
     </div>
@@ -59,17 +46,57 @@
 </template>
 
 <script setup>
+import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { useUserProfileStore } from '@/stores/userProfile'
 import { storeToRefs } from 'pinia'
+import UserSummaryPanel from '../common/UserSummaryPanel.vue'
 
-const auth = useAuthStore()
+/* =====================
+   기본 세팅
+===================== */
 const router = useRouter()
+const auth = useAuthStore()
+const userProfile = useUserProfileStore()
+const { isLogin } = storeToRefs(auth)
 
-const { isLogin, userId } = storeToRefs(auth)
+/* =====================
+   로그인 시 유저 정보 로드
+===================== */
+onMounted(() => {
+  if (isLogin.value && !userProfile.rawUser) {
+    userProfile.fetchMe()
+  }
+})
+
+/* =====================
+   드롭다운용 최소 유저 정보
+===================== */
+const dropdownUser = computed(() => {
+  if (!userProfile.rawUser) return null
+
+  return {
+    nickname: userProfile.rawUser.user.nickname,
+    tags: userProfile.rawUser.tags,
+    counts: userProfile.rawUser.counts
+  }
+})
+
+/* =====================
+   액션
+===================== */
+const goMyPage = () => {
+  router.push('/myPage')
+}
+
+const goMyReview = () => {
+  router.push('/review/my')
+}
 
 const logout = () => {
   auth.logout()
+  userProfile.$reset()   // 🔥 로그아웃 시 유저 정보 초기화
   router.push({ name: 'login' })
 }
 </script>
@@ -137,9 +164,9 @@ header {
 
 :deep(.hover-dropdown .dropdown-menu) {
   right: 0;
-  min-width: 120px;
-  padding: 6px 0;
-  border-radius: 12px;
+  min-width: auto;
+  padding: 0;
+  border-radius: 14px;
   border: none;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
   opacity: 0;
@@ -153,15 +180,5 @@ header {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
-}
-
-:deep(.hover-dropdown .dropdown-item) {
-  font-size: 14px;
-  padding: 10px 16px;
-}
-
-:deep(.hover-dropdown .dropdown-item:hover) {
-  background-color: #c0c0c0;
-  color: white;
 }
 </style>
