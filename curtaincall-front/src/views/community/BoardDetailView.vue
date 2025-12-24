@@ -11,8 +11,11 @@
     <!-- 게시글 카드 -->
     <article class="card">
       <header class="post-header">
-        <div class="category-chip">{{ board.category }}</div>
-        <h1 class="title">{{ board.title }}</h1>
+        <div style="display: flex; gap:10px; align-items: center; text-align: center; margin-top:10px; margin-bottom:20px;">
+          <div class="category-chip">{{ board.category }}</div>
+          <h1 class="title">{{ board.title }}</h1>
+        </div>
+        <hr>
 
         <div class="meta-row">
           <div class="author">
@@ -281,7 +284,9 @@ const onDelete = async () => {
 .icon-btn:hover { background: #f3f5fa; }
 
 /* ===== post header ===== */
-.post-header { margin-bottom: 14px; }
+.post-header { 
+  margin-bottom: 14px;
+ }
 .category-chip {
   display: inline-flex;
   padding: 6px 10px;
@@ -290,10 +295,10 @@ const onDelete = async () => {
   color: #ff5454;
   font-weight: 700;
   font-size: 12px;
-  margin-bottom: 8px;
+  /* margin-bottom: 8px; */
 }
 .title {
-  margin: 0 0 12px;
+  margin: 0;
   font-size: 22px;
   line-height: 1.25;
   font-weight: 900;
@@ -462,7 +467,7 @@ const onDelete = async () => {
 .write-actions {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: end;
   margin-top: 8px;
 }
 .helper { font-size: 12px; color: #8a8f99; }

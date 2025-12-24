@@ -92,6 +92,12 @@ public class ActorServiceImpl implements ActorService {
 		return mapper.selectLike(actorId);
 	}
 
+	@Override
+	public List<Actor> getMyLikedActors(int userId) {
+		// TODO Auto-generated method stub
+		return mapper.selectLikedActor(userId);
+	}
+
 }
 
 

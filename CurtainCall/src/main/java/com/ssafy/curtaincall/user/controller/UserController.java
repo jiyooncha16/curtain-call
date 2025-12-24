@@ -202,6 +202,9 @@ public class UserController {
 	    @RequestBody User user,
 	    @AuthenticationPrincipal CustomUserDetails loginUser
 	) {
+		if (user == null) {
+	        return ResponseEntity.status(401).build();
+	    }
 		user.setUserId(loginUser.getUserId());
 	    service.modifyUser(user);
 	    return ResponseEntity.ok().build();

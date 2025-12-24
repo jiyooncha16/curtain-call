@@ -95,6 +95,11 @@ public class MusicalServiceImpl implements MusicalService {
 		return mapper.existsLike(userId, musicalId) > 0;
 	}
 
+	@Override
+	public List<Musical> getMyLikedMusicals(int userId) {
+		return mapper.selectLikedMusicals(userId);
+	}
+
 }
 
 

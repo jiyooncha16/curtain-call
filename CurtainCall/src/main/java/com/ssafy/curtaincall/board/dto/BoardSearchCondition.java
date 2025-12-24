@@ -45,7 +45,7 @@ public class BoardSearchCondition {
     
     //페이징
     private int page = 0; // 0페이지부터
-    private int size = 10; // 페이지 크기 (몇개)
+    private int size = 10000; // 페이지 크기 (몇개)
     private int offset; // mybatis에서 곱셉 지원이 안 돼서 ... 여기에서 결정
 
     // 롬복 인식 안 돼서 수기 게터세터

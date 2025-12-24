@@ -19,6 +19,7 @@ public interface MusicalService {
 	boolean toggleLike(int userId, int musicalId); // 좋아요 등록
 	int getLike(int musicalId); // 좋아요 조회
 	boolean isLiked(int userId, int musicalId); // 내 좋아요 확인
+	List<Musical> getMyLikedMusicals(int userId);
 	
 
 }

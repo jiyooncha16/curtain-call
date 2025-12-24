@@ -1,7 +1,7 @@
 <template>
-  <article class="card">
+  <article class="card" @click="posterClicked">
     <!-- 포스터 -->
-    <div class="poster-wrap" @click="posterClicked">
+    <div class="poster-wrap">
       <img
         class="poster"
         :src="`/${review.image}`"
@@ -42,7 +42,7 @@
         <button
           class="like-btn"
           :class="{ active: isLiked }"
-          @click="likeBtnClicked(review.reviewId)"
+          @click.stop="likeBtnClicked(review.reviewId)"
           type="button"
         >
           <i :class="icon"></i>
@@ -59,27 +59,28 @@
         <div class="pill">
           <i class="bi bi-person"></i>
           <span class="sep"> | </span>
-          <b>{{ review.nickname }}</b>
+          <b class="pill-text">{{ review.nickname }}</b>
         </div>
 
         <div class="pill">
           <i class="bi bi-film"></i>
           <span class="sep"> | </span>
-          <b>{{ review.title }}</b>
+          <b class="pill-text">{{ review.title }}</b>
         </div>
 
         <!-- 수정 버튼 @click="$emit('edit', review)"-->
         <button
           v-if="isMine"
           class="edit-btn"
-          @click="clicked(review.reviewId)"
+          @click.stop="clicked(review.reviewId)"
           type="button"
-          title="리뷰 수정"
         >
+
           <i class="bi bi-pencil-square"></i>
         </button>
       </div>
     </div>
+
   </article>
 </template>
 
@@ -148,6 +149,16 @@ const likeBtnClicked = async function(id) {
   likeCount.value = cntRes.data
 
 }
+
+const showModal = ref(false)
+
+const openModal = () => {
+  showModal.value = true
+}
+
+const closeModal = () => {
+  showModal.value = false
+}
 </script>
 <style scoped>
     .card {
@@ -159,6 +170,7 @@ const likeBtnClicked = async function(id) {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
   align-items: stretch;
+  /* height: 250px; */
 }
 
 .card:hover {
@@ -187,6 +199,7 @@ padding: 10px;
   text-shadow: 0 2px 8px rgba(0,0,0,0.6);
   text-align: center;
   padding-bottom: 10px;
+  width: 100%;
 }
 
 .musical-name {
@@ -198,6 +211,7 @@ padding: 10px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-width:0;
 }
 
 .top {
@@ -235,8 +249,8 @@ padding: 10px;
 .like-btn {
   border: none;
   background: #f1f1f5;
-  border-radius: 20px;
-  padding: 6px 12px;
+  border-radius: 10px;
+  padding: 0px 0px;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -249,27 +263,64 @@ padding: 10px;
   color: #e11d48;
 }
 .review-content {
+  height: 105px;
   font-size: 14px;
   line-height: 1.6;
   color: #333;
   background: #fafafa;
   padding: 12px;
   border-radius: 10px;
-  white-space: pre-wrap;
+  /* white-space: pre-wrap; */
+
+  
+  /* ⭐ 핵심 */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;   /* ← 보여줄 줄 수 (원하면 3, 5로 변경) */
+  overflow: hidden;
 }
+
 .bottom {
   display: flex;
   gap: 10px;
   margin-top: auto;
+  overflow: hidden;
+  width: 100%;          /* ⭐⭐⭐ 이 줄이 없으면 100% 실패 */
+  max-width: 100%;      /* ⭐ 안전장치 */
 }
 
 .pill {
+  display: flex;
   font-size: 12px;
   background: #f3f4f6;
   padding: 6px 10px;
   border-radius: 999px;
   color: #555;
+  max-width: 100%;       /* 핵심 */
+  min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis
 }
+.pill b {
+  display: block;       /* ⭐ inline → block */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.text-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.pill-text {
+  flex: 1;               /* ⭐ 줄어들 수 있음 */
+  min-width: 0;          /* ⭐⭐⭐ 이거 없으면 절대 안 됨 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* =============================
    별점
 ============================= */
@@ -308,14 +359,14 @@ padding: 10px;
 ============================= */
 button {
   border: 1px solid #800000;
-  border-radius: 10px;
+  border-radius: 5px;
 
   color: #800000;
   background: transparent;
 
   font-size: 16px;
   font-weight: bold;
-  width: 60px;
+  width: 50px;
   height: 36px;
 
   display: flex;
@@ -343,4 +394,5 @@ button:active {
 button:hover {
   background: rgba(128, 0, 0, 0.68);
 }
+
 </style>

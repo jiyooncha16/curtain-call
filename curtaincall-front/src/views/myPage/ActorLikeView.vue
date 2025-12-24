@@ -4,18 +4,14 @@
     <header class="page-header">
       <div>
         <p class="page-kicker">STATS</p>
-        <h1 class="page-title">자주 본 배우</h1>
-        <p class="page-sub">내가 공연에서 자주 만난 배우들은 누가 있을까요?</p>
+        <h1 class="page-title">좋아요 한 배우</h1>
+        <p class="page-sub">관심 있는 배우들을 한눈에 확인해요.</p>
       </div>
 
       <div class="summary">
         <div class="sum-card">
-          <div class="sum-label">총 배우 수</div>
+          <div class="sum-label">배우 수</div>
           <div class="sum-value">{{ actors.length }}</div>
-        </div>
-        <div class="sum-card">
-          <div class="sum-label">총 횟수</div>
-          <div class="sum-value">{{ totalCount }}</div>
         </div>
       </div>
     </header>
@@ -30,15 +26,14 @@
             <div class="line w60"></div>
             <div class="line w40"></div>
           </div>
-          <div class="pill"></div>
         </article>
       </section>
 
       <!-- 빈 상태 -->
       <section v-else-if="actors.length === 0" class="empty">
-        <div class="empty-icon"><i class="bi bi-emoji-frown"></i></div>
-        <div class="empty-title">표시할 배우가 없어요</div>
-        <div class="empty-sub">리뷰를 남기고 내가 만났던 배우를 확인해보세요!</div>
+        <div class="empty-icon">🎭</div>
+        <div class="empty-title">좋아요 한 배우가 없어요</div>
+        <div class="empty-sub">마음에 드는 배우에게 ❤️를 눌러보세요!</div>
       </section>
 
       <!-- 리스트 -->
@@ -60,17 +55,12 @@
               loading="lazy"
             />
             <div v-else class="avatar avatar-fallback">
-              {{ initial(a.name) }}
+              🎭
             </div>
           </div>
 
           <div class="meta">
             <div class="name">{{ a.name }}</div>
-          </div>
-
-          <div class="count">
-            <div class="count-num">{{ a.count }}</div>
-            <div class="count-label">회</div>
           </div>
         </article>
       </section>
@@ -80,25 +70,31 @@
 
 <script setup>
 import api from '@/api/axios'
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
 /**
- * 기대 데이터 형태 (예시)
+ * 기대 데이터 형태
  * [
- *   { actorId: 3, name: '홍길동', image: 'uploads/actor/3.jpg', count: 12, lastSeenDate: '2025-12-20T13:20:00' }
+ *  {
+ *    actorId: 1,
+ *    name: '조승우',
+ *    image: 'uploads/actor/1.jpg',
+ *    role: '지킬 앤 하이드',
+ *    likeCount: 1
+ *  }
  * ]
  */
+
 const actors = ref([])
 const loading = ref(true)
 
 onMounted(async () => {
   try {
-    const res = await api.get('/api/user/main')
-    console.log("결과 : ", res.data.favoriteActors)
-    actors.value = res.data.favoriteActors ?? []
+    const res = await api.get('/api/actors/like/myActor')
+    actors.value = res.data
   } catch (e) {
     console.error(e)
     actors.value = []
@@ -107,37 +103,15 @@ onMounted(async () => {
   }
 })
 
-const totalCount = computed(() =>
-  actors.value.reduce((sum, a) => sum + (a.count ?? 0), 0)
-)
-
 function imgSrc(path) {
-  // path가 이미 /로 시작하면 그대로, 아니면 앞에 / 붙이기
   return path.startsWith('/') ? path : '/' + path
 }
 
-function initial(name = '') {
-  return name?.trim()?.[0] ?? '?'
-}
-
-function formatDate(iso) {
-  try {
-    const d = new Date(iso)
-    const y = d.getFullYear()
-    const m = String(d.getMonth() + 1).padStart(2, '0')
-    const day = String(d.getDate()).padStart(2, '0')
-    return `${y}.${m}.${day}`
-  } catch {
-    return '-'
-  }
-}
-
-function goActor(actorId) {
-  if (!actorId) return
-  router.push(`/actor/${actorId}`)
+function goActor(id) {
+  if (!id) return
+  router.push(`/actor/${id}`)
 }
 </script>
-
 <style scoped>
 .page {
   padding: 18px 18px 60px;
@@ -147,14 +121,12 @@ function goActor(actorId) {
 .page-header {
   display: flex;
   justify-content: space-between;
-  font-family: 'IBM Plex Sans KR', sans-serif;
   gap: 16px;
   align-items: flex-end;
   margin-bottom: 18px;
 }
 
 .page-kicker {
-  font-family: 'IBM Plex Sans KR', sans-serif;
   letter-spacing: 0.18em;
   font-size: 12px;
   opacity: 0.7;
@@ -162,15 +134,12 @@ function goActor(actorId) {
 }
 
 .page-title {
-  
-  font-family: 'IBM Plex Sans KR', sans-serif;
   font-size: 28px;
-  font-weight: bold;
+  font-weight: 800;
   margin: 0;
 }
 
 .page-sub {
-  font-family: 'IBM Plex Sans KR', sans-serif;
   margin: 8px 0 0;
   opacity: 0.75;
   font-weight: 600;
@@ -190,62 +159,20 @@ function goActor(actorId) {
   min-width: 80px;
   text-align: center;
 }
+
 .sum-label {
   font-size: 13px;
   font-weight: 700;
   opacity: 0.7;
 }
+
 .sum-value {
   font-size: 20px;
   font-weight: 800;
   margin-top: 2px;
 }
 
-/* controls */
-.controls {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  margin: 10px 0 16px;
-  flex-wrap: wrap;
-}
-
-.search {
-  flex: 1;
-  min-width: 240px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border-radius: 999px;
-  padding: 10px 14px;
-  background: #fff;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.10);
-}
-.search input {
-  border: none;
-  outline: none;
-  width: 100%;
-  font-size: 14px;
-}
-.sort {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.sort-btn, .sort-toggle {
-  border: none;
-  cursor: pointer;
-  border-radius: 999px;
-  padding: 10px 12px;
-  background: #fff;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.10);
-  font-size: 13px;
-}
-.sort-btn.active {
-  font-weight: 800;
-}
-
-/* grid */
+/* ===== GRID ===== */
 .grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -253,9 +180,12 @@ function goActor(actorId) {
 }
 
 @media (min-width: 980px) {
-  .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
 }
 
+/* ===== CARD ===== */
 .card {
   position: relative;
   display: flex;
@@ -268,29 +198,31 @@ function goActor(actorId) {
   cursor: pointer;
   transition: transform .15s ease, box-shadow .15s ease;
 }
+
 .card:hover {
   transform: translateY(-2px);
   box-shadow: 0 14px 34px rgba(0,0,0,0.14);
 }
 
+/* ===== RANK ===== */
 .rank {
   position: absolute;
   top: 10px;
   left: 12px;
   font-size: 15px;
-  opacity: 0.7;
-  font-weight: 700;
-  border-radius: 50px;
-  background-color: black;
-  color : white;
-  width : 30px;
+  opacity: 0.85;
+  font-weight: 800;
+  border-radius: 50%;
+  background: #111;
+  color: white;
+  width: 30px;
   height: 30px;
   display: flex;
-  text-align: center;
   align-items: center;
   justify-content: center;
 }
 
+/* ===== AVATAR ===== */
 .avatar-wrap {
   width: 100px;
   height: 100px;
@@ -299,25 +231,29 @@ function goActor(actorId) {
   flex: 0 0 auto;
   box-shadow: 0 10px 22px rgba(0,0,0,0.12);
 }
+
 .avatar {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
+
 .avatar-fallback {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 20px;
   font-weight: 900;
-  font-size: 18px;
   background: #f2f3f6;
 }
 
+/* ===== META ===== */
 .meta {
   flex: 1;
   min-width: 0;
 }
+
 .name {
   font-size: 16px;
   font-weight: 900;
@@ -325,34 +261,14 @@ function goActor(actorId) {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .sub {
   margin-top: 4px;
   font-size: 12px;
   opacity: 0.7;
 }
 
-.count {
-  border-radius: 15px;
-  background-color: pink;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 60px;
-  min-height : 30px;
-  gap: 5px;
-}
-.count-num {
-  font-size: 20px;
-  font-weight: 900;
-  line-height: 1;
-}
-.count-label {
-  font-size: 12px;
-  opacity: 0.7;
-  margin-top: 2px;
-}
-
-/* empty */
+/* ===== EMPTY ===== */
 .empty {
   border-radius: 18px;
   padding: 40px 16px;
@@ -360,28 +276,63 @@ function goActor(actorId) {
   box-shadow: 0 10px 28px rgba(0,0,0,0.12);
   text-align: center;
 }
-.empty-icon { font-size: 34px; opacity: 0.6; }
-.empty-title { font-size: 18px; font-weight: 900; margin-top: 10px; }
-.empty-sub { opacity: 0.75; margin-top: 6px; }
 
-/* skeleton */
+.empty-icon {
+  font-size: 34px;
+  opacity: 0.6;
+}
+
+.empty-title {
+  font-size: 18px;
+  font-weight: 900;
+  margin-top: 10px;
+}
+
+.empty-sub {
+  opacity: 0.75;
+  margin-top: 6px;
+}
+
+/* ===== SKELETON ===== */
 .skeleton {
   cursor: default;
 }
+
 .skeleton .avatar,
-.skeleton .line,
-.skeleton .pill {
-  background: linear-gradient(90deg, #f2f3f6 25%, #e9ebf1 37%, #f2f3f6 63%);
+.skeleton .line {
+  background: linear-gradient(
+    90deg,
+    #f2f3f6 25%,
+    #e9ebf1 37%,
+    #f2f3f6 63%
+  );
   background-size: 400% 100%;
   animation: shimmer 1.2s ease infinite;
   border-radius: 12px;
 }
-.skeleton .avatar { width: 56px; height: 56px; border-radius: 16px; }
-.skeleton .meta { flex: 1; }
-.skeleton .line { height: 12px; margin: 8px 0; }
-.skeleton .w60 { width: 60%; }
-.skeleton .w40 { width: 40%; }
-.skeleton .pill { width: 56px; height: 22px; border-radius: 999px; }
+
+.skeleton .avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+}
+
+.skeleton .meta {
+  flex: 1;
+}
+
+.skeleton .line {
+  height: 12px;
+  margin: 8px 0;
+}
+
+.skeleton .w60 {
+  width: 60%;
+}
+
+.skeleton .w40 {
+  width: 40%;
+}
 
 @keyframes shimmer {
   0% { background-position: 100% 0; }

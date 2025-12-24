@@ -23,6 +23,7 @@ public interface ActorService {
 	boolean toggleLike(int userId, int actorId); // 좋아요 등록
 	int getLike(int actorId); // 좋아요 조회
 	boolean isLiked(int userId, int actorId); // 내 좋아요 확인
+	List<Actor> getMyLikedActors(int userId);
 	
 
 }

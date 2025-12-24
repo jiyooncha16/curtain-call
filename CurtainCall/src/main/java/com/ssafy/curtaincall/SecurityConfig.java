@@ -75,6 +75,10 @@ public class SecurityConfig {
             		.requestMatchers("/api/user/me/**").authenticated()
             		.requestMatchers("/api/user/tag/**").authenticated()
             		.requestMatchers("/api/user/taste/**").authenticated()
+            		.requestMatchers(
+            		        "/api/user/auth/login",
+            		        "/api/user/auth/signup"
+            		    ).permitAll()
             		
             		// 그 외 전부 허용
             		// 필요 시 컨트롤러 단에서 막음 : uri 정리가 안 되어있으므로

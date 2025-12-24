@@ -31,6 +31,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException, java.io.IOException {
+    	System.out.println("🔥 JWT FILTER ENTERED 🔥");
+
 
         String header = request.getHeader("Authorization");
 
@@ -60,6 +62,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 // 5️. SecurityContext 저장
                 SecurityContextHolder.getContext()
                     .setAuthentication(authentication);
+                
+                System.out.println("auth = " + authentication);
             }
         }
 

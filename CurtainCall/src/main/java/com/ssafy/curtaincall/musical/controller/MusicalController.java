@@ -127,6 +127,17 @@ public class MusicalController {
 		else return ResponseEntity.ok(list);
 	}
 	
+	// 내가 좋아요 한 뮤지컬
+	@GetMapping("/like/myMusical")
+    public ResponseEntity<?> myLikedMusicals(
+            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        if (user == null) return ResponseEntity.status(401).build();
+
+        int userId = user.getUserId(); // 네 CustomUserDetails에 맞게
+        return ResponseEntity.ok(service.getMyLikedMusicals(userId));
+    }
+	
 	// 2. 좋아요
 	@PostMapping("/like/toggle/{musicalId}")
 	public ResponseEntity<?> toggleLike(

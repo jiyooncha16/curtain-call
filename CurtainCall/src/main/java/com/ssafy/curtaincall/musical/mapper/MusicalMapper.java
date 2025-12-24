@@ -26,5 +26,6 @@ public interface MusicalMapper {
 	public int existsLike(@Param("userId")int userId, @Param("musicalId")int musicalId); // 내 좋아요
 	public void deleteLike(@Param("userId")int userId, @Param("musicalId")int musicalId);
 	public void insertLike(@Param("userId")int userId, @Param("musicalId")int musicalId);
+	public List<Musical> selectLikedMusicals(int userId);
 	
 }
