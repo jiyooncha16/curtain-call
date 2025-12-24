@@ -186,8 +186,8 @@ const goBack = () => router.back()
 
 .btn.primary {
   border-color: transparent;
-  background: #ffd6d6;
-  color: #ff5454;
+  background: #fae6b9;
+  color: #ff8a1d;
 }
 
 .btn.primary:hover {

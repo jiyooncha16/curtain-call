@@ -557,22 +557,21 @@ const goMyPage = function() {
 }
 
 /* Gold accent (뮤지컬과 동일) */
-.hero--main .gold {
-  background: linear-gradient(
-    90deg,
-    #c9a24d,
-    #ffd77a,
-    #c9a24d
-  );
+.hero-title {
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 20px;
 
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  text-shadow:
-    0 2px 6px rgba(0,0,0,0.6),
-    0 0 12px rgba(255,215,122,0.35);
+  text-shadow: 0 6px 20px rgba(0,0,0,0.6);
 }
 
+.hero-title .gold {
+  color: #ffd77a;
+}
+.hero-kicker.gold {
+  color: #ffd77a;
+}
 /* Sub text */
 .hero--main .hero-sub {
   font-size: 17px;

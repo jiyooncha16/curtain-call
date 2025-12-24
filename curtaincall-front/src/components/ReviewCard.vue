@@ -238,7 +238,7 @@ padding: 10px;
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #ff8989;
+  background: #ffd77a;
   color: #fff;
   display: flex;
   align-items: center;
