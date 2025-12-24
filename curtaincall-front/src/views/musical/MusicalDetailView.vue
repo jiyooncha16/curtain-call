@@ -31,14 +31,14 @@
 
   <!-- 출연 배우 영역 -->
   <div class="title-text">출연 배우</div>
-  <div class="shadow">
-    <div v-if="actors && actors.length" class="actor-list">
-      <CardItemRadius v-for="actor in actors" :key="actor.actorId" :actor="actor" />
-    </div>
-    <!-- 배우가 없을 때 -->
-    <div v-else class="empty">
-      등록된 배우가 없습니다
-    </div>
+  <div v-if="actors && actors.length" class="actor-shadow">
+    <ActorRoleGroup :actors="actors" />
+  </div>
+  <!-- 배우가 없을 때 -->
+  <div v-else class=" actor-shadow empty">
+
+    등록된 배우가 없습니다
+
   </div>
   <!-- 카카오 맵 api -->
   <div class="title-text">공연장</div>
@@ -136,6 +136,7 @@ import axios from 'axios';
 import { onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
+import ActorRoleGroup from '@/components/actor/ActorRoleGroup.vue';
 
 const route = useRoute()
 const id = route.params.id
@@ -321,15 +322,15 @@ img {
   white-space: pre-line;
 }
 
-.actor-list {
-  margin-top: 10px;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 5px;
-  align-items: center;
-  justify-content: start;
+.actor-shadow {
+  width: 100%;
+  padding: 24px;
+  box-sizing: border-box;
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
 }
+
 
 .map-container {
   display: flex;
