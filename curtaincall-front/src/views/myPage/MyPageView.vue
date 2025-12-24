@@ -23,7 +23,7 @@
     </section>
 
     <!-- 상단 프로필 영역 -->
-    <div class="flex" style="margin-top: 20px;">
+    <div class="flex" style="margin: 50px;">
       <div class="container flex my-profile" style="justify-content: space-around; width: 100%">
         <!-- 왼쪽 프로필 -->
         <div class="container profile">
@@ -727,5 +727,8 @@ function likeActorClicked() {
   color: #666;
 }
 
+.calendar-wrapper{
+margin-bottom: 70px;
+}
 
 </style>

@@ -277,20 +277,28 @@ watch(onStageCount, (newVal) => {
 }
 
 /* ===== Gold Accent (Hero Common) ===== */
-.hero .gold {
-  background: linear-gradient(
-    90deg,
-    #c9a24d,
-    #ffd77a,
-    #c9a24d
-  );
+/* .hero .gold {
+  background: #ffd77a;
 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
-  text-shadow:
-    0 2px 6px rgba(0,0,0,0.6),
-    0 0 12px rgba(255,215,122,0.25);
+  
+} */
+.hero-title {
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 20px;
+
+  text-shadow: 0 6px 20px rgba(0,0,0,0.6);
+}
+
+.hero-title .gold {
+  color: #ffd77a;
+}
+.hero-kicker.gold {
+  color: #ffd77a;
 }
 
 /* ===== Title Accent (Actor) ===== */
@@ -369,6 +377,8 @@ watch(onStageCount, (newVal) => {
 .stat {
   min-width: 100px;
   padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
 
   border-radius: 14px;
   background: rgba(255,255,255,0.08);
@@ -382,7 +392,7 @@ watch(onStageCount, (newVal) => {
 .stat .num {
   font-size: 26px;
   font-weight: 800;
-  color: #ffffff;
+  color: #ffd77a;
 }
 
 .stat .label {

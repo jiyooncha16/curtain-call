@@ -11,7 +11,8 @@
     <!-- 게시글 카드 -->
     <article class="card">
       <header class="post-header">
-        <div style="display: flex; gap:10px; align-items: center; text-align: center; margin-top:10px; margin-bottom:20px;">
+        <div
+          style="display: flex; gap:10px; align-items: center; text-align: center; margin-top:10px; margin-bottom:20px;">
           <div class="category-chip">{{ board.category }}</div>
           <h1 class="title">{{ board.title }}</h1>
         </div>
@@ -53,18 +54,9 @@
       <div class="comment-write">
         <div class="avatar sm">{{ auth.nickname?.slice(0, 1) || '?' }}</div>
         <div class="write-box">
-          <textarea
-            v-model="newComment"
-            class="textarea"
-            rows="3"
-            placeholder="댓글을 입력하세요."
-          />
+          <textarea v-model="newComment" class="textarea" rows="3" placeholder="댓글을 입력하세요." />
           <div class="write-actions">
-            <button
-              class="btn primary"
-              :disabled="!newComment.trim()"
-              @click="submitComment"
-            >
+            <button class="btn primary" :disabled="!newComment.trim()" @click="submitComment">
               등록
             </button>
           </div>
@@ -77,11 +69,7 @@
           아직 댓글이 없어요.
         </div>
 
-        <div
-          v-for="c in sortedComments"
-          :key="c.replyId"
-          class="comment-item"
-        >
+        <div v-for="c in sortedComments" :key="c.replyId" class="comment-item">
           <div class="avatar sm">{{ c.nickname?.slice(0, 1) }}</div>
 
           <div class="comment-body">
@@ -103,11 +91,7 @@
 
             <!-- 수정 모드 -->
             <div v-else>
-              <textarea
-                v-model="editContent"
-                class="textarea"
-                rows="2"
-              />
+              <textarea v-model="editContent" class="textarea" rows="2" />
               <div class="comment-actions">
                 <button class="mini primary" @click="updateComment(c.replyId)">
                   저장
@@ -257,7 +241,9 @@ const onDelete = async () => {
   margin-bottom: 14px;
 }
 
-.muted { color: #8a8f99; }
+.muted {
+  color: #8a8f99;
+}
 
 /* ===== topbar ===== */
 .topbar {
@@ -266,11 +252,13 @@ const onDelete = async () => {
   gap: 10px;
   padding: 10px 4px 14px;
 }
+
 .topbar-title {
   flex: 1;
   font-size: 18px;
   font-weight: 800;
 }
+
 .icon-btn {
   width: 38px;
   height: 38px;
@@ -281,22 +269,27 @@ const onDelete = async () => {
   display: grid;
   place-items: center;
 }
-.icon-btn:hover { background: #f3f5fa; }
+
+.icon-btn:hover {
+  background: #f3f5fa;
+}
 
 /* ===== post header ===== */
-.post-header { 
+.post-header {
   margin-bottom: 14px;
- }
+}
+
 .category-chip {
   display: inline-flex;
   padding: 6px 10px;
   border-radius: 999px;
-  background: #ffd6d6;
-  color: #ff5454;
+  background: #fae6b9;
+  color: #ff8a1d;
   font-weight: 700;
   font-size: 12px;
   /* margin-bottom: 8px; */
 }
+
 .title {
   margin: 0;
   font-size: 22px;
@@ -323,35 +316,49 @@ const onDelete = async () => {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: #ffd6d6;
-  color: #ff5454;
+  background: #fae6b9;
+  color: #ff8a1d;
   display: grid;
   place-items: center;
   font-weight: 900;
 }
+
 .avatar.sm {
   width: 34px;
   height: 34px;
   font-size: 13px;
 }
 
-.author-info .author-name { font-weight: 800; }
+.author-info .author-name {
+  font-weight: 800;
+}
+
 .author-info .sub {
   font-size: 12px;
   color: #8a8f99;
   margin-top: 2px;
 }
-.dot { margin: 0 6px; }
 
-.owner-actions { display: flex; gap: 8px; }
+.dot {
+  margin: 0 6px;
+}
+
+.owner-actions {
+  display: flex;
+  gap: 8px;
+}
 
 /* ===== gallery ===== */
-.gallery { margin: 14px 0; }
+.gallery {
+  margin: 14px 0;
+}
+
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
 }
+
 .img-tile {
   border: none;
   padding: 0;
@@ -361,13 +368,17 @@ const onDelete = async () => {
   aspect-ratio: 4 / 3;
   background: #f0f1f5;
 }
+
 .img-tile img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
-.img-tile:hover { transform: translateY(-1px); }
+
+.img-tile:hover {
+  transform: translateY(-1px);
+}
 
 /* ===== content ===== */
 .content-text {
@@ -377,6 +388,7 @@ const onDelete = async () => {
   color: #1f2328;
   margin: 0;
 }
+
 .section-title {
   font-weight: 900;
   margin-bottom: 10px;
@@ -384,6 +396,7 @@ const onDelete = async () => {
   align-items: center;
   gap: 8px;
 }
+
 /* ===== buttons ===== */
 .btn {
   border: 1px solid #e6e8ee;
@@ -396,25 +409,39 @@ const onDelete = async () => {
   align-items: center;
   gap: 8px;
 }
-.btn:hover { background: #f3f5fa; }
+
+.btn:hover {
+  background: #f3f5fa;
+}
+
 .btn.primary {
   border-color: transparent;
-  background: #ffd6d6;;
-  color: #ff5454;
+  background: #fae6b9;
+  color: #ff8a1d;
   font-size: 13px;
   font-weight: bold;
 }
-.btn.primary:disabled { opacity: 0.5; cursor: not-allowed; }
-.btn.ghost { background: #fff; }
+
+.btn.primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn.ghost {
+  background: #fff;
+}
+
 .btn.danger {
-  border-color: #ffd6d6;
-  color: #d12b2b;
+  background: #fae6b9;
+  color: #ff8a1d;
 }
+
 .btn.like.active {
-  border-color: #ffd6e0;
-  background: #fff2f6;
-  color: #d91b5c;
+  border-color: #fae6b9;
+  background: #fab81f;
+  color: #ff8a1d;
 }
+
 .count {
   /* font-weight: 900; */
   /* padding: 2px 8px; */
@@ -437,6 +464,7 @@ const onDelete = async () => {
   justify-content: space-between;
   margin-bottom: 14px;
 }
+
 .select {
   border: 1px solid #e6e8ee;
   border-radius: 12px;
@@ -451,7 +479,11 @@ const onDelete = async () => {
   align-items: flex-start;
   margin-bottom: 14px;
 }
-.write-box { flex: 1; }
+
+.write-box {
+  flex: 1;
+}
+
 .textarea {
   width: 100%;
   resize: none;
@@ -462,7 +494,10 @@ const onDelete = async () => {
   font-size: 14px;
   line-height: 1.6;
 }
-.textarea:focus { border-color: #2f5cff; }
+
+.textarea:focus {
+  border-color: #2f5cff;
+}
 
 .write-actions {
   display: flex;
@@ -470,28 +505,51 @@ const onDelete = async () => {
   justify-content: end;
   margin-top: 8px;
 }
-.helper { font-size: 12px; color: #8a8f99; }
 
-.comment-list { display: grid; gap: 12px; }
+.helper {
+  font-size: 12px;
+  color: #8a8f99;
+}
+
+.comment-list {
+  display: grid;
+  gap: 12px;
+}
+
 .comment-item {
   display: flex;
   gap: 10px;
   align-items: flex-start;
 }
+
 .comment-body {
   flex: 1;
   border: 1px solid #eef0f5;
   border-radius: 14px;
   padding: 12px;
 }
+
 .comment-top {
   display: flex;
   align-items: center;
   gap: 10px;
 }
-.comment-name { font-weight: 900; }
-.comment-sub { color: #8a8f99; font-size: 12px; margin-left: auto; }
-.comment-menu { display: flex; gap: 6px; margin-left: 6px; }
+
+.comment-name {
+  font-weight: 900;
+}
+
+.comment-sub {
+  color: #8a8f99;
+  font-size: 12px;
+  margin-left: auto;
+}
+
+.comment-menu {
+  display: flex;
+  gap: 6px;
+  margin-left: 6px;
+}
 
 .comment-text {
   margin-top: 8px;
@@ -504,6 +562,7 @@ const onDelete = async () => {
   gap: 8px;
   margin-top: 10px;
 }
+
 .mini {
   border: 1px solid #e6e8ee;
   background: #fff;
@@ -516,8 +575,15 @@ const onDelete = async () => {
   gap: 6px;
   font-size: 13px;
 }
-.mini:hover { background: #f3f5fa; }
-.mini.danger { border-color: #ffd6d6; color: #d12b2b; }
+
+.mini:hover {
+  background: #f3f5fa;
+}
+
+.mini.danger {
+  border-color: #ffd6d6;
+  color: #d12b2b;
+}
 
 .empty {
   text-align: center;
@@ -525,5 +591,4 @@ const onDelete = async () => {
   color: #8a8f99;
   font-weight: 700;
 }
-
 </style>
