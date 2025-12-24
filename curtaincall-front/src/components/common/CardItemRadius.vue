@@ -4,7 +4,7 @@
             <img :src="`/${actor.image}`">
         </div>
         <div class="basic-text">{{actor.name}}</div>
-        <div class="basic-text">({{ actor.roleName }})</div>
+        <div class="role-text">({{ actor.roleName }})</div>
     </div>
 </template>
 
@@ -43,6 +43,12 @@ img {
 }
 .basic-text {
     margin: 0
+}
+.role-text{
+    .empty {
+  font-size: 15px;
+  color: #b6b6b6;
+}
 }
 
 </style>

@@ -32,9 +32,12 @@
   <!-- 출연 배우 영역 -->
   <div class="title-text">출연 배우</div>
   <div class="shadow">
-    <div v-if="actors" class="actor-list">
+    <div v-if="actors && actors.length" class="actor-list">
       <CardItemRadius v-for="actor in actors" :key="actor.actorId" :actor="actor" />
-
+    </div>
+    <!-- 배우가 없을 때 -->
+    <div v-else class="empty">
+      등록된 배우가 없습니다
     </div>
   </div>
   <!-- 카카오 맵 api -->
@@ -274,6 +277,11 @@ function goWriteReview() {
 </script>
 
 <style scoped>
+.empty {
+  font-size: 15px;
+  color: #888;
+}
+
 .back-btn {
   background: none;
   border: none;
