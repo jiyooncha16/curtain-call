@@ -21,6 +21,7 @@ public class CustomUserDetailsService
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
 
+    	System.out.println(mapper.selectDbName());
         User user = mapper.selectUser(username)
             .orElseThrow(() ->
                 new UsernameNotFoundException("유저 없음")

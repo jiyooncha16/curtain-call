@@ -65,6 +65,7 @@ const login = () => {
     })
     .catch((err) => {
       alert("아이디, 비밀번호가 잘못되었습니다.")
+      console.log(err)
     })
     .finally(() => {
       username.value = ''

@@ -4,18 +4,14 @@
     <header class="page-header">
       <div>
         <p class="page-kicker">STATS</p>
-        <h1 class="page-title">자주 본 배우</h1>
-        <p class="page-sub">내가 공연에서 자주 만난 배우들은 누가 있을까요?</p>
+        <h1 class="page-title">좋아요 한 뮤지컬</h1>
+        <p class="page-sub">관심 있는 뮤지컬들을 한눈에 확인해요.</p>
       </div>
 
       <div class="summary">
         <div class="sum-card">
-          <div class="sum-label">총 배우 수</div>
-          <div class="sum-value">{{ actors.length }}</div>
-        </div>
-        <div class="sum-card">
-          <div class="sum-label">총 횟수</div>
-          <div class="sum-value">{{ totalCount }}</div>
+          <div class="sum-label">뮤지컬 수</div>
+          <div class="sum-value">{{ musicals.length }}</div>
         </div>
       </div>
     </header>
@@ -35,42 +31,38 @@
       </section>
 
       <!-- 빈 상태 -->
-      <section v-else-if="actors.length === 0" class="empty">
-        <div class="empty-icon"><i class="bi bi-emoji-frown"></i></div>
-        <div class="empty-title">표시할 배우가 없어요</div>
-        <div class="empty-sub">리뷰를 남기고 내가 만났던 배우를 확인해보세요!</div>
+      <section v-else-if="musicals.length === 0" class="empty">
+        <div class="empty-icon">💔</div>
+        <div class="empty-title">좋아요 한 뮤지컬이 없어요</div>
+        <div class="empty-sub">마음에 드는 공연에 ❤️를 눌러보세요!</div>
       </section>
 
       <!-- 리스트 -->
       <section v-else class="grid">
         <article
-          v-for="(a, idx) in actors"
-          :key="a.actorId ?? idx"
+          v-for="(m, idx) in musicals"
+          :key="m.musicalId ?? idx"
           class="card"
-          @click="goActor(a.actorId)"
+          @click="goMusical(m.musicalId)"
         >
           <div class="rank">{{ idx + 1 }}</div>
 
           <div class="avatar-wrap">
             <img
-              v-if="a.image"
+              v-if="m.image"
               class="avatar"
-              :src="imgSrc(a.image)"
-              :alt="a.name"
+              :src="imgSrc(m.image)"
+              :alt="m.title"
               loading="lazy"
             />
             <div v-else class="avatar avatar-fallback">
-              {{ initial(a.name) }}
+              🎵
             </div>
           </div>
 
           <div class="meta">
-            <div class="name">{{ a.name }}</div>
-          </div>
-
-          <div class="count">
-            <div class="count-num">{{ a.count }}</div>
-            <div class="count-label">회</div>
+            <div class="name">{{ m.title }}</div>
+            <div class="sub">{{ m.theater }}</div>
           </div>
         </article>
       </section>
@@ -86,57 +78,47 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 /**
- * 기대 데이터 형태 (예시)
+ * 기대 데이터 형태
  * [
- *   { actorId: 3, name: '홍길동', image: 'uploads/actor/3.jpg', count: 12, lastSeenDate: '2025-12-20T13:20:00' }
+ *  {
+ *    musicalId: 1,
+ *    title: '레미제라블',
+ *    image: 'uploads/musical/1.jpg',
+ *    theater: '블루스퀘어',
+ *    likeCount: 1
+ *  }
  * ]
  */
-const actors = ref([])
+
+const musicals = ref([])
 const loading = ref(true)
 
 onMounted(async () => {
   try {
-    const res = await api.get('/api/user/main')
-    console.log("결과 : ", res.data.favoriteActors)
-    actors.value = res.data.favoriteActors ?? []
+    const res = await api.get('/api/musicals/like/myMusical')
+    musicals.value = res.data
   } catch (e) {
     console.error(e)
-    actors.value = []
+    musicals.value = []
   } finally {
     loading.value = false
   }
 })
 
 const totalCount = computed(() =>
-  actors.value.reduce((sum, a) => sum + (a.count ?? 0), 0)
+  musicals.value.reduce((sum, m) => sum + (m.likeCount ?? 0), 0)
 )
 
 function imgSrc(path) {
-  // path가 이미 /로 시작하면 그대로, 아니면 앞에 / 붙이기
   return path.startsWith('/') ? path : '/' + path
 }
 
-function initial(name = '') {
-  return name?.trim()?.[0] ?? '?'
-}
-
-function formatDate(iso) {
-  try {
-    const d = new Date(iso)
-    const y = d.getFullYear()
-    const m = String(d.getMonth() + 1).padStart(2, '0')
-    const day = String(d.getDate()).padStart(2, '0')
-    return `${y}.${m}.${day}`
-  } catch {
-    return '-'
-  }
-}
-
-function goActor(actorId) {
-  if (!actorId) return
-  router.push(`/actor/${actorId}`)
+function goMusical(id) {
+  if (!id) return
+  router.push(`/musical/${id}`)
 }
 </script>
+
 
 <style scoped>
 .page {
@@ -317,13 +299,23 @@ function goActor(actorId) {
 .meta {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* ⭐ 세로 가운데 */
+  align-items: center;       /* ⭐ 가로 가운데 */
+  text-align: center;        /* ⭐ 텍스트 가운데 */
 }
 .name {
   font-size: 16px;
   font-weight: 900;
-  white-space: nowrap;
+  /* white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+   */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;   /* ⭐ 2줄까지만 */
+  overflow: hidden;
 }
 .sub {
   margin-top: 4px;

@@ -20,6 +20,8 @@ import SignupView from '@/views/auth/SignupView.vue'
 import SubView from '@/views/SubView.vue'
 import { useAuthStore } from '@/stores/auth'
 import FrequentActorsView from '@/views/myPage/FrequentActorsView.vue'
+import MusicalLikeView from '@/views/myPage/MusicalLikeView.vue'
+import ActorLikeView from '@/views/myPage/ActorLikeView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -135,6 +137,18 @@ const router = createRouter({
       path: '/myPage/actors',
       name: 'frequentActors',
       component: FrequentActorsView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/myPage/musicalLike',
+      name: 'musicalLike',
+      component: MusicalLikeView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/myPage/actorLike',
+      name: 'actorLike',
+      component: ActorLikeView,
       meta: { requiresAuth: true },
     },
     {

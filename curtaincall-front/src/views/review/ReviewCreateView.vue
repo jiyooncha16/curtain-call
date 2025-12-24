@@ -37,7 +37,11 @@
           class="textarea"
           v-model="content"
           placeholder="공연을 보고 느낀 점을 자유롭게 작성해 주세요."
+          maxlength="100"
         ></textarea>
+         <p class="char-count">
+          {{ content.length }} / 100
+        </p>
       </div>
 
       <!-- 버튼 -->
@@ -199,5 +203,12 @@ const submitReview = async () => {
   font-size: 14px;
   color: #555;
 }
+.char-count {
+  text-align: right;
+  font-size: 12px;
+  color: #888;
+  margin-top: 4px;
+}
+
 
 </style>

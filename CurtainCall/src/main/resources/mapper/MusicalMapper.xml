@@ -101,4 +101,11 @@
 		LEFT JOIN hashtag AS t ON c.tag_id = t.tag_id
         where m.musical_id = #{id};
     </select>
+    
+    <select id="selectLikedMusicals" resultType="Musical">
+    		SELECT m.* FROM musical as m JOIN like_musical as l
+    		ON m.musical_id = l.musical_id
+    		WHERE user_id = #{userId}
+    		ORDER BY m.musical_id;
+    </select>
 </mapper>

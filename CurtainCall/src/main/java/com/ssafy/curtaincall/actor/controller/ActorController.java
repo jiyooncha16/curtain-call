@@ -142,7 +142,16 @@ public class ActorController {
 	    return ResponseEntity.ok(list);
 	}
 	
-	
+	// 내가 좋아요 한 배우
+		@GetMapping("/like/myActor")
+	    public ResponseEntity<?> myLikedActors(
+	            @AuthenticationPrincipal CustomUserDetails user
+	    ) {
+	        if (user == null) return ResponseEntity.status(401).build();
+
+	        int userId = user.getUserId(); // 네 CustomUserDetails에 맞게
+	        return ResponseEntity.ok(service.getMyLikedActors(userId));
+	    }
 	// 2. 좋아요
 	@PostMapping("/like/toggle/{actorId}")
 	public ResponseEntity<?> toggleLike(

@@ -11,7 +11,7 @@
     <div class="title-text">마이페이지</div>
     <!-- 상단 프로필 영역 -->
     <div class="flex">
-      <div class="container flex" style="justify-content: space-around; width: 100%">
+      <div class="container flex my-profile" style="justify-content: space-around; width: 100%">
         <!-- 왼쪽 프로필 -->
         <div class="container profile">
           <div class="circle-img-wrapper">
@@ -20,7 +20,7 @@
             </div>
 
             <!-- 수정 버튼 -->
-            <div class="icon-box">
+            <div class="icon-box" @click="editClicked">
               <i class="bi bi-pencil"></i>
             </div>
           </div>
@@ -45,11 +45,11 @@
               <div class="stat-value">Like</div>
               <div class="stat-label">나의 취향</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card" @click="likeMusicalClicked">
               <div class="stat-value">{{ user.counts.likeMusicalCount }}</div>
               <div class="stat-label">뮤지컬</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card" @click="likeActorClicked">
               <div class="stat-value">{{ user.counts.likeActorCount }}</div>
               <div class="stat-label">배우</div>
             </div>
@@ -225,6 +225,18 @@ function goMyReview() {
   router.push(`/review/my`)
 }
 
+function editClicked() {
+  router.push(`/myPage/edit`)
+}
+
+function likeMusicalClicked() {
+  router.push(`/myPage/musicalLike`)
+}
+
+function likeActorClicked() {
+  router.push(`/myPage/actorLike`)
+}
+
 </script>
 
 <style scoped>
@@ -253,12 +265,19 @@ function goMyReview() {
 }
 
 /* 프로필 */
+/* .my-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+} */
+
 .profile {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .circle-img-wrapper {
@@ -314,8 +333,16 @@ function goMyReview() {
   position: relative;
   width: 50%;
   aspect-ratio: 4/1;
-  background-color: white;
+  background-color: rgb(245, 245, 245);
   /* opacity: 50%; */
+  border-radius: 18px;
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.08),
+    0 12px 30px rgba(0, 0, 0, 0.06);
+
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 /* .info-row {
@@ -361,6 +388,18 @@ function goMyReview() {
   border-radius: 6px;
   padding: 10px 0;
   text-align: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+
+  transition: 
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.15);
 }
 
 .stat-value {

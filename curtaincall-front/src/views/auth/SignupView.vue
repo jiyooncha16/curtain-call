@@ -30,11 +30,6 @@
       </div>
 
       <div class="input-group">
-        <label>전화번호</label>
-        <input type="text" v-model="phone" placeholder="전화번호를 입력하세요" />
-      </div>
-
-      <div class="input-group">
         <label>닉네임</label>
         <input type="text" v-model="nickname" placeholder="닉네임을 입력하세요" />
       </div>
@@ -96,7 +91,7 @@ const signupClicked = async () => {
     password: password.value,
     name: name.value,
     email : email.value,
-    phone : phone.value,
+    phone : "010-0000-0000",
     nickname: nickname.value
   })
 

@@ -2,10 +2,10 @@
   <div>
     <table class="table">
       <colgroup>
-        <col style="width: 10%" />
-        <col style="width: 40%" />
         <col style="width: 15%" />
+        <col style="width: 35%" />
         <col style="width: 25%" />
+        <col style="width: 15%" />
         <col style="width: 10%" />
       </colgroup>
 
@@ -30,7 +30,7 @@
           <td style="text-align:start">{{ item.title }}</td>
           <td>{{ item.nickname }}</td>
           <td>{{ item.createDate }}</td>
-          <td>{{ Math.floor(Math.random() * 100) }}</td>
+          <td>{{ Math.floor(Math.random() * 20) }}</td>
         </tr>
       </tbody>
     </table>

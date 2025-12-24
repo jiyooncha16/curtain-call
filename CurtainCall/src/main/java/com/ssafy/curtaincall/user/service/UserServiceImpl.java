@@ -72,6 +72,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int modifyUser(User user) {
 		if (mapper.selectUserById(user.getUserId()) == null) return 0;
+		if (user.getPassword() != null && !user.getPassword().isBlank()) {
+            String encoded = passwordEncoder.encode(user.getPassword());
+            user.setPassword(encoded);
+        } else {
+        	user.setPassword(null); // SQL에서 제외
+        }
 		return mapper.updateUser(user);
 	}
 

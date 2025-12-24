@@ -84,9 +84,13 @@
 	    LIMIT 6
 
 	</select>
-
-
-
+	
+	<select id="selectLikedActor" resultType="Actor">
+    		SELECT a.* FROM actor as a JOIN like_actor as l
+    		ON a.actor_id = l.actor_id
+    		WHERE user_id = #{userId}
+    		ORDER BY a.actor_id;
+    </select>
     
     <!-- 좋아요 있는지 확인 -->
     <select id="existsLike" resultType="int">

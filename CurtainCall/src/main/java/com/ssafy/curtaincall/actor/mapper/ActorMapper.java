@@ -31,5 +31,6 @@ public interface ActorMapper {
 		public int existsLike(@Param("userId")int userId, @Param("actorId")int actorId); // 내 좋아요
 		public void deleteLike(@Param("userId")int userId, @Param("actorId")int actorId);
 		public void insertLike(@Param("userId")int userId, @Param("actorId")int actorId);
+		public List<Actor> selectLikedActor(int userId);
 	
 }
