@@ -6,13 +6,16 @@
 
 <script setup>
 import api from '@/api/axios';
+import { useAuthStore } from '@/stores/auth';
 // import axios from 'axios';
 import { computed, onMounted, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 const props = defineProps ({
     like : Number,
 })
 
+const auth = useAuthStore()
+const router = useRouter()
 const route = useRoute()
 const id = route.params.id
 
@@ -27,11 +30,25 @@ const likeCnt = ref(props.like)
 watch(() => props.like, (v) => {likeCnt.value = v}) // 변경되도록
 
 onMounted(async () => {
+
+  if (!auth.isLogin) {
+    return
+  }
+
   const res = await api.get(`/api/musicals/like/me/${id}`) // 내가 눌렀는지?
   isLiked.value = res.data
 
 })
 const heartClicked = async () => {
+
+  if (!auth.isLogin) {
+    const ok = confirm('로그인하시겠습니까?')
+    if (ok) {
+      router.push('/login')
+    }
+    return
+  }
+
   const res = await api.post(`/api/musicals/like/toggle/${id}`) // 토글하기
   isLiked.value = res.data   // true / false
 

@@ -19,7 +19,7 @@ public class JwtProvider {
             "ssafy-curtaincall-secret-key".getBytes()
         );
 
-    private final long EXPIRATION = 1000 * 60 * 60; // 1시간
+    private final long EXPIRATION = 1000 * 60 * 60 * 3; // 1시간
 
     
     // 토큰 생성하기

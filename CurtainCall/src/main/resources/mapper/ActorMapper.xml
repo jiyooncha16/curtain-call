@@ -54,6 +54,16 @@
         </if>
     </select>
     
+    <select id="selectOnStageActor" resultType="Actor">
+	    SELECT DISTINCT a.*
+		FROM actor a
+		JOIN cast c ON a.actor_id = c.actor_id
+		JOIN musical m ON c.musical_id = m.musical_id
+		WHERE m.start_date &lt;= CURDATE()
+		  AND m.end_date   &gt;= CURDATE();
+	</select>
+
+    
     <!-- 탑 5 조회-->
 	<select id="selectActorOfTopFive" resultType="Actor">
 		select a.* from actor as a

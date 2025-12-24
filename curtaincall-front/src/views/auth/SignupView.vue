@@ -1,50 +1,89 @@
 <template>
-  <div class="signup-wrapper">
-    <div class="signup-box">
-      <h2 class="title">회원가입</h2>
-
-      <div class="input-group">
-        <label>아이디</label>
-        <input type="text"v-model="username" placeholder="아이디를 입력하세요"/>
+  <div class="page">
+    <!-- 헤더 -->
+    <header class="page-header">
+      <div class="header-inner">
+        <p class="page-kicker">MY PAGE</p>
+        <h1 class="page-title">회원가입</h1>
       </div>
+    </header>
 
-      <div class="input-group">
-        <label>비밀번호</label>
-        <input type="password" v-model="password" placeholder="비밀번호를 입력하세요"
-        />
-      </div>
+    <!-- 본문 -->
+    <main class="content">
+      <section class="card signup-card">
+        <form @submit.prevent="signupClicked">
 
-      <div class="input-group">
-        <label>비밀번호 확인</label>
-        <input type="password" v-model="passwordCheck" placeholder="비밀번호를 다시 입력하세요" />
-      </div>
+          <div class="form-group">
+            <label>아이디</label>
+            <input
+              type="text"
+              v-model="username"
+              placeholder="아이디를 입력하세요"
+              required
+            />
+          </div>
 
-      <div class="input-group">
-        <label>이름</label>
-        <input type="text" v-model="name" placeholder="이름을 입력하세요" />
-      </div>
+          <div class="form-group">
+            <label>비밀번호</label>
+            <input
+              type="password"
+              v-model="password"
+              placeholder="비밀번호를 입력하세요"
+              required
+            />
+          </div>
 
-      <div class="input-group">
-        <label>이메일</label>
-        <input type="email" v-model="email" placeholder="이메일을 입력하세요" />
-      </div>
+          <div class="form-group">
+            <label>비밀번호 확인</label>
+            <input
+              type="password"
+              v-model="passwordCheck"
+              placeholder="비밀번호를 다시 입력하세요"
+              required
+            />
+          </div>
 
-      <div class="input-group">
-        <label>닉네임</label>
-        <input type="text" v-model="nickname" placeholder="닉네임을 입력하세요" />
-      </div>
+          <div class="form-group">
+            <label>이름</label>
+            <input
+              type="text"
+              v-model="name"
+              placeholder="이름을 입력하세요"
+            />
+          </div>
 
-      <button class="signup-btn" @click="signupClicked">
-        회원가입
-      </button>
+          <div class="form-group">
+            <label>닉네임</label>
+            <input
+              type="text"
+              v-model="nickname"
+              placeholder="닉네임을 입력하세요"
+            />
+          </div>
 
-      <div class="extra">
-        <span @click="goLogin">이미 계정이 있으신가요? 로그인</span>
-      </div>
-    </div>
+          <div class="form-group">
+            <label>이메일</label>
+            <input
+              type="email"
+              v-model="email"
+              placeholder="이메일을 입력하세요"
+              required
+            />
+          </div>
+
+          <button type="submit" class="btn primary">
+            회원가입
+          </button>
+
+          <div class="extra">
+            <span @click="goLogin">이미 계정이 있으신가요? 로그인</span>
+          </div>
+
+        </form>
+      </section>
+    </main>
   </div>
 </template>
-
 <script setup>
 import axios from 'axios'
 import { ref } from 'vue'
@@ -57,12 +96,11 @@ const password = ref('')
 const passwordCheck = ref('')
 const name = ref('')
 const email = ref('')
-const phone = ref('')
 const nickname = ref('')
 
 const signupClicked = async () => {
   if (!username.value || !password.value || !passwordCheck.value || !email.value) {
-    alert('모든 항목을 입력해주세요.')
+    alert('필수 항목을 모두 입력해주세요.')
     return
   }
 
@@ -72,114 +110,123 @@ const signupClicked = async () => {
   }
 
   try {
-    console.log("시작해요")
-    const res = await axios.post('/api/user', {
+    await axios.post('/api/user', {
       username: username.value,
       password: password.value,
       name: name.value,
-      email : email.value,
-      phone : phone.value,
+      email: email.value,
       nickname: nickname.value
     })
-   } catch(err) {
-      console.log(err)
-   }
 
-  // TODO: axios 회원가입 API 호출
-  console.log('회원가입:', {
-    username: username.value,
-    password: password.value,
-    name: name.value,
-    email : email.value,
-    phone : "010-0000-0000",
-    nickname: nickname.value
-  })
-
-  alert('회원가입이 완료되었습니다. 로그인해주세요.')
-  router.push('/login')
+    alert('회원가입이 완료되었습니다. 로그인해주세요.')
+    router.push('/login')
+  } catch (err) {
+    console.error(err)
+    alert('회원가입 중 오류가 발생했습니다.')
+  }
 }
 
 const goLogin = () => {
   router.push('/login')
 }
 </script>
-
 <style scoped>
-.signup-wrapper {
-  min-height: 80vh;
+.page {
+  padding: 18px 18px 60px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
+.page-header {
   display: flex;
   justify-content: center;
-  align-items: center;
-  background-color: white;
-  font-family: var(--font-main);
+  margin-bottom: 20px;
 }
 
-.signup-box {
-  width: 360px;
-  padding: 30px;
-  background: #eae9e973;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(71, 61, 61, 0.486);
+.header-inner {
+  width: 100%;
+  max-width: 420px;
 }
 
-.title {
-  text-align: center;
-  margin-bottom: 25px;
+.page-kicker {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  opacity: 0.7;
 }
 
-.input-group {
-  margin-bottom: 14px;
+.page-title {
+  font-size: 28px;
+  font-weight: 800;
+  margin: 6px 0;
 }
 
-.input-group label {
-  display: block;
-  font-size: 14px;
+.content {
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+}
+
+.signup-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 28px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+label {
+  font-size: 13px;
+  font-weight: 700;
   margin-bottom: 6px;
 }
 
-.input-group input {
-  width: 100%;
-  padding: 10px;
+input {
+  border-radius: 12px;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 12px 14px;
+  font-size: 14px;
 }
 
-.signup-btn {
+input:focus {
+  outline: none;
+  border-color: #111;
+}
+
+.btn {
   width: 100%;
-  padding: 12px;
   margin-top: 10px;
-  background-color: #800000;
-  color: white;
+  padding: 12px;
+  border-radius: 12px;
   border: none;
-  border-radius: 4px;
-  font-size: 16px;
+  font-weight: 800;
   cursor: pointer;
 }
 
-.signup-btn:hover {
-  background-color: var(--bg-dark);
+.btn.primary {
+  background: #111;
+  color: #fff;
+}
+
+.btn.primary:hover {
+  opacity: 0.9;
 }
 
 .extra {
-  margin-top: 15px;
+  margin-top: 18px;
   text-align: center;
   font-size: 13px;
-  color: #555;
+  color: #666;
 }
 
 .extra span {
   cursor: pointer;
-}
-
-.input-group input {
-  border: none;
-  outline: none;
-  box-shadow: none;
-}
-
-input:focus {
-  border: none;
-  outline: none;
-  box-shadow: none;
 }
 </style>

@@ -3,6 +3,7 @@ package com.ssafy.curtaincall.user.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.ssafy.curtaincall.user.dto.FindIdRequest;
 import com.ssafy.curtaincall.user.dto.LikeCountDto;
 import com.ssafy.curtaincall.user.dto.MyPageResponseDto;
 import com.ssafy.curtaincall.user.dto.User;
@@ -26,6 +27,7 @@ public interface UserService {
 //	int modifyPassword(String password); // 비밀번호 변경 : 추후 암호화
 	int modifyUser(User user); // 회원정보 수정
 	int deleteUser(int id); // 탈퇴
+	String findByNameAndEmail(FindIdRequest req);
 	
 
 }

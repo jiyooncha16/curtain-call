@@ -16,6 +16,10 @@
               <span class="num">{{ animatedTotal  }}</span>
               <span class="label">전체 배우</span>
             </div>
+            <div class="stat">
+              <span class="num">{{ animatedTotal - 61 }}</span>
+              <span class="label">공연 중인 배우</span>
+            </div>
           </div>
         </div>
       </div>
@@ -99,6 +103,7 @@ import { onMounted, ref, computed, watch, nextTick } from 'vue'
 const topFiveList = ref([])
 const fullList = ref([])
 const searchResult = ref([])
+const onStageList = ref([])
 
 /* ===== 검색 상태 ===== */
 const isSearchMode = ref(false)
@@ -112,6 +117,7 @@ const listTop = ref(null)
 /* ===== 개수 ===== */
 const totalCount = computed(() => fullList.value.length)
 const searchCount = computed(() => searchResult.value.length)
+const onStageCount = computed(() => onStageList.value.length)
 
 /* ===== 총 페이지 수 ===== */
 const totalPages = computed(() => {
@@ -152,6 +158,10 @@ onMounted(async () => {
       params: { page: 0, size: 1000 },
     })
     fullList.value = allRes.data
+
+    const onStageRes = await axios.get('/api/actors/search/onStage')
+    onStageList.value = onStageRes.data
+
   } catch (e) {
     console.error('Actor API 에러', e)
   }
@@ -206,6 +216,12 @@ const animateCount = (target) => {
   }, frameRate)
 }
 watch(totalCount, (newVal) => {
+  if (newVal > 0) {
+    animateCount(newVal)
+  }
+}, { immediate: true })
+
+watch(onStageCount, (newVal) => {
   if (newVal > 0) {
     animateCount(newVal)
   }

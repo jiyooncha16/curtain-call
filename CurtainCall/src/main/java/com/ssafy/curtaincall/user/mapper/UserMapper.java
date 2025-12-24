@@ -12,6 +12,7 @@ import com.ssafy.curtaincall.actor.dto.ActorLikes;
 import com.ssafy.curtaincall.actor.dto.ActorMeetDto;
 import com.ssafy.curtaincall.actor.dto.ActorSearchCondition;
 import com.ssafy.curtaincall.musical.dto.Musical;
+import com.ssafy.curtaincall.user.dto.FindIdRequest;
 import com.ssafy.curtaincall.user.dto.LikeCountDto;
 import com.ssafy.curtaincall.user.dto.User;
 import com.ssafy.curtaincall.user.dto.UserMeResponse;
@@ -37,5 +38,6 @@ public interface UserMapper {
 	
 	//임시
 	Map<String, Object> selectDbName();
+	String selectUserByNameAndEmail(FindIdRequest req);
 	
 }

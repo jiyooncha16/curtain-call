@@ -17,6 +17,10 @@
               <span class="label">공연 중</span>
             </div>
             <div class="stat">
+              <span class="num">{{ animatedWillBeOnStage }}</span>
+              <span class="label">공연 예정</span>
+            </div>
+            <div class="stat">
               <span class="num">{{ animatedTotal }}</span>
               <span class="label">전체 작품</span>
             </div>
@@ -91,6 +95,7 @@ import axios from 'axios'
 
 /* ===== 데이터 ===== */
 const onStageMusical = ref([])
+const willBeOnStageMusical = ref([])
 const fullList = ref([])
 const searchResult = ref([])
 
@@ -131,15 +136,33 @@ const displayList = computed(() => {
 
 
 /* ===== API ===== */
+const today = new Date()
+const dateStr =
+  today.getFullYear() + '-' +
+  (today.getMonth() + 1) + '-' +
+  today.getDate()
+const tomorrow = new Date(today)
+tomorrow.setDate(today.getDate() + 1)
+const tomStr = 
+  tomorrow.getFullYear() + '-' +
+  (tomorrow.getMonth() + 1) + '-' +
+  tomorrow.getDate()
+
+
 onMounted(async () => {
   try {
     const onStageRes = await axios.get('/api/musicals/search', {
-      params: { date: '2025-12-18', order: 'desc', page: 0, size: 10 },
+      params: { date: dateStr , order: 'desc', page: 0, size: 10000 },
     })
     onStageMusical.value = onStageRes.data
 
     const allRes = await axios.get('/api/musicals')
     fullList.value = allRes.data
+
+    const willRes = await axios.get('/api/musicals/search', {
+      params: { fromDate: tomStr, order: 'desc', page: 0, size: 10000 },
+    })
+    willBeOnStageMusical.value = willRes.data
   } catch (e) {
     console.error('API 에러', e)
   }
@@ -196,6 +219,7 @@ const endPage = computed(() => {
 
 const animatedTotal = ref(0)
 const animatedOnStage = ref(0)
+const animatedWillBeOnStage = ref(0)
 
 const animateCount = (target, animatedRef) => {
   animatedRef.value = 0
@@ -231,6 +255,16 @@ watch(
   (newVal) => {
     if (newVal > 0) {
       animateCount(newVal, animatedOnStage)
+    }
+  },
+  { immediate: true }
+)
+//////////
+watch(
+  () => willBeOnStageMusical.value.length,
+  (newVal) => {
+    if (newVal > 0) {
+      animateCount(newVal, animatedWillBeOnStage)
     }
   },
   { immediate: true }

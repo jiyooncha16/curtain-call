@@ -21,6 +21,13 @@
 		WHERE user_id = #{userId}
 	</select>
 	
+	<!-- 아이디 찾기 용 -->
+	<select id="selectUserByNameAndEmail" parameterType="FindIdRequest" resultType="String">
+		SELECT username FROM users
+		WHERE name = #{name}
+		AND email = #{email}
+	</select>
+	
 	<!--유저의 좋아요/리뷰 개수-->
 	<select id="selectCount" parameterType="int" resultType="LikeCountDto">
 		SELECT

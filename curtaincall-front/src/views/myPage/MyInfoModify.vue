@@ -2,7 +2,7 @@
   <div class="page">
     <!-- 헤더 -->
     <header class="page-header">
-      <div>
+      <div class="header-inner">
         <p class="page-kicker">MY PAGE</p>
         <h1 class="page-title">내 정보 수정하기</h1>
       </div>
@@ -126,11 +126,20 @@ function cancel() {
 .page {
   padding: 18px 18px 60px;
   font-family: 'IBM Plex Sans KR', sans-serif;
+  width: 100%;
 }
 
 .page-header {
+  display: flex;
+  justify-content: center;
   margin-bottom: 20px;
 }
+
+.header-inner {
+  width: 100%;
+  max-width: 520px;
+}
+
 
 .page-kicker {
   font-size: 12px;
@@ -212,4 +221,6 @@ input:disabled {
 .btn.primary:hover {
   opacity: 0.9;
 }
+
+
 </style>

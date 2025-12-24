@@ -1,44 +1,58 @@
 <template>
-  <div class="find-wrapper">
-    <div class="find-box">
-      <h2 class="title">아이디 찾기</h2>
-
-      <p class="desc">
-        가입 시 등록한 이메일과 이름을 입력하세요.
-      </p>
-
-      <div class="input-group">
-        <label>이름</label>
-        <input
-          type="text"
-          v-model="name"
-          placeholder="이름을 입력하세요"
-        />
+  <div class="page">
+    <!-- 헤더 -->
+    <header class="page-header">
+      <div class="header-inner">
+        <p class="page-kicker">MY PAGE</p>
+        <h1 class="page-title">아이디 찾기</h1>
+        <p class="page-desc">
+          가입 시 등록한 이름과 이메일을 입력하세요.
+        </p>
       </div>
+    </header>
 
-      <div class="input-group">
-        <label>이메일</label>
-        <input
-          type="email"
-          v-model="email"
-          placeholder="이메일을 입력하세요"
-        />
-      </div>
+    <!-- 본문 -->
+    <main class="content">
+      <section class="card find-card">
+        <form @submit.prevent="findId">
 
-      <button class="find-btn" @click="findId">
-        아이디 찾기
-      </button>
+          <div class="form-group">
+            <label>이름</label>
+            <input
+              type="text"
+              v-model="name"
+              placeholder="이름을 입력하세요"
+              required
+            />
+          </div>
 
-      <div class="extra">
-        <span @click="goLogin">로그인</span>
-        <span class="divider">|</span>
-        <span @click="goLogin">비밀번호 재설정</span>
-      </div>
-    </div>
+          <div class="form-group">
+            <label>이메일</label>
+            <input
+              type="email"
+              v-model="email"
+              placeholder="이메일을 입력하세요"
+              required
+            />
+          </div>
+
+          <button type="submit" class="btn primary">
+            아이디 찾기
+          </button>
+
+          <div class="extra">
+            <span @click="goLogin">로그인</span>
+            <span class="divider">|</span>
+            <span @click="goChangePassword">비밀번호 재설정</span>
+          </div>
+
+        </form>
+      </section>
+    </main>
   </div>
 </template>
-
 <script setup>
+import api from '@/api/axios'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -53,16 +67,13 @@ const findId = async () => {
     return
   }
 
-  // TODO: axios API 호출
-  // const res = await axios.post('/api/find-id', {
-  //   name: name.value,
-  //   email: email.value
-  // })
+  const res = await api.post('/api/user/auth/findId', {
+    name: name.value,
+    email: email.value
+  })
 
   // 임시 응답 예시
-  const foundId = 'jiyoon1234'
-
-  // 아이디 마스킹 (보안)
+  const foundId = res.data
   const maskedId = maskId(foundId)
 
   alert(`회원님의 아이디는 ${maskedId} 입니다.`)
@@ -77,84 +88,120 @@ const maskId = (id) => {
 const goLogin = () => {
   router.push('/login')
 }
+
+const goChangePassword = () => {
+  router.push('/login/changePassword')
+}
 </script>
-
-
 <style scoped>
-.find-wrapper {
-  min-height: 100vh;
+.page {
+  padding: 18px 18px 60px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
+.page-header {
   display: flex;
   justify-content: center;
-  align-items: center;
-  background-color: white;
-  font-family: var(--font-main);
-}
-
-.find-box {
-  width: 360px;
-  padding: 30px;
-  background: #eae9e973;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(71, 61, 61, 0.486);
-}
-
-.title {
-  text-align: center;
-  margin-bottom: 15px;
-}
-
-.desc {
-  text-align: center;
-  font-size: 13px;
-  color: #666;
   margin-bottom: 20px;
+}
+
+.header-inner {
+  width: 100%;
+  max-width: 420px;
+}
+
+.page-kicker {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  opacity: 0.7;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 800;
+  margin: 6px 0;
+}
+
+.page-desc {
+  margin-top: 6px;
+  font-size: 13px;
+  opacity: 0.7;
   line-height: 1.5;
 }
 
-.input-group {
-  margin-bottom: 15px;
+.content {
+  display: flex;
+  justify-content: center;
 }
 
-.input-group label {
-  display: block;
-  font-size: 14px;
+.card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+}
+
+.find-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 28px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+label {
+  font-size: 13px;
+  font-weight: 700;
   margin-bottom: 6px;
 }
 
-.input-group input {
-  width: 100%;
-  padding: 10px;
+input {
+  border-radius: 12px;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 12px 14px;
+  font-size: 14px;
 }
 
-.find-btn {
+input:focus {
+  outline: none;
+  border-color: #111;
+}
+
+.btn {
   width: 100%;
-  padding: 12px;
   margin-top: 10px;
-  background-color: var(--bg-accent);
-  color: white;
+  padding: 12px;
+  border-radius: 12px;
   border: none;
-  border-radius: 4px;
-  font-size: 16px;
+  font-weight: 800;
   cursor: pointer;
 }
 
-.find-btn:hover {
-  background-color: var(--bg-dark);
+.btn.primary {
+  background: #111;
+  color: #fff;
+}
+
+.btn.primary:hover {
+  opacity: 0.9;
 }
 
 .extra {
-  margin-top: 15px;
+  margin-top: 18px;
   text-align: center;
   font-size: 13px;
-  color: #555;
+  color: #666;
 }
 
 .extra span {
   cursor: pointer;
 }
+
 .divider {
   margin: 0 6px;
+  opacity: 0.5;
 }
 </style>

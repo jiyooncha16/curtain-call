@@ -24,6 +24,7 @@ public interface ActorService {
 	int getLike(int actorId); // 좋아요 조회
 	boolean isLiked(int userId, int actorId); // 내 좋아요 확인
 	List<Actor> getMyLikedActors(int userId);
+	List<Actor> getOnStageActors();
 	
 
 }

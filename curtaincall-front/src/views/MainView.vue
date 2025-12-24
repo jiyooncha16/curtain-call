@@ -56,15 +56,20 @@
 
   <!-- 비로그인 상태 -->
   <div v-else class="login-cta shadow">
-    <h2>🎭 내 뮤지컬 기록을 남겨보세요</h2>
-    <p>
-      로그인하고<br />
-      관람한 뮤지컬을 기록해보세요.
-    </p>
+    <div class="content">
+      <h2>🎭 내가 사랑하는 무대는 어떤 모습인가요?</h2>
+      <p>
+        뮤지컬 정보/기록 플랫폼 <b> 커튼콜 </b> 에 가입하고 <br/>
+        관람 기록과 통계로 나의 뮤지컬 취향을 한눈에 확인해보세요.
+      </p>
 
-    <button class="login-btn" @click="goLogin">
-      로그인하러 가기
-    </button>
+      <button class="login-btn" @click="goLogin">
+        로그인하기
+      </button>
+      <button class="login-btn" @click="goLogin">
+        회원가입하기
+      </button>
+      </div>
   </div>
 
 </div>
@@ -232,21 +237,35 @@ const goMyPage = function() {
 
 /* 비로그인 CTA 전체 박스 */
 .login-cta {
+  height : 300px;
   position: relative;
   overflow: hidden;
+  padding : 10px 30px;
 }
 
 .login-cta::after {
   content: '';
   position: absolute;
   inset: 0;
+  z-index: 1;              /* ⭐ 텍스트 아래 */
   background:
     radial-gradient(
       circle at top left,
-      rgba(201,162,77,0.15),
-      transparent 60%
+      rgba(196, 157, 74, 0.45),
+      transparent 65%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(245, 232, 200, 0.45),
+      rgba(235, 216, 170, 0.158)
     );
   pointer-events: none;
+}
+
+.login-cta .content {
+  margin-top: 25px;
+  position: relative;
+  z-index: 2; /* ⭐ 텍스트는 무조건 위 */
 }
 
 /* 내부 정렬 */
@@ -265,12 +284,13 @@ const goMyPage = function() {
 .login-cta p {
   font-size: 16px;
   line-height: 1.6;
-  color: #d0d0d0;
+  color: #000000;
 }
 /* 로그인 버튼 - Gold */
 .login-btn {
-  margin-top: 30px;
-  padding: 12px 36px;
+  margin-top: 50px;
+  margin-right: 10px;
+  padding: 12px 30px;
   font-size: 16px;
   font-weight: 600;
   border-radius: 999px;

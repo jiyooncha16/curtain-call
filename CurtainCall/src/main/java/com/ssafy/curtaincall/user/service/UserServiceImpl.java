@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.curtaincall.ai.dto.HashtagDTO;
 import com.ssafy.curtaincall.ai.service.AiService;
+import com.ssafy.curtaincall.user.dto.FindIdRequest;
 import com.ssafy.curtaincall.user.dto.LikeCountDto;
 import com.ssafy.curtaincall.user.dto.MyPageResponseDto;
 import com.ssafy.curtaincall.user.dto.User;
@@ -138,6 +139,12 @@ public class UserServiceImpl implements UserService {
 
         return res;
     }
+
+	@Override
+	public String findByNameAndEmail(FindIdRequest req) {
+		
+		return mapper.selectUserByNameAndEmail(req);
+	}
 
 }
 

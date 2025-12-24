@@ -98,6 +98,11 @@ public class ActorServiceImpl implements ActorService {
 		return mapper.selectLikedActor(userId);
 	}
 
+	@Override
+	public List<Actor> getOnStageActors() {
+		return mapper.selectOnStageActor();
+	}
+
 }
 
 

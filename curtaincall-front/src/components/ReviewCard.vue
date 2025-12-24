@@ -94,6 +94,7 @@ const props = defineProps({
   review: Object,
 })
 const id = props.review.reviewId
+const auth = useAuthStore()
 
 // 내 리뷰인지 확인하기
 const authStore = useAuthStore()
@@ -141,6 +142,14 @@ onMounted(async () => {
 })
 
 const likeBtnClicked = async function(id) {
+
+  if (!auth.isLogin) {
+    const ok = confirm('로그인하시겠습니까?')
+    if (ok) {
+      router.push('/login')
+    }
+    return
+  }
 
   const res = await api.post(`/api/reviews/like/toggle/${id}`) // 토글하기
   isLiked.value = res.data   // true / false

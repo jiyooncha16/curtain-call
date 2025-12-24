@@ -28,6 +28,7 @@ import com.ssafy.curtaincall.CustomUserDetails;
 import com.ssafy.curtaincall.JwtProvider;
 import com.ssafy.curtaincall.ai.dto.HashtagDTO;
 import com.ssafy.curtaincall.ai.service.AiService;
+import com.ssafy.curtaincall.user.dto.FindIdRequest;
 import com.ssafy.curtaincall.user.dto.LikeCountDto;
 import com.ssafy.curtaincall.user.dto.LoginRequest;
 import com.ssafy.curtaincall.user.dto.LoginResponse;
@@ -264,6 +265,20 @@ public class UserController {
 	    int userId = userDetails.getUserId();
 	    UserMeResponse response = service.getMyInfo(userId);
 	    return ResponseEntity.ok(response);
+	}
+	
+	// 9. 아이디 찾기
+	@PostMapping("/auth/findId")
+	public ResponseEntity<?> findId(@RequestBody FindIdRequest req) {
+		System.out.println("################################");
+		System.out.println(req.getName());
+		System.out.println(req.getEmail());
+		String id = service.findByNameAndEmail(req);
+
+		    if (id == null) {
+		        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("일치하는 회원이 없습니다.");
+		    }
+		    return ResponseEntity.ok(id);
 	}
 
 }

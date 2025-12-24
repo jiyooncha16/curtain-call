@@ -6,14 +6,17 @@
 
 <script setup>
 import api from '@/api/axios';
+import { useAuthStore } from '@/stores/auth';
 import axios from 'axios';
 // import axios from 'axios';
 import { computed, onMounted, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 const props = defineProps ({
     like : Number,
 })
 
+const router = useRouter()
+const auth = useAuthStore()
 const route = useRoute()
 const id = route.params.id
 
@@ -34,7 +37,15 @@ onMounted(async () => {
 
 })
 const heartClicked = async () => {
-  console.log("actorID", id)
+
+  if (!auth.isLogin) {
+    const ok = confirm('로그인하시겠습니까?')
+    if (ok) {
+      router.push('/login')
+    }
+    return
+  }
+  
   const res = await api.post(`/api/actors/like/toggle/${id}`) // 토글하기
   isLiked.value = res.data   // true / false
 

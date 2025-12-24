@@ -142,6 +142,13 @@ public class ActorController {
 	    return ResponseEntity.ok(list);
 	}
 	
+	@GetMapping("/search/onStage")
+	public ResponseEntity<List<Actor>> getOnStagelist() {
+		List<Actor> list = service.getlist();
+		if (list == null || list.size() == 0) return ResponseEntity.noContent().build();
+		return ResponseEntity.ok(list);
+	}
+	
 	// 내가 좋아요 한 배우
 		@GetMapping("/like/myActor")
 	    public ResponseEntity<?> myLikedActors(

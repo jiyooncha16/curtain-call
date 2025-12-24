@@ -32,5 +32,6 @@ public interface ActorMapper {
 		public void deleteLike(@Param("userId")int userId, @Param("actorId")int actorId);
 		public void insertLike(@Param("userId")int userId, @Param("actorId")int actorId);
 		public List<Actor> selectLikedActor(int userId);
+		public List<Actor> selectOnStageActor();
 	
 }

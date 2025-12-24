@@ -19,8 +19,8 @@
 	<select id="selectMusicalByCondition" parameterType="SearchCondition" resultType="Musical">
         SELECT m.*
 		FROM musical AS m
-		JOIN tag_connection AS c ON m.musical_id = c.musical_id
-		JOIN hashtag AS t ON c.tag_id = t.tag_id
+		LEFT JOIN tag_connection AS c ON m.musical_id = c.musical_id
+		LEFT JOIN hashtag AS t ON c.tag_id = t.tag_id
 		LEFT JOIN like_musical AS l ON m.musical_id = l.musical_id
 
         <where>
@@ -40,7 +40,7 @@
 	            AND #{date} BETWEEN m.start_date AND m.end_date
 	        </if>
 	        <if test="fromDate != null">
-			    AND m.start_date &gt; #{fromDate}
+			    AND m.start_date &gt;= #{fromDate}
 			</if>
 			<if test="startDate != null">
 		        AND m.start_date &lt;= #{endDate}

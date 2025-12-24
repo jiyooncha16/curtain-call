@@ -1,36 +1,55 @@
 <template>
-  <div class="login-wrapper">
-    <form class="login-box" @submit.prevent="login">
-      <h2 class="title">로그인</h2>
-
-      <div class="input-group">
-        <label>아이디</label>
-        <input type="text" v-model="username" placeholder="아이디를 입력하세요" />
+  <div class="page">
+    <!-- 헤더 -->
+    <header class="page-header">
+      <div class="header-inner">
+        <p class="page-kicker">MY PAGE</p>
+        <h1 class="page-title">로그인</h1>
       </div>
+    </header>
 
-      <div class="input-group">
-        <label>비밀번호</label>
-        <input type="password" v-model="password" placeholder="비밀번호를 입력하세요" />
-      </div>
+    <!-- 본문 -->
+    <main class="content">
+      <section class="card login-card">
+        <form @submit.prevent="login">
 
-      <button class="login-btn" type="submit">
-        로그인
-      </button>
+          <div class="form-group">
+            <label>아이디</label>
+            <input
+              type="text"
+              v-model="username"
+              placeholder="아이디를 입력하세요"
+            />
+          </div>
 
-      <div class="extra">
-        <span @click="goSignup">회원가입</span>
-        <span class="divider">|</span>
-        <span @click="goFindId">아이디 찾기</span>
-        <span class="divider">|</span>
-        <span @click="goChangePassword">비밀번호 재설정</span>
-      </div>
-    </form>
+          <div class="form-group">
+            <label>비밀번호</label>
+            <input
+              type="password"
+              v-model="password"
+              placeholder="비밀번호를 입력하세요"
+            />
+          </div>
+
+          <button class="btn primary" type="submit">
+            로그인
+          </button>
+
+          <div class="extra">
+            <span @click="goSignup">회원가입</span>
+            <span class="divider">|</span>
+            <span @click="goFindId">아이디 찾기</span>
+            <span class="divider">|</span>
+            <span @click="goChangePassword">비밀번호 재설정</span>
+          </div>
+
+        </form>
+      </section>
+    </main>
   </div>
 </template>
-
 <script setup>
 import api from '@/api/axios'
-import axios from 'axios'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
@@ -41,112 +60,127 @@ const router = useRouter()
 const username = ref('')
 const password = ref('')
 
-// 로그인 비동기 요청
-const login = () => {
-
-  // 둘 다 입력해야
+const login = async () => {
   if (!username.value || !password.value) {
     alert('아이디와 비밀번호를 입력해주세요.')
     return
   }
 
-  // 로그인
-  console.log('로그인 시도:', username.value, password.value)
-  api.post(`/api/user/auth/login`, {
-    username: username.value,
-    password: password.value
-  })
-    .then((res) => {
-      console.log(res.data)
-      alert("로그인에 성공했습니다.")
-      const token = res.data.accessToken
-      auth.login(token)
-      router.push('/')
+  try {
+    const res = await api.post('/api/user/auth/login', {
+      username: username.value,
+      password: password.value
     })
-    .catch((err) => {
-      alert("아이디, 비밀번호가 잘못되었습니다.")
-      console.log(err)
-    })
-    .finally(() => {
-      username.value = ''
-      password.value = ''
-    })
+
+    auth.login(res.data.accessToken)
+    alert('로그인에 성공했습니다.')
+    router.push('/')
+  } catch (e) {
+    alert('아이디 또는 비밀번호가 잘못되었습니다.')
+  } finally {
+    username.value = ''
+    password.value = ''
+  }
 }
 
-const goSignup = () => {
-  router.push('/signup')
-}
-
-const goFindId = () => {
-  router.push('/login/findId')
-}
-
-const goChangePassword = () => {
-  router.push('/login/changePassword')
-}
+const goSignup = () => router.push('/signup')
+const goFindId = () => router.push('/login/findId')
+const goChangePassword = () => router.push('/login/changePassword')
 </script>
-
 <style scoped>
-.login-wrapper {
-  min-height: 70vh;
+.page {
+  padding: 60px 18px 60px 18px;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+}
+
+.page-header {
   display: flex;
   justify-content: center;
-  align-items: center;
-  background-color: white;
-  font-family: var(--font-main);
+  margin-bottom: 20px;
 }
 
-.login-box {
-  width: 360px;
-  padding: 30px;
-  background: #eae9e973;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(71, 61, 61, 0.486);
+.header-inner {
+  width: 100%;
+  max-width: 420px;
 }
 
-.title {
-  text-align: center;
-  margin-bottom: 25px;
+.page-kicker {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  opacity: 0.7;
 }
 
-.input-group {
-  margin-bottom: 15px;
+.page-title {
+  font-size: 28px;
+  font-weight: 800;
+  margin: 6px 0;
 }
 
-.input-group label {
-  display: block;
-  font-size: 14px;
+.content {
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 28px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+label {
+  font-size: 13px;
+  font-weight: 700;
   margin-bottom: 6px;
 }
 
-.input-group input {
-  width: 100%;
-  padding: 10px;
+input {
+  border-radius: 12px;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 12px 14px;
+  font-size: 14px;
 }
 
-.login-btn {
+input:focus {
+  outline: none;
+  border-color: #111;
+}
+
+.btn {
   width: 100%;
-  padding: 12px;
   margin-top: 10px;
-  background-color: #800000;
-  color: white;
+  padding: 12px;
+  border-radius: 12px;
   border: none;
-  border-radius: 4px;
-  font-size: 16px;
+  font-weight: 800;
   cursor: pointer;
 }
 
-.login-btn:hover {
-  background-color: var(--bg-dark);
+.btn.primary {
+  background: #111;
+  color: #fff;
+}
+
+.btn.primary:hover {
+  opacity: 0.9;
 }
 
 .extra {
-  margin-top: 15px;
+  margin-top: 18px;
   text-align: center;
   font-size: 13px;
-  color: #555;
+  color: #666;
 }
 
 .extra span {
@@ -155,17 +189,6 @@ const goChangePassword = () => {
 
 .divider {
   margin: 0 6px;
-}
-
-.input-group input {
-  border: none;
-  outline: none;
-  box-shadow: none;
-}
-
-input:focus {
-  border: none;
-  outline: none;
-  box-shadow: none;
+  opacity: 0.5;
 }
 </style>

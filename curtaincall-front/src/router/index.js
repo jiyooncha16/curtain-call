@@ -22,6 +22,7 @@ import { useAuthStore } from '@/stores/auth'
 import FrequentActorsView from '@/views/myPage/FrequentActorsView.vue'
 import MusicalLikeView from '@/views/myPage/MusicalLikeView.vue'
 import ActorLikeView from '@/views/myPage/ActorLikeView.vue'
+import ErrorPage from '@/views/ErrorPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -156,6 +157,18 @@ const router = createRouter({
       name: 'exaple',
       component: SubView,
     },
+    // 공용 에러 페이지
+    {
+      path: '/error',
+      name: 'Error',
+      component: ErrorPage
+    },
+
+    // 404
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: { path: '/error' }
+    }
   ],
   
   scrollBehavior(to, from, savedPosition) {
