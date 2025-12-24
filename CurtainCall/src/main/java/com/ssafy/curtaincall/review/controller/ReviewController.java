@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.curtaincall.CustomUserDetails;
+import com.ssafy.curtaincall.ai.service.AiService;
 import com.ssafy.curtaincall.board.dto.Board;
 import com.ssafy.curtaincall.board.dto.BoardLikes;
 import com.ssafy.curtaincall.board.dto.BoardSearchCondition;
@@ -63,6 +64,10 @@ public class ReviewController {
 	@Autowired
 	@Qualifier("reviewServiceImpl")
 	ReviewService service;
+	
+	@Autowired
+	@Qualifier("aiServiceImpl")
+	AiService aiService;
 	
 	/* 1-1. 뮤지컬별 리뷰 목록 조회
 	 *
@@ -241,6 +246,14 @@ public class ReviewController {
 		int result = service.deleteReview(id);
 		if (result == 1) return ResponseEntity.ok("리뷰가 삭제되었습니다!");
         else return ResponseEntity.badRequest().body("리뷰 삭제 실패 : 없는 리뷰입니다.");
+    }
+    
+    // 리뷰 AI
+    @GetMapping("/generateReview")
+    public ResponseEntity<?> generateReview(@RequestParam String title, @RequestParam String keyword) {
+		if (title == null || keyword == null) return ResponseEntity.badRequest().body("키워드 또는 제목이 없습니다.");
+		String result = aiService.generateReview(title, keyword);
+		return ResponseEntity.ok(result);
     }
     
     

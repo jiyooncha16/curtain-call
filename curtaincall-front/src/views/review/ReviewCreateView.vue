@@ -30,6 +30,34 @@
         </div>
       </div>
 
+      <!-- AI -->
+      <div class="field ai-field">
+        <label class="label">AI</label>
+
+        <div class="ai-row">
+          <input
+            type="text"
+            class="input ai-input"
+            :value="keyword"
+            placeholder="키워드를 10자 이상 입력하세요."
+          />
+
+          <button
+            class="ai-btn"
+            :disabled="loading"
+            @click="generateReview"
+          >
+            {{ loading ? '생성 중...' : '리뷰 생성' }}
+          </button>
+        </div>
+
+        <p class="ai-help">
+          예시 : 감동적인 스토리, 또 보고 싶음, 넘버가 좋음
+        </p>
+      </div>
+
+
+
       <!-- 리뷰 내용 -->
       <div class="field">
         <label class="label">리뷰 내용</label>
@@ -73,8 +101,38 @@ onMounted( async ()=> {
     title.value = musical.data.title
 })
 const content = ref('')
+const keyword = ref('')
 const rate = ref(0)
 const authStore = useAuthStore()
+const loading = ref(false)
+
+const generateReview = async () => {
+  if (content.length < 10) {
+    alert('키워드를 10자 이상 적어주세요.')
+    return
+  }
+
+  if (title.length < 1) {
+    alert('제목이 없습니다.')
+    return
+  }
+
+  
+  loading.value = true
+  const res = await axios.get('/api/reviews/generateReview', {
+    params : {
+      title : title.value,
+      keyword : keyword.value
+    }
+  })
+  await new Promise(resolve => setTimeout(resolve, 1500))
+
+  loading.value = false
+  content.value = res.data
+  alert('리뷰 초안이 생성되었습니다! 다듬어서 작성해보세요.')
+
+}
+
 const submitReview = async () => {
     if (rate.value === 0) {
     alert('평점을 선택해 주세요.')
@@ -208,6 +266,58 @@ const submitReview = async () => {
   font-size: 12px;
   color: #888;
   margin-top: 4px;
+}
+
+
+.ai-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ai-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ai-input {
+  flex: 1;
+  height: 44px;
+  font-size: 14px;
+}
+
+.ai-btn {
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #111 0%, #333 100%);
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+/* hover */
+.ai-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* disabled 상태용 (키워드 3개 미만일 때 추천) */
+.ai-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.ai-help {
+  font-size: 13px;
+  color: #777;
 }
 
 

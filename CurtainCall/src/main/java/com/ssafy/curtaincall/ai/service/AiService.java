@@ -10,4 +10,5 @@ import com.ssafy.curtaincall.ai.mapper.AiMapper;
 public interface AiService {
 	public List<HashtagDTO> hashtagCount(int id);
 	public String generateUserTaste(int id);
+	public String generateReview(String title, String keyword);
 }
