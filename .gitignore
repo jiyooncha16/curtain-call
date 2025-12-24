@@ -12,3 +12,8 @@ out/
 *.classpath
 *.project
 *.settings/
+
+# env
+.env
+.env.local
+.env.*.local

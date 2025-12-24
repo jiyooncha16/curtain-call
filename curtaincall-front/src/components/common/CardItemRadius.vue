@@ -1,48 +1,48 @@
 <template>
     <div class="poster" @click="clicked(actor.actorId)">
         <div class="img-box">
-            <img :src="`/${actor.image}`">
+            <img :src="`/${actor.image}`" />
         </div>
-        <div class="basic-text">{{actor.name}}</div>
-        <div class="basic-text">({{ actor.roleName }})</div>
+        <div class="basic-text">{{ actor.name }}</div>
     </div>
 </template>
 
 <script setup>
-import router from '@/router';
+import router from '@/router'
 
-const props = defineProps({
-    actor : Object,
+defineProps({
+    actor: Object
 })
 
-console.log(props.actor)
-const clicked = function(id) {
+const clicked = (id) => {
     router.push(`/actor/${id}`)
-
 }
 </script>
 
 <style scoped>
 .img-box {
     width: 60%;
-    aspect-ratio: 1/1;
+    aspect-ratio: 1 / 1;
     border-radius: 50%;
     overflow: hidden;
 }
+
 img {
     width: 100%;
     height: 100%;
-    object-fit:cover;
-    
-}
-.poster {
-  display: flex;
-  flex-direction: column;  /* 이미지 위 / 이름 아래 */
-  align-items: center;
-  margin: 10px;
-}
-.basic-text {
-    margin: 0
+    object-fit: cover;
 }
 
+.poster {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.basic-text {
+    margin-top: 6px;
+    font-size: 14px;
+}
 </style>

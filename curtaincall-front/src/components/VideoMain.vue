@@ -106,7 +106,7 @@ onMounted(() => {
 /* 캐러셀 */
 .carousel-wrapper {
   position: relative;
-  padding: 20px 56px;
+  padding: 0 56px;
 }
 
 /* ===== 네비 버튼 ===== */
