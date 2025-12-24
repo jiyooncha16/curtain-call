@@ -1,53 +1,42 @@
 <template>
   <div class="carousel-wrapper">
-
-    <!-- 이전 / 다음 -->
-    <button
-      ref="prevEl"
-      class="nav prev"
-      :class="{ disabled: isBeginning }"
-      aria-label="이전"
-    >
-      <i class="bi bi-chevron-left"></i>
-    </button>
-
-    <button
-      ref="nextEl"
-      class="nav next"
-      :class="{ disabled: isEnd }"
-      aria-label="다음"
-    >
-      <i class="bi bi-chevron-right"></i>
-    </button>
-
-    <Swiper
-      :modules="[Navigation]"
-      :navigation="{ prevEl, nextEl }"
-      :slides-per-view="'auto'"
-      :space-between="18"
-      @swiper="onSwiper"
-      @slideChange="onSlideChange"
-    >
-      <SwiperSlide
-        v-for="musical in musicalList"
-        :key="musical.musicalId"
-      >
+    <!-- 🔥 Swiper -->
+    <Swiper :modules="[Navigation]" :navigation="{ prevEl, nextEl }" :slides-per-view="'auto'" :space-between="18"
+      @swiper="onSwiper" @slideChange="onSlideChange">
+      <SwiperSlide v-for="musical in musicalList" :key="musical.musicalId">
         <CardItem :item="musical" />
       </SwiperSlide>
     </Swiper>
+
+    <!-- 🔥 오른쪽 하단 네비 버튼 -->
+    <div class="bottom-nav">
+      <button ref="prevEl" class="nav-btn" :class="{ disabled: isBeginning }" aria-label="이전">
+        <i class="bi bi-chevron-left"></i>
+      </button>
+
+      <button ref="nextEl" class="nav-btn" :class="{ disabled: isEnd }" aria-label="다음">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
   </div>
 </template>
 
-
 <script setup>
-import CardItem from './CardItem.vue';
+import CardItem from './CardItem.vue'
 
-// 카드 스와이프 위한 스와이퍼
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Navigation } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
-import { nextTick, ref } from 'vue';
+
+import { ref, nextTick } from 'vue'
+
+defineProps({
+  musicalList: {
+    type: Array,
+    required: true
+  }
+})
 
 const prevEl = ref(null)
 const nextEl = ref(null)
@@ -56,8 +45,8 @@ const isBeginning = ref(true)
 const isEnd = ref(false)
 
 const onSwiper = async (swiper) => {
-  await nextTick()        // DOM 렌더 완료 대기
-  swiper.update()         // 슬라이드 재계산
+  await nextTick()
+  swiper.update()
 
   isBeginning.value = swiper.isBeginning
   isEnd.value = swiper.isEnd
@@ -67,77 +56,64 @@ const onSlideChange = (swiper) => {
   isBeginning.value = swiper.isBeginning
   isEnd.value = swiper.isEnd
 }
-
-const props = defineProps({
-  musicalList : Array
-})
 </script>
+
 <style scoped>
-/* ===== 슬라이드 크기 ===== */
+/* ===== 카드 크기 ===== */
 .swiper-slide {
   width: 150px;
-  height: auto;
 }
 
-/* ===== 캐러셀 전체 =====
+/* ===== 전체 래퍼 ===== */
 .carousel-wrapper {
   position: relative;
-  padding: 24px 56px;
+  padding-bottom: 36px;
+  /* 🔥 버튼 공간 확보 */
+}
 
-  background: #ffffff;
-  border-radius: 20px;
-
-  box-shadow:
-    0 12px 32px rgba(0,0,0,0.08);
-
-  overflow: hidden;
-} */
-
-/* ===== 네비 버튼 ===== */
-.nav {
+/* ===== 오른쪽 하단 버튼 ===== */
+.bottom-nav {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
+  right: 12px;
+  bottom: 0;
 
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
+  display: flex;
+  gap: 10px;
+}
+
+/* 버튼 */
+.nav-btn {
+  width: 20px;
+  height: 20px;
+
   border: none;
 
-  background: rgba(255,255,255,0.95);
+  background: #fff;
   color: #333;
-  font-size: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   cursor: pointer;
 
-  box-shadow:
-    0 8px 20px rgba(0,0,0,0.15);
-
-  transition: all 0.2s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-/* 위치 */
-.nav.prev { left: 10px; }
-.nav.next { right: 10px; }
+/* 
+.nav-btn:hover:not(.disabled) {
+  transform: scale(1.08);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
+} */
 
-/* hover */
-.nav:not(.disabled):hover {
-  transform: translateY(-50%) scale(1.08);
-  box-shadow:
-    0 12px 28px rgba(0,0,0,0.22);
-}
-
-/* 비활성화 */
-.nav.disabled {
+.nav-btn.disabled {
   opacity: 0.35;
   pointer-events: none;
 }
 
-/* 아이콘 정렬 */
-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* 아이콘 */
+.nav-btn i {
+  font-size: 18px;
 }
 </style>

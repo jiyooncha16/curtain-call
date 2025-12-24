@@ -16,7 +16,10 @@
         <div class="container profile">
           <div class="circle-img-wrapper">
             <div class="circle-img">
-              <img :src="hong" alt="홍광호" />
+              <img :src="userProfile.profileImage" alt="프로필" />
+              <div class="nickname-text">
+                {{ userProfile.rawUser.user.nickname }}
+              </div>
             </div>
 
             <!-- 수정 버튼 -->
@@ -116,33 +119,30 @@
         </button>
       </div>
       <div class="rate-wrapper">
-  <!-- 블러 대상 -->
-  <div
-    class="rate-avg-wrapper"
-    :class="{ blurred: rate == 0 }"
-  >
-    <div class="rate-box center" style="width: 30%">
-      <div class="title-text" style="font-size: 35px;">
-        {{ rate }}
-      </div>
-      <Rate :rate="rate" />
-      <div class="basic-text">
-        내 리뷰 {{ user.counts.reviewCount }}개
-      </div>
-    </div>
+        <!-- 블러 대상 -->
+        <div class="rate-avg-wrapper" :class="{ blurred: rate == 0 }">
+          <div class="rate-box center" style="width: 30%">
+            <div class="title-text" style="font-size: 35px;">
+              {{ rate }}
+            </div>
+            <Rate :rate="rate" />
+            <div class="basic-text">
+              내 리뷰 {{ user.counts.reviewCount }}개
+            </div>
+          </div>
 
-    <div style="width: 70%; padding:10px 0">
-      <RateStats :stats="stats" />
-    </div>
-  </div>
+          <div style="width: 70%; padding:10px 0">
+            <RateStats :stats="stats" />
+          </div>
+        </div>
 
-  <!-- 오버레이 -->
-  <div v-if="rate === 0" class="rate-overlay" @click="overlayClicked">
-    <div class="overlay-text">
-      리뷰를 입력해보세요!
-    </div>
-  </div>
-</div>
+        <!-- 오버레이 -->
+        <div v-if="rate === 0" class="rate-overlay" @click="overlayClicked">
+          <div class="overlay-text">
+            리뷰를 입력해보세요!
+          </div>
+        </div>
+      </div>
 
     </div>
 
@@ -158,7 +158,7 @@
 
 <script setup>
 import PhotoBoard from "@/components/common/PhotoBoard.vue";
-import hong from "@/assets/홍광호.jpg";
+
 import HashtagForMypage from "@/components/common/icon/HashtagForMypage.vue";
 import Calendar from "@/components/common/calendar.vue";
 import { onMounted, ref, toRaw } from "vue";
@@ -167,6 +167,8 @@ import RateStats from "@/components/common/RateStats.vue";
 import Rate from "@/components/common/icon/Rate.vue";
 import { useAuthStore } from "@/stores/auth";
 import api from "@/api/axios";
+import { computed } from "vue";
+import { useUserProfileStore } from "@/stores/userProfile";
 const loading = ref(true)
 
 // const monthNow = emit.month
@@ -209,6 +211,38 @@ onMounted(async () => {
     loading.value = false   // 🔥 여기서 한 번만 끈다
   }
 })
+
+
+// const DEFAULT_IMAGES = [
+//   '/profile/default.jpg',
+//   '/profile/profile1.jpg',
+//   '/profile/profile2.jpg',
+//   '/profile/profile3.jpg',
+//   '/profile/profile4.jpg',
+// ]
+
+// // ✅ userId 기반 고정 랜덤
+// function getRandomDefault(userId) {
+//   if (!userId) return DEFAULT_IMAGES[0]
+//   const index = userId % DEFAULT_IMAGES.length
+//   return DEFAULT_IMAGES[index]
+// }
+
+// const profileImage = computed(() => {
+//   const img = user.value?.user?.profileImage
+//   if (img) return img
+
+//   const userId = user.value?.user?.userId
+//   return getRandomDefault(userId)
+// })
+const userProfile = useUserProfileStore()
+
+onMounted(async () => {
+  if (!userProfile.rawUser) {
+    await userProfile.fetchMe()
+  }
+})
+
 
 // const route = useRoute();
 // const id = route.params.id;
@@ -391,7 +425,7 @@ function likeActorClicked() {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   cursor: pointer;
 
-  transition: 
+  transition:
     transform 0.25s ease,
     box-shadow 0.25s ease,
     background-color 0.25s ease;
@@ -565,7 +599,8 @@ function likeActorClicked() {
 .blurred {
   filter: blur(4px);
   opacity: 0.6;
-  pointer-events: none; /* 클릭 막기 */
+  pointer-events: none;
+  /* 클릭 막기 */
 }
 
 /* 오버레이 */
@@ -586,5 +621,4 @@ function likeActorClicked() {
   font-size: 16px;
   font-weight: 600;
 }
-
 </style>

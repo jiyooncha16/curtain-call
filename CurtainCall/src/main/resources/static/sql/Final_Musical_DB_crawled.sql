@@ -667,7 +667,7 @@ NULL),
 '〈킹키부츠〉 - 성남 2025.11.15 ~ 2025.11.16 성남아트센터 오페라하우스 찰리 역'),
 
 (63,'강홍석',NULL,NULL,
-'https://jament.co.kr/artist/profile?artist_id=9 | https://www.instagram.com/bollsar0211/',
+'https://www.instagram.com/bollsar0211/',
 'actor_images/26127.gif',
 '〈킹키부츠〉 2025.12.17 ~ 2026.03.29 샤롯데씨어터 롤라 역',
 '〈킹키부츠〉 - 용인 2025.12.06 ~ 2025.12.07 용인포은아트홀 롤라 역',

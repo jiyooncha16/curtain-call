@@ -16,10 +16,20 @@
 	</select>
 	
 	<!-- 개별 항목 조회 -->
-	<select id="selectUserById" parameterType="int" resultType="User">
-		SELECT * FROM users
-		WHERE user_id = #{userId}
+	<select id="selectUserById" resultType="User">
+	  SELECT
+	    user_id,
+	    username,
+	    password,
+	    name,
+	    email,
+	    phone,
+	    nickname,
+	    user_profile_image AS profileImage
+	  FROM users
+	  WHERE user_id = #{userId}
 	</select>
+
 	
 	<!-- 아이디 찾기 용 -->
 	<select id="selectUserByNameAndEmail" parameterType="FindIdRequest" resultType="String">
@@ -86,19 +96,36 @@
 	
 	<!--수정-->
 	<update id="updateUser" parameterType="User">
-		UPDATE users
-	  <set>
-	    <if test="password != null">
-	      password = #{password},
-	    </if>
-	    name = #{name},
-	    email = #{email},
-	    nickname = #{nickname}
-	  </set>
-	  WHERE user_id = #{userId}
-	</update>
-	
-	
+  UPDATE users
+  <set>
+    <if test="name != null">
+      name = #{name},
+    </if>
+
+    <if test="nickname != null">
+      nickname = #{nickname},
+    </if>
+
+    <if test="email != null">
+      email = #{email},
+    </if>
+
+    <if test="phone != null">
+      phone = #{phone},
+    </if>
+
+    <if test="profileImage != null">
+      user_profile_image = #{profileImage},
+    </if>
+
+    <if test="password != null">
+      password = #{password}
+    </if>
+  </set>
+  WHERE user_id = #{userId}
+</update>
+
+
 	<!-- 삭제 -->
 	<delete id="deleteUser" parameterType="int">
 		DELETE FROM users

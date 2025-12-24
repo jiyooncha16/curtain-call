@@ -18,11 +18,11 @@
 import router from '@/router';
 
 const props = defineProps({
-    item: Object
+  item: Object
 })
 console.log(props.item)
-const clicked = function(id) {
-    router.push(`/musical/${id}`)
+const clicked = function (id) {
+  router.push(`/musical/${id}`)
 }
 </script>
 
@@ -37,13 +37,13 @@ const clicked = function(id) {
   cursor: pointer;
 
   background: #fff;
-  box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 16px 36px rgba(0,0,0,0.14);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.14);
 }
 
 /* ===== 포스터 ===== */
@@ -76,12 +76,10 @@ const clicked = function(id) {
   padding: 28px 12px 12px;
 
   /* 🔥 핵심: 검은색 흐림 그라데이션 */
-  background: linear-gradient(
-    to top,
-    rgba(0,0,0,0.75),
-    rgba(0,0,0,0.35),
-    rgba(0,0,0,0)
-  );
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.75),
+      rgba(0, 0, 0, 0.35),
+      rgba(0, 0, 0, 0));
 }
 
 /* ===== 제목 ===== */
@@ -98,6 +96,6 @@ const clicked = function(id) {
   -webkit-box-orient: vertical;
   overflow: hidden;
 
-  text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
 }
 </style>

@@ -111,7 +111,9 @@ public class UserServiceImpl implements UserService {
 	            user.getName(),
 	            user.getEmail(),
 	            user.getPhone(),
-	            user.getNickname()
+	            user.getNickname(),
+	            user.getProfileImage()
+
         );
         List<HashtagDTO> tags = aiService.hashtagCount(userId);
 
@@ -122,6 +124,8 @@ public class UserServiceImpl implements UserService {
         return new MyPageResponseDto(userDto, tags, taste, counts);
     }
 	
+
+
 	@Override
     public UserMeResponse getMyInfo(int userId) {
 
