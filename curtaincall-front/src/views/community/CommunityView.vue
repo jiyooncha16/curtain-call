@@ -103,7 +103,7 @@ const goWrite = () => {
   font-size: 20px;
   font-weight: 900;
   padding: 0 .15em; /* 살짝 여백 */
-  background: linear-gradient(transparent 55%, #ffd6d6 55%);
+  background: linear-gradient(transparent 55%, #ffcf407a 55%);
 }
 
 /* ===== buttons ===== */
@@ -125,11 +125,12 @@ const goWrite = () => {
 
 .btn.primary {
   border-color: transparent;
-  background: #ffd6d6;
-  color: #fd4040;
+  background: rgb(0, 0, 0);
+  color: #ffffff;
 }
 
 .btn.primary:hover {
-  background: #ffb3b3;
+  background: #d1d1d1;
+  color: black;
 }
 </style>

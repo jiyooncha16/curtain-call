@@ -133,9 +133,9 @@ watch(
 }
 
 .page-btn.active {
-  background: #7b0000;
+  background: #000000;
   color: #fff;
-  border-color: #7b0000;
+  border-color: #000000;
 }
 
 .page-btn:disabled {

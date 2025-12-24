@@ -22,7 +22,7 @@ import Footer from './components/layout/Footer.vue';
   flex-direction: column;
 }
 main {
-  margin : 20px auto;
+  margin : 0px auto;
   width : 50%;
   flex: 1;
   font-family: "IBM Plex Sans KR", sans-serif;

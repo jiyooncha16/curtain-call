@@ -7,10 +7,23 @@
 
   <!-- 🔥 2. 로딩 끝 + 데이터 있음 -->
   <div v-else-if="user">
-    <BackButton label="뮤지컬 목록으로" />
-    <div class="title-text">마이페이지</div>
+    
+
+  <!-- ===== Hero ===== -->
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-text">
+          <p class="hero-kicker">MY PAGE</p>
+          <h1 class="hero-title">내가 사랑한 무대의 모든 순간</h1>
+          <p class="hero-sub">
+            나는 어떤 무대를 사랑해왔을까요?
+          </p>
+        </div>
+      </div>
+    </section>
+
     <!-- 상단 프로필 영역 -->
-    <div class="flex">
+    <div class="flex" style="margin-top: 20px;">
       <div class="container flex my-profile" style="justify-content: space-around; width: 100%">
         <!-- 왼쪽 프로필 -->
         <div class="container profile">
@@ -274,6 +287,11 @@ function likeActorClicked() {
 </script>
 
 <style scoped>
+
+.info-row {
+  margin-top : 20px;
+}
+
 .loading-wrapper {
   height: 60vh;
   display: flex;
@@ -286,7 +304,7 @@ function likeActorClicked() {
   width: 48px;
   height: 48px;
   border: 5px solid #eee;
-  border-top: 5px solid #800000;
+  border-top: 5px solid #3f3f3f;
   border-radius: 50%;
   animation: spin 0.9s linear infinite;
   margin-bottom: 14px;
@@ -324,8 +342,9 @@ function likeActorClicked() {
   width: 100%;
   height: 100%;
   aspect-ratio: 1/1;
-  border-radius: 50%;
+  border-radius: 100%;
   overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.187);
 }
 
 .circle-img img {
@@ -367,7 +386,7 @@ function likeActorClicked() {
   position: relative;
   width: 50%;
   aspect-ratio: 4/1;
-  background-color: rgb(245, 245, 245);
+  background-color: rgba(226, 226, 226, 0.356);
   /* opacity: 50%; */
   border-radius: 18px;
   box-shadow:
@@ -621,4 +640,92 @@ function likeActorClicked() {
   font-size: 16px;
   font-weight: 600;
 }
+
+/* =========================
+   HERO : Section
+========================= */
+.hero {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  background: linear-gradient(
+    180deg,
+    #000000 30%,
+    #00000094 60%,
+    #0505051c 100%
+  );
+  /* padding: 30px 20px 0px; */
+  padding : 15px 0;
+
+  height : 180px;
+}
+/* =========================
+   HERO : Inner Wrapper
+========================= */
+.hero-inner {
+  max-width: 1200px;
+  width: 50%;
+  margin: 0 auto;
+  color: #fff;
+}
+/* =========================
+   HERO : Text Block
+========================= */
+.hero-text {
+  width: 58%;
+  display: flex;
+  flex-direction: column;
+}
+/* =========================
+   HERO : Kicker
+========================= */
+.hero-kicker {
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+/* =========================
+   HERO : Title
+========================= */
+.hero-title {
+  font-size: 36px;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+/* =========================
+   HERO : Subtitle
+========================= */
+.hero-sub {
+  font-size: 16px;
+  color: #dbdbdb;
+  max-width: 420px;
+}
+/* =========================
+   HERO : Stats Wrapper
+========================= */
+.hero-stats {
+  display: flex;
+  gap: 24px;
+  margin-top: 28px;
+}
+/* =========================
+   HERO : Stat Item
+========================= */
+.stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat .num {
+  font-size: 28px;
+  font-weight: 800;
+  color: #7b0000;
+}
+
+.stat .label {
+  font-size: 13px;
+  color: #666;
+}
+
+
 </style>

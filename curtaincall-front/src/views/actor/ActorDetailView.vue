@@ -1,12 +1,16 @@
 <template>
   <!-- actor 로드 전에는 아무것도 안 그림 -->
-  <div v-if="actor">
+  <div v-if="actor" class="background">
+    <div class="box">
 
     <!-- 뒤로가기 -->
-    <button class="back-btn" @click="goBack">
-      <i class="bi bi-arrow-left"></i>
-      배우 목록
-    </button>
+    <!-- 상단 네비 -->
+    <!-- <div class="topbar">
+      <button class="icon-btn" @click="goBack">
+        <i class="bi bi-arrow-left"></i>
+      </button>
+      <div class="topbar-title">배우 목록</div>
+    </div> -->
 
     <!-- ===== Actor Hero ===== -->
     <div class="actor-hero">
@@ -67,6 +71,7 @@
     </div>
     <!-- ===== 관련 배우 ===== -->
     <RelatedActorList :actors="relatedActors" />
+  </div>
   </div>
 </template>
 
@@ -143,6 +148,14 @@ const goBack = () => {
 </script>
 
 <style scoped>
+
+/* .box {
+  margin : 20px;
+}
+.background {
+  background-color: rgba(211, 211, 211, 0.37);
+} */
+
 .back-btn {
   background: none;
   border: none;
@@ -259,4 +272,29 @@ const goBack = () => {
   border-radius: 12px;
   border-left: 4px solid #e5e7eb;
 }
+
+
+/* ===== topbar ===== */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 4px 14px;
+}
+.topbar-title {
+  flex: 1;
+  font-size: 18px;
+  /* font-weight: 800; */
+}
+.icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  border: 1px solid #e6e8ee;
+  background: #fff;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.icon-btn:hover { background: #f3f5fa; }
 </style>

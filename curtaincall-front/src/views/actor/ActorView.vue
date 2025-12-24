@@ -2,28 +2,35 @@
   <div class="page">
 
     <!-- ===== Hero ===== -->
-    <section class="hero">
-      <div class="hero-inner">
-        <div class="hero-text">
-          <p class="hero-kicker">ACTOR</p>
-          <h1 class="hero-title">무대를 빛내는 배우들</h1>
-          <p class="hero-sub">
-            인기 배우부터 전체 배우까지 한눈에 살펴보세요.
-          </p>
+    <section class="hero hero--actor">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <p class="hero-kicker gold">ACTOR</p>
 
-          <div class="hero-stats">
-            <div class="stat">
-              <span class="num">{{ animatedTotal  }}</span>
-              <span class="label">전체 배우</span>
-            </div>
-            <div class="stat">
-              <span class="num">{{ animatedTotal - 61 }}</span>
-              <span class="label">공연 중인 배우</span>
-            </div>
-          </div>
+      <h1 class="hero-title">
+        무대를 <span class="gold">빛내는</span> 배우들
+      </h1>
+
+      <p class="hero-sub">
+        인기 배우부터 전체 배우까지 한눈에 살펴보세요.
+      </p>
+
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="num">{{ animatedTotal }}</span>
+          <span class="label">전체 배우</span>
+        </div>
+        <div class="stat">
+          <span class="num">
+            {{ animatedTotal >= 61 ? animatedTotal - 61 : 0 }}
+          </span>
+          <span class="label">공연 중인 배우</span>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
+
 
     <!-- ===== TOP 5 ===== -->
     <section class="section">
@@ -235,63 +242,155 @@ watch(onStageCount, (newVal) => {
 .page {
   color: #222;
 }
-
-/* ===== Hero ===== */
+/* ===== Hero : ACTOR ===== */
 .hero {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  height: 480px;
+
+  position: relative;
+
+  background-image:
+    /* 좌우 암전 */
+    linear-gradient(
+      to right,
+      rgba(0,0,0,0.85),
+      rgba(0,0,0,0.35),
+      rgba(0,0,0,0.85)
+    ),
+    /* 상하 무대 눌림 */
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.35),
+      rgba(0,0,0,0.75)
+    ),
+    /* ACTOR 전용 배경 (임시 동일 이미지) */
+    url('/배우3.jpg');
+
+  background-size: cover;
+  /* background-position: start; */
+
+  background-repeat: no-repeat;
+
+  display: flex;
+  align-items: center;
+}
+
+/* ===== Gold Accent (Hero Common) ===== */
+.hero .gold {
+  background: linear-gradient(
+    90deg,
+    #c9a24d,
+    #ffd77a,
+    #c9a24d
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-shadow:
+    0 2px 6px rgba(0,0,0,0.6),
+    0 0 12px rgba(255,215,122,0.25);
+}
+
+/* ===== Title Accent (Actor) ===== */
+.hero--actor .hero-title .accent {
+  color: #ffffff;
+  background: linear-gradient(
+    90deg,
+    #ffffff,
+    #dcdcdc
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-shadow: 0 6px 18px rgba(0,0,0,0.6);
+}
+
+/* 안개 레이어 (뮤지컬보다 약하게) */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
   background: linear-gradient(
     180deg,
-    #9c1e1e44 0%,
-    #ffd6d673 60%,
-    #ffffff 100%
+    rgba(255,255,255,0.04),
+    rgba(255,255,255,0)
   );
-  padding: 80px 20px 60px;
+  pointer-events: none;
 }
 
+/* ===== Hero Inner ===== */
 .hero-inner {
-  max-width: 1200px;
+  width: 55%;
   margin: 0 auto;
+  padding: 0 80px;
+
+  position: relative;
+  z-index: 1;
+  color: #fff;
 }
 
+/* ===== Text ===== */
 .hero-kicker {
   font-size: 12px;
-  letter-spacing: 0.2em;
-  color: #ffffff;
-  margin-bottom: 12px;
+  letter-spacing: 0.28em;
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 14px;
 }
 
 .hero-title {
-  font-size: 36px;
+  font-size: 40px;
   font-weight: 800;
-  margin-bottom: 16px;
+  line-height: 1.25;
+  margin-bottom: 18px;
+
+  color: #ffffff;
+  text-shadow: 0 6px 18px rgba(0,0,0,0.65);
 }
 
 .hero-sub {
   font-size: 16px;
-  color: #666;
+  line-height: 1.6;
   max-width: 420px;
+
+  color: rgba(255,255,255,0.75);
 }
 
+/* ===== Stats ===== */
 .hero-stats {
   display: flex;
   gap: 24px;
-  margin-top: 28px;
+  margin-top: 30px;
 }
 
 .stat {
-  display: flex;
-  flex-direction: column;
+  min-width: 100px;
+  padding: 14px 18px;
+
+  border-radius: 14px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(6px);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.15),
+    0 10px 24px rgba(0,0,0,0.35);
 }
 
 .stat .num {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 800;
-  color: #7b0000;
+  color: #ffffff;
 }
 
 .stat .label {
   font-size: 13px;
-  color: #666;
+  margin-top: 4px;
+  color: rgba(255,255,255,0.7);
 }
+
 
 /* ===== Section ===== */
 .section {

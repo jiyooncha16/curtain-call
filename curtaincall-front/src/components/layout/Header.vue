@@ -102,62 +102,135 @@ const logout = () => {
 </script>
 
 <style scoped>
-/* ===== Header ===== */
+/* =========================
+   Header
+========================= */
 header {
   width: 100%;
-  height: 60px;
-  padding: 0 20px;
+  height: 64px;
+  padding: 0 28px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #800000;
+
+  background: #000; /* 🔥 완전 블랙 */
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+
   box-sizing: border-box;
 }
 
-/* ===== Rows ===== */
+/* =========================
+   Rows
+========================= */
 .board-row {
   display: flex;
   align-items: center;
 }
 
 .board-row.left {
-  gap: 12px;
+  gap: 20px;
 }
 
 .board-row.right {
   gap: 14px;
 }
 
-/* ===== Text ===== */
+/* =========================
+   Logo
+========================= */
+.board-row.left img {
+  margin-right: 6px;
+  filter: brightness(1.1);
+}
+
+/* =========================
+   Menu Text
+========================= */
 .headerText {
   font-family: "IBM Plex Sans KR", sans-serif;
-  font-size: 18px;
-  font-weight: bold;
-  color: white;
+  font-size: 14px;
+  font-weight: 600;
+
+  color: #fff;
   text-decoration: none;
   cursor: pointer;
+
+  position: relative;
+  padding: 6px 4px;
+
+  transition: opacity 0.2s ease;
 }
 
-/* ===== Auth Buttons ===== */
+.headerText:hover {
+  opacity: 0.75;
+}
+
+/* white underline */
+.headerText::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+
+  width: 100%;
+  height: 2px;
+  background: #fff;
+
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+
+.headerText:hover::after {
+  transform: scaleX(1);
+}
+
+/* =========================
+   Auth Buttons
+========================= */
 .auth-btn {
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 600;
+
+  color: #fff;
+  background: transparent;
+
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.4);
+
+  transition: all 0.2s ease;
 }
 
+.auth-btn:hover {
+  background: rgba(255,255,255,0.12);
+}
+
+/* logout reset */
 .logout-btn {
-  background: none;
   border: none;
   padding: 0;
 }
 
-/* ===== Icon ===== */
+/* =========================
+   User Icon
+========================= */
 .bi-person-fill {
-  color: white;
-  font-size: 26px;
+  color: #fff;
+  font-size: 24px;
   cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-/* ===== Dropdown ===== */
+.bi-person-fill:hover {
+  opacity: 0.75;
+  transform: scale(1.1);
+}
+
+/* =========================
+   Dropdown
+========================= */
 .dropdown-toggle::after {
   display: none;
 }
@@ -166,12 +239,17 @@ header {
   right: 0;
   min-width: auto;
   padding: 0;
+
   border-radius: 14px;
   border: none;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  background: #111;
+
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+
   opacity: 0;
-  transform: translateY(5px);
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  transform: translateY(8px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+
   display: block;
   pointer-events: none;
 }
@@ -181,4 +259,5 @@ header {
   transform: translateY(0);
   pointer-events: auto;
 }
+
 </style>

@@ -6,9 +6,14 @@
       <div class="hero-inner">
         <div class="hero-text">
           <p class="hero-kicker">MUSICAL</p>
-          <h1 class="hero-title">지금, 이 순간의 뮤지컬</h1>
+
+          <h1 class="hero-title">
+            지금, <span class="gold">이 순간</span>의 뮤지컬
+          </h1>
+
           <p class="hero-sub">
-            공연 중인 작품과 다양한 뮤지컬을 한눈에 확인해보세요.
+            공연 중인 작품과 다양한 뮤지컬을<br />
+            한눈에 확인해보세요.
           </p>
 
           <div class="hero-stats">
@@ -28,6 +33,7 @@
         </div>
       </div>
     </section>
+
 
     <!-- ===== 공연 중 작품 ===== -->
     <section class="section">
@@ -278,64 +284,173 @@ watch(
   /* background: #f9fafb; */
   color: #222;
 }
+/* =========================
+   HERO : MUSICAL
+========================= */
 
-/* ===== Hero ===== */
 .hero {
-  background: linear-gradient(
-    180deg,
-    #9c1e1e44 0%,
-    #ffd6d673 60%,
-    #ffffff 100%
-  );
-  padding: 80px 20px 60px;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  height: 480px;
+
+  background-image:
+  linear-gradient(
+    to right,
+    rgba(0,0,0,.75),
+    rgba(0,0,0,.3),
+    rgba(0,0,0,.75)
+  ),
+  linear-gradient(
+    to bottom,
+    rgba(0,0,0,.25),
+    rgba(0,0,0,.6)
+  ),
+  url('/물랑루즈.jpg');
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  align-items: center;
 }
 
 
 .hero-inner {
-  max-width: 1200px;
-  margin: 0 auto;
+  color: white;
+  padding: 0 80px;
 }
 
+.hero-inner {
+  color: white;
+  padding: 0 80px;
+}
+
+
+/* 무대 안개 느낌 */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.06),
+    rgba(255,255,255,0)
+  );
+  pointer-events: none;
+}
+
+
+/* =========================
+   HERO INNER
+========================= */
+.hero-inner {
+  /* max-width: 1200px; */
+  width: 55%;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================
+   HERO TEXT
+========================= */
+.hero-text {
+  max-width: 520px;
+  color: #ffffff;
+}
+
+/* =========================
+   KICKER
+========================= */
 .hero-kicker {
   font-size: 12px;
-  letter-spacing: 0.2em;
-  color: #ffffff;
-  margin-bottom: 12px;
-}
+  letter-spacing: 0.28em;
+  font-weight: 600;
 
-.hero-title {
-  font-size: 36px;
-  font-weight: 800;
+  color: rgba(255, 215, 140, 0.9);
   margin-bottom: 16px;
 }
 
-.hero-sub {
-  font-size: 16px;
-  color: #666;
-  max-width: 420px;
+/* =========================
+   TITLE
+========================= */
+.hero-title {
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 20px;
+
+  text-shadow: 0 6px 20px rgba(0,0,0,0.6);
 }
 
+.hero-title .gold {
+  color: #ffd77a;
+}
+
+/* =========================
+   SUB TITLE
+========================= */
+.hero-sub {
+  font-size: 17px;
+  line-height: 1.6;
+
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 36px;
+}
+
+/* =========================
+   STATS
+========================= */
 .hero-stats {
   display: flex;
-  gap: 24px;
-  margin-top: 28px;
+  gap: 28px;
 }
 
 .stat {
-  display: flex;
-  flex-direction: column;
+  min-width: 90px;
+  padding: 14px 18px;
+
+  border-radius: 14px;
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(6px);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.12),
+    0 10px 24px rgba(0,0,0,0.35);
 }
 
 .stat .num {
+  display: block;
   font-size: 28px;
   font-weight: 800;
-  color: #7b0000;
+  color: #ffd77a;
 }
 
 .stat .label {
   font-size: 13px;
-  color: #666;
+  margin-top: 4px;
+  color: rgba(255,255,255,0.7);
 }
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 900px) {
+  .hero {
+    padding: 90px 20px 70px;
+  }
+
+  .hero-title {
+    font-size: 34px;
+  }
+
+  .hero-stats {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+}
+
 
 /* ===== Section ===== */
 .section {

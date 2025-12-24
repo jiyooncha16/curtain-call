@@ -1,8 +1,5 @@
 <template>
   <!-- 작품 정보 영역 -->
-  <button class="back-btn" @click="goBack">
-    <i class="bi bi-arrow-left">뮤지컬 목록</i>
-  </button>
   <div class="musical-hero">
     <!-- 포스터 -->
     <div class="poster-box">
@@ -688,6 +685,7 @@ img {
   display: flex;
   gap: 36px;
   align-items: flex-start;
+  margin-top: 20px;
   padding: 32px;
   border-radius: 20px;
 

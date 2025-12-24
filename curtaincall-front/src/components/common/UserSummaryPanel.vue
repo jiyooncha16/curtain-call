@@ -48,9 +48,11 @@ defineProps({
 
 <style scoped>
 .user-summary {
+    background-color: white;
     width: 320px;
     /* 🔥 드롭다운 크기 */
     padding: 16px;
+    border-radius: 15px;
 }
 
 .top {

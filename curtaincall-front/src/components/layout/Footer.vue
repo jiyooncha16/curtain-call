@@ -11,7 +11,7 @@
 <style scoped>
 footer {
     height:60px; 
-    background-color:var(--color-dark); 
+    background-color:black;
     width:100%;
     display:flex; 
     align-items: center; 

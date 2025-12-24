@@ -1,78 +1,58 @@
 <template>
   <div>
-    <div class="hero-section" style="margin-bottom:50px;">
-  
-  <!-- 로그인 상태 -->
-  <div v-if="isLogin && me" class="hero-user">
-
-    <!-- 상단 인사 -->
-    <div class="hero-header flex" style="justify-content: space-between;">
-      <div class="hello">
-        <div>
-          <span class="nickname">{{ me.nickname }}</span>님 안녕하세요😄
-        </div>
-          <div>
-          <span class="nickname">지금까지의 관극 기록을 살펴볼까요?</span>
-        </div>
-      </div>
-
-      <button class="mypage-btn" @click="goMyPage">
-        마이페이지 →
-      </button>
-    </div>
-
-    <!-- 개인화 콘텐츠 -->
+    <!-- ===== Hero : MAIN ===== -->
+<section class="hero hero--main">
+  <div class="hero-inner">
     <div class="hero-content">
 
-      <!-- 최근 본 뮤지컬 -->
-      <div class="photo-wrapper">
-        <PhotoBoard
-          :obj="{
-            title: '최근 본 뮤지컬',
-            imgs: me.recentMusicals.map(m => ({
-              src: '/' + m.image,
-              id: m.musicalId
-            }))
-          }"
-        />
-      </div>
+      <!-- 로그인 상태 -->
+      <!-- 로그인 상태 -->
+      <template v-if="isLogin && me">
+        <p class="hero-kicker gold">WELCOME</p>
 
-      <!-- 자주 본 배우 -->
-      <div class="photo-wrapper">
-        <PhotoBoard
-          :obj="{
-            title: '자주 본 배우',
-            imgs: me.favoriteActors
-              .slice(0, 3)
-              .map(a => ({
-                src: '/' + a.image,
-                id: a.actorId
-              }))
-          }"
-        />
-      </div>
+        <h1 class="hero-title">
+          <span class="gold">{{ me.nickname }}</span>님 안녕하세요!
+        </h1>
+
+        <p class="hero-sub">
+          지금까지의 관극 기록을 살펴볼까요?
+        </p>
+
+        <div class="hero-actions">
+          <button class="hero-btn gold-btn" @click="goMyPage">
+            마이페이지로 가기 →
+          </button>
+        </div>
+      </template>
+
+      <!-- 비로그인 상태 -->
+      <template v-else>
+        <p class="hero-kicker gold">CURTAIN CALL</p>
+
+        <h1 class="hero-title">
+          내가 <span class="gold">사랑하는 무대</span>는 어떤 모습인가요?
+        </h1>
+
+        <p class="hero-sub">
+          뮤지컬 정보/기록 플랫폼 <b> 커튼콜 </b> 에 가입하고 
+          <br/> 관람 기록과 통계로 나의 뮤지컬 취향을 한눈에 확인해보세요.
+        </p>
+
+        <div class="hero-actions">
+          <button class="hero-btn gold-btn" @click="goLogin">
+            로그인하러 가기
+          </button>
+          <button class="hero-btn outline-btn" @click="goSignup">
+            회원가입하러 가기
+          </button>
+        </div>
+      </template>
+
+
+    </div>
   </div>
-</div>
+</section>
 
-  <!-- 비로그인 상태 -->
-  <div v-else class="login-cta shadow">
-    <div class="content">
-      <h2>🎭 내가 사랑하는 무대는 어떤 모습인가요?</h2>
-      <p>
-        뮤지컬 정보/기록 플랫폼 <b> 커튼콜 </b> 에 가입하고 <br/>
-        관람 기록과 통계로 나의 뮤지컬 취향을 한눈에 확인해보세요.
-      </p>
-
-      <button class="login-btn" @click="goLogin">
-        로그인하기
-      </button>
-      <button class="login-btn" @click="goLogin">
-        회원가입하기
-      </button>
-      </div>
-  </div>
-
-</div>
 
     <div class="shadow" style="margin-bottom:30px;">
       <div class="title-text">HOT 작품</div>
@@ -106,10 +86,7 @@
 </template>
 
 <script setup>
-import CardItem from '@/components/common/CardItem.vue';
 import CardSlide from '@/components/common/CardSlide.vue';
-import PhotoBoard from '@/components/common/PhotoBoard.vue';
-import ReviewMainList from '@/components/review/ReviewMainList.vue';
 import ReviewCard from '@/components/ReviewCard.vue';
 import VideoMain from '@/components/VideoMain.vue';
 import axios from 'axios';
@@ -117,6 +94,7 @@ import { onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
+import PhotoBoardMain from '@/components/common/PhotoBoardMain.vue';
 
 const authStore = useAuthStore()
 const { isLogin } = storeToRefs(authStore)
@@ -325,16 +303,37 @@ const goMyPage = function() {
   border-radius: 26px;
 
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0)),
-    linear-gradient(135deg, #1b1d24, #232631);
+    /* 상단에서 떨어지는 금빛 조명 */
+    radial-gradient(
+      900px 420px at 30% -20%,
+      rgba(255, 215, 120, 0.637),
+      rgba(255, 215, 120, 0.26) 35%,
+      transparent 100%
+    ),
 
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.55);
+    /* 살짝 반사되는 골드 광 */
+    linear-gradient(
+      180deg,
+      rgba(255, 230, 170, 0.08),
+      rgba(255, 230, 170, 0)
+    ),
+
+    /* 무대 바탕 */
+    linear-gradient(
+      135deg,
+      #1b1d24,
+      #232631
+    );
+
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
+
 
 /* 상단 헤더 */
 .hero-header {
   padding-bottom: 18px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
   color : white
 }
 
@@ -342,6 +341,10 @@ const goMyPage = function() {
 .hello {
   font-size: 22px;
   font-weight: 600;
+}
+
+.hello {
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
 }
 
 .nickname {
@@ -370,7 +373,9 @@ const goMyPage = function() {
 
 /* 콘텐츠 영역 */
 .hero-content {
+  margin: auto;
   display: flex;
+  flex-direction: column;
   gap: 22px;
 }
 
@@ -457,6 +462,170 @@ const goMyPage = function() {
 
   border: 1px solid #eee;
   box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+/* ===== Hero : MAIN ===== */
+
+/* ===== Hero Actions ===== */
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 34px;
+}
+
+.hero-btn {
+  height: 48px;
+  padding: 0 28px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.gold-btn {
+  background: linear-gradient(135deg, #c9a24d, #ffd77a);
+  border: none;
+  color: #1e1f26;
+}
+
+.outline-btn {
+  background: transparent;
+  border: 1px solid #c9a24d;
+  color: #c9a24d;
+}
+.hero {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-bottom: 40px;
+  height: 480px;
+
+  padding-top: 64px;   /* 🔥 이 줄 추가 */
+
+  position: relative;
+
+  background-image:
+    linear-gradient(
+      to right,
+      rgba(0,0,0,0.85),
+      rgba(0,0,0,0.35),
+      rgba(0,0,0,0.85)
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.35),
+      rgba(0,0,0,0.75)
+    ),
+    url('/팬텀.png');
+
+  background-size: cover;
+  background-position: 60% center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  align-items: center;
+}
+
+/* =========================
+   HERO : MAIN (TEXT FIX)
+========================= */
+
+.hero--main {
+  color: #ffffff;
+  
+  padding: 0;
+}
+
+/* Kicker */
+.hero--main .hero-kicker {
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  font-weight: 600;
+  margin-bottom: 14px;
+
+  color: #ffd77a; /* 🔥 골드 */
+}
+
+/* Title */
+.hero--main .hero-title {
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 18px;
+
+  color: #ffffff;
+  text-shadow: 0 6px 20px rgba(0,0,0,0.65);
+}
+
+/* Gold accent (뮤지컬과 동일) */
+.hero--main .gold {
+  background: linear-gradient(
+    90deg,
+    #c9a24d,
+    #ffd77a,
+    #c9a24d
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-shadow:
+    0 2px 6px rgba(0,0,0,0.6),
+    0 0 12px rgba(255,215,122,0.35);
+}
+
+/* Sub text */
+.hero--main .hero-sub {
+  font-size: 17px;
+  line-height: 1.6;
+  max-width: 440px;
+
+  color: rgba(255,255,255,0.75);
+}
+
+/* =========================
+   HERO STATS (뮤지컬과 동일)
+========================= */
+
+.hero--main .hero-stats {
+  display: flex;
+  gap: 28px;
+  margin-top: 34px;
+}
+
+.hero--main .stat {
+  min-width: 100px;
+  padding: 14px 18px;
+
+  border-radius: 14px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(6px);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.15),
+    0 10px 24px rgba(0,0,0,0.35);
+}
+
+.hero--main .stat .num {
+  display: block;
+  font-size: 28px;
+  font-weight: 800;
+  color: #ffd77a; /* 🔥 숫자도 골드 */
+}
+
+.hero--main .stat .label {
+  font-size: 13px;
+  margin-top: 4px;
+  color: rgba(255,255,255,0.7);
+}
+.hero-inner {
+  width: 58%;
+  max-width: 1200px;   /* 🔥 중앙 기준 */
+  margin: 0 auto;
+
+  padding: 10px 80px;
+
+  position: relative;
+  z-index: 1;
 }
 
 </style>

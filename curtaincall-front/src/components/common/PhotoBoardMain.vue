@@ -70,7 +70,7 @@ p {
   margin: 0 auto;
   border-radius: 18px;
   overflow: hidden;
-  background: #3a3f52a2;
+  /* background: #f5edc0; */
   box-shadow:
     0 10px 10px rgba(0, 0, 0, 0.35),
     0 0 0 1px rgba(0, 0, 0, 0.25);
