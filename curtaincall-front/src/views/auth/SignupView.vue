@@ -115,6 +115,7 @@ const signupClicked = async () => {
       password: password.value,
       name: name.value,
       email: email.value,
+      phone: '010-0000-0000',
       nickname: nickname.value
     })
 

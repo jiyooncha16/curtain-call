@@ -103,6 +103,9 @@ const router = useRouter()
 const goLogin = () => {
   router.push('/login')
 }
+const goSignup = () => {
+  router.push('/signup')
+}
 
 
 const keyword = "뮤지컬 인기 영상"
