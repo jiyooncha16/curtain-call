@@ -210,7 +210,7 @@ function resetRating() {
 watch(theater, (newTheater) => {
   if (!newTheater) return
 
-  console.log('🎯 theater 변경 감지:', newTheater)
+  console.log('theater 변경 감지:', newTheater)
 
   // 지도 최초 생성 (1번만)
   if (!map) {

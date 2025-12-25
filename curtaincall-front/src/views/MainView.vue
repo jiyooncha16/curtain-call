@@ -1,11 +1,10 @@
 <template>
   <div>
     <!-- ===== Hero : MAIN ===== -->
-<section class="hero hero--main">
+<section class="hero hero--main" :class="isLogin ? 'login' : 'guest'">
   <div class="hero-inner">
     <div class="hero-content">
 
-      <!-- 로그인 상태 -->
       <!-- 로그인 상태 -->
       <template v-if="isLogin && me">
         <p class="hero-kicker gold">WELCOME</p>
@@ -197,16 +196,9 @@ const goMyPage = function() {
   margin-left: 10px;
 }
 .photo-board {
-  /* background-color: white; */
   position: relative;
-  /* background: transparent; 실제 배경은 가상요소가 담당 */
   overflow: hidden;
 }
-/* .hero-section {
-  background: linear-gradient(135deg, #50000041, #460000e8);
-  padding: 20px 20px;
-  border-radius: 20px;
-} */
 .review-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* 2열 */
@@ -225,7 +217,7 @@ const goMyPage = function() {
   content: '';
   position: absolute;
   inset: 0;
-  z-index: 1;              /* ⭐ 텍스트 아래 */
+  z-index: 1;  
   background:
     radial-gradient(
       circle at top left,
@@ -243,7 +235,7 @@ const goMyPage = function() {
 .login-cta .content {
   margin-top: 25px;
   position: relative;
-  z-index: 2; /* ⭐ 텍스트는 무조건 위 */
+  z-index: 2; 
 }
 
 /* 내부 정렬 */
@@ -498,11 +490,19 @@ const goMyPage = function() {
   margin-left: calc(-50vw + 50%);
   margin-bottom: 40px;
   height: 480px;
-
-  padding-top: 64px;   /* 🔥 이 줄 추가 */
-
+  padding-top: 64px;
   position: relative;
 
+  background-size: cover;
+  background-position: 60% center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  align-items: center;
+}
+
+/* 로그인 */
+.hero.login {
   background-image:
     linear-gradient(
       to right,
@@ -516,14 +516,25 @@ const goMyPage = function() {
       rgba(0,0,0,0.75)
     ),
     url('/팬텀.png');
-
-  background-size: cover;
-  background-position: 60% center;
-  background-repeat: no-repeat;
-
-  display: flex;
-  align-items: center;
 }
+
+/* 비로그인 */
+.hero.guest {
+  background-image:
+    linear-gradient(
+      to right,
+      rgba(0,0,0,0.85),
+      rgba(0,0,0,0.35),
+      rgba(0,0,0,0.85)
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.35),
+      rgba(0,0,0,0.75)
+    ),
+    url('/커튼콜4.jpg');
+}
+
 
 /* =========================
    HERO : MAIN (TEXT FIX)

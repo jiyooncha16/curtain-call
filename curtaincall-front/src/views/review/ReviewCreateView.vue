@@ -32,7 +32,12 @@
 
       <!-- AI -->
       <div class="field ai-field">
-        <label class="label">AI</label>
+        <div style="display: flex; gap:10px; align-items:baseline; height:25px;">
+          <label class="label">💡 AI</label>
+          <p class="ai-help">
+            AI가 키워드를 바탕으로 리뷰 초안을 도와드려요!
+          </p>
+        </div>
 
         <div class="ai-row">
           <input
@@ -50,10 +55,10 @@
             {{ loading ? '생성 중...' : '리뷰 생성' }}
           </button>
         </div>
-
         <p class="ai-help">
-          예시 : 감동적인 스토리, 또 보고 싶음, 넘버가 좋음
+          ※ 예시 : 감동적인 스토리, 또 보고 싶음, 넘버가 좋았다
         </p>
+        
       </div>
 
 

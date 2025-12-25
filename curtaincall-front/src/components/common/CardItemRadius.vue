@@ -21,7 +21,7 @@ const clicked = (id) => {
 
 <style scoped>
 .img-box {
-    width: 60%;
+    width: 70%;
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     overflow: hidden;
@@ -37,7 +37,7 @@ img {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 10px;
+    /* margin: 10px; */
     cursor: pointer;
 }
 
