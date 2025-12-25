@@ -23,8 +23,8 @@
     </section>
 
     <!-- 상단 프로필 영역 -->
-    <div class="flex" style="margin: 50px;">
-      <div class="container flex my-profile" style="justify-content: space-around; width: 100%">
+    <div class="flex" style="margin: 50px 0;gap:50px;">
+      <div class="container flex my-profile" style="justify-content: space-around; width: 100%; gap: 30px;">
         <!-- 왼쪽 프로필 -->
         <div class="container profile">
           <div class="circle-img-wrapper">
@@ -329,6 +329,8 @@ function likeActorClicked() {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 0;
+  /* margin-right: 100px; */
   gap: 10px;
 }
 
@@ -373,7 +375,7 @@ function likeActorClicked() {
 }
 
 .icon-box i {
-  font-size: 20px;
+  font-size: 25px;
 }
 
 .nickname-text {

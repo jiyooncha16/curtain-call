@@ -351,17 +351,29 @@ padding: 10px;
   margin-left: 4px;
 }
 .edit-btn {
-  margin-left: auto; 
-  background: transparent;
+  margin-left: auto;
+  text-align: end;
+  background: #cbcbcb;
   border: none;
   cursor: pointer;
-  color: #666;
-  font-size: 15px;
+  color: #ffffff;
+  font-size: 14px;
+  border-radius: 9999px;
+  font-weight: 500;
+  width: 35px;
+  height: 35px;
+
+  transition: background 0.2s ease, transform 0.15s ease;
 }
 
 .edit-btn:hover {
-  color: #800000;
+  background: rgb(167, 167, 167);          /* hover 시 조금 진한 회색 */
 }
+
+.edit-btn:active {
+  transform: scale(0.96);       /* 눌리는 느낌 */
+}
+
 
 /* =============================
    하트

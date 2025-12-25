@@ -1,5 +1,6 @@
 # 2025. 11. 25
 # 2025. 12. 20
+# 2025. 12. 25
 
 # --------------------------------------------------------
 # --------------------------------------------------------
@@ -16,21 +17,7 @@ USE musical_db;
 # --------------------------------------------------------
 
 
--- # 1. 공연장 theater
--- CREATE TABLE `theater` (
--- 	`theater`	VARCHAR(255)	PRIMARY KEY,
--- 	`address`	VARCHAR(255)	NOT NULL,
--- 	-- `parking`	BOOLEAN	NOT NULL,
--- 	-- `seats`	INT	NOT NULL,
--- 	-- `subway`	VARCHAR(255)	NULL
--- );
-
-
-# --------------------------------------------------------
-# --------------------------------------------------------
-
-
-# 2. 뮤지컬 musical
+# 1. 뮤지컬 musical
 CREATE TABLE `musical` (
 	`musical_id`	INT PRIMARY KEY AUTO_INCREMENT,
 	`title`	VARCHAR(255)	NOT NULL,
@@ -51,7 +38,7 @@ CREATE TABLE `musical` (
 # --------------------------------------------------------
 
 
-# 3. 해시태그 hashtag
+# 2. 해시태그 hashtag
 CREATE TABLE `hashtag` (
 	`tag_id`	INT	PRIMARY KEY AUTO_INCREMENT,
 	`tag`	VARCHAR(255)	NOT NULL
@@ -62,7 +49,7 @@ CREATE TABLE `hashtag` (
 # --------------------------------------------------------
 
 
-# 4. 태그 연결 tag_connection (hashtag - musical)
+# 3. 태그 연결 tag_connection (hashtag - musical)
 
 CREATE TABLE `tag_connection` (
 	`musical_id`	INT	NOT NULL, -- FK
@@ -92,28 +79,7 @@ ON DELETE CASCADE;
 # --------------------------------------------------------
 # --------------------------------------------------------
 
-
--- # 5. 영상 video
--- CREATE TABLE `video` (
--- 	`video_id`	INT	PRIMARY KEY AUTO_INCREMENT,
--- 	`musical_id`	INT	NOT NULL, -- FK
--- 	`url`	VARCHAR(255)	NOT NULL,
--- 	`title`	VARCHAR(255)	NOT NULL,
--- 	`view_cnt`	INT	DEFAULT 0
--- );
--- ALTER TABLE `video` ADD CONSTRAINT `FK_musical_TO_video_1` FOREIGN KEY (
--- 	`musical_id`
--- )
--- REFERENCES `musical` (
--- 	`musical_id`
--- );
-
-
-# --------------------------------------------------------
-# --------------------------------------------------------
-
-
-# 6. 배우 actor
+# 4. 배우 actor
 
 CREATE TABLE `actor` (
 	`actor_id`	INT	PRIMARY KEY AUTO_INCREMENT,
@@ -134,7 +100,7 @@ CREATE TABLE `actor` (
 # --------------------------------------------------------
 
 
-# 7. 캐스트 cast (actor - musical)
+# 5. 캐스트 cast (actor - musical)
 
 CREATE TABLE `cast` (
 	`cast_id`	INT PRIMARY KEY,
@@ -159,7 +125,7 @@ REFERENCES `musical` (
 # --------------------------------------------------------
 # --------------------------------------------------------
 
-# 8. 유저 users -- user은 예약어
+# 6. 유저 users -- user은 예약어
 
 CREATE TABLE `users` (
 	`user_id`	INT	PRIMARY KEY AUTO_INCREMENT,
@@ -177,7 +143,7 @@ CREATE TABLE `users` (
 # --------------------------------------------------------
 
 
-# 9. 리뷰 review
+# 7. 리뷰 review
 
 CREATE TABLE `review` (
 	`review_id`	INT	PRIMARY KEY AUTO_INCREMENT,
@@ -205,7 +171,7 @@ ON DELETE CASCADE;
 # --------------------------------------------------------
 
 
-# 10. 게시판 board
+# 8. 게시판 board
 
 CREATE TABLE `board` (
     `board_id` INT PRIMARY KEY auto_increment,
@@ -226,7 +192,7 @@ ON DELETE CASCADE;
 # --------------------------------------------------------
 
 
-# 11. 댓글 reply
+# 9. 댓글 reply
 
 CREATE TABLE `reply` (
 	`reply_id`	INT	PRIMARY KEY auto_increment,
@@ -253,23 +219,7 @@ ON DELETE CASCADE;
 # --------------------------------------------------------
 
 
-# 12. 좋아요 (게시판)
-CREATE TABLE `like_board` (
-	`user_id`	INT	NOT NULL, -- FK
-	`board_id`	INT	NOT NULL -- FK
-);
-
-ALTER TABLE `like_board` ADD CONSTRAINT `PK_LIKE_BOARD` PRIMARY KEY (
-	`user_id`,
-	`board_id`
-);
-
-
-# --------------------------------------------------------
-# --------------------------------------------------------
-
-
-# 13. 좋아요 (리뷰)
+# 10. 좋아요 (리뷰)
 CREATE TABLE `like_review` (
 	`user_id`	INT	NOT NULL, -- FK
 	`review_id`	INT	NOT NULL -- FK
@@ -284,7 +234,7 @@ ALTER TABLE `like_review` ADD CONSTRAINT `PK_LIKE_REVIEW` PRIMARY KEY (
 # --------------------------------------------------------
 
 
-# 14. 좋아요 (뮤지컬)
+# 11. 좋아요 (뮤지컬)
 CREATE TABLE `like_musical` (
 	`user_id`	INT	NOT NULL, -- FK
 	`musical_id`	INT	NOT NULL -- FK
@@ -299,7 +249,7 @@ ALTER TABLE `like_musical` ADD CONSTRAINT `PK_LIKE_MUSICAL` PRIMARY KEY (
 # --------------------------------------------------------
 
 
-# 15. 좋아요 (배우)
+# 12. 좋아요 (배우)
 CREATE TABLE `like_actor` (
 	`user_id`	INT	NOT NULL, -- FK
 	`actor_id`	INT	NOT NULL -- FK
@@ -314,21 +264,7 @@ ALTER TABLE `like_actor` ADD CONSTRAINT `PK_LIKE_ACTOR` PRIMARY KEY (
 # --------------------------------------------------------
 
 
-# 16. 좋아요 테이블들 외래키 제약조건
-ALTER TABLE `like_board` ADD CONSTRAINT `FK_users_TO_like_board_1` FOREIGN KEY (
-	`user_id`
-)
-REFERENCES `users` (
-	`user_id`
-)ON DELETE CASCADE;
-
-ALTER TABLE `like_board` ADD CONSTRAINT `FK_board_TO_like_board_1` FOREIGN KEY (
-	`board_id`
-)
-REFERENCES `board` (
-	`board_id`
-)ON DELETE CASCADE;
-
+# 13. 좋아요 테이블들 외래키 제약조건
 ALTER TABLE `like_review` ADD CONSTRAINT `FK_users_TO_like_review_1` FOREIGN KEY (
 	`user_id`
 )

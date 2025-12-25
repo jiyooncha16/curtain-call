@@ -559,9 +559,9 @@ img {
 }
 
 .rating-btn.active {
-  background: #4f46e5;
+  background: #282475;
   color: #fff;
-  border-color: #4f46e5;
+  border-color: #282475;
 }
 
 .review-summary {
