@@ -1,0 +1,222 @@
+@startuml
+skinparam linetype ortho
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+
+' =========================
+' User
+' =========================
+package "User" {
+  class User {
+     - id: Long
+     - email: String
+     - password: String
+     - nickname: String
+     - age: Integer
+     - gender: char
+     - image: String
+  }
+
+  class UserController {
+     + login(LoginRequest): ResponseEntity<LoginResponse>
+     + join(User): ResponseEntity<Void>
+     + userInfo(Long): ResponseEntity<UserResponse>
+     + updateUser(User): ResponseEntity<Void>
+     + deleteUser(Long): ResponseEntity<Void>
+  }
+
+  interface UserService {
+     + login(LoginRequest): LoginResponse
+     + join(User): void
+     + getUser(Long): UserResponse
+     + updateUser(User): void
+     + deleteUser(Long): void
+  }
+
+  class UserServiceImpl
+}
+
+UserController ..> UserService
+UserService <|.. UserServiceImpl
+UserServiceImpl ..> User
+
+' =========================
+' Musical
+' =========================
+package "Musical" {
+  class Musical {
+     - id: Long
+     - title: String
+     - startDate: Date
+     - endDate: Date
+     - theaterName: String
+     - poster: String
+     - state: String
+  }
+
+  class MusicalController {
+     + getMusicalList(SearchCondition): ResponseEntity<List<Musical>>
+     + getMusicalDetail(Long): ResponseEntity<Musical>
+     + likeMusical(Long, User): ResponseEntity<Void>
+  }
+
+  interface MusicalService {
+     + getMusicalList(SearchCondition): List<Musical>
+     + getMusicalDetail(Long): Musical
+     + likeMusical(Long, User): void
+  }
+
+  class MusicalServiceImpl
+}
+
+MusicalController ..> MusicalService
+MusicalService <|.. MusicalServiceImpl
+MusicalServiceImpl ..> Musical
+
+' =========================
+' Actor
+' =========================
+package "Actor" {
+  class Actor {
+     - id: Long
+     - name: String
+     - profileImage: String
+  }
+
+  class ActorController {
+     + getActorList(ActorSearchCondition): ResponseEntity<List<Actor>>
+     + getActorDetail(Long): ResponseEntity<Actor>
+     + likeActor(Long, User): ResponseEntity<Void>
+  }
+
+  interface ActorService {
+     + getActorList(ActorSearchCondition): List<Actor>
+     + getActorDetail(Long): Actor
+     + likeActor(Long, User): void
+  }
+
+  class ActorServiceImpl
+}
+
+ActorController ..> ActorService
+ActorService <|.. ActorServiceImpl
+ActorServiceImpl ..> Actor
+
+' =========================
+' Board
+' =========================
+package "Board" {
+  class Board {
+     - id: Long
+     - title: String
+     - content: String
+     - createdAt: Date
+     - category: String
+  }
+
+  class BoardController {
+     + getBoardList(BoardSearchCondition): ResponseEntity<List<Board>>
+     + getBoardDetail(Long): ResponseEntity<Board>
+     + createBoard(Board): ResponseEntity<Void>
+     + updateBoard(Board): ResponseEntity<Void>
+     + deleteBoard(Long): ResponseEntity<Void>
+  }
+
+  interface BoardService {
+     + getBoardList(BoardSearchCondition): List<Board>
+     + getBoardDetail(Long): Board
+     + createBoard(Board): void
+     + updateBoard(Board): void
+     + deleteBoard(Long): void
+  }
+
+  class BoardServiceImpl
+}
+
+BoardController ..> BoardService
+BoardService <|.. BoardServiceImpl
+BoardServiceImpl ..> Board
+
+' =========================
+' Review
+' =========================
+package "Review" {
+  class Review {
+     - id: Long
+     - content: String
+     - rating: Double
+     - createdAt: Date
+  }
+
+  class ReviewController {
+     + getReviewList(Long): ResponseEntity<List<Review>>
+     + createReview(Review): ResponseEntity<Void>
+     + updateReview(Review): ResponseEntity<Void>
+     + deleteReview(Long): ResponseEntity<Void>
+  }
+
+  interface ReviewService {
+     + getReviewList(Long): List<Review>
+     + createReview(Review): void
+     + updateReview(Review): void
+     + deleteReview(Long): void
+  }
+
+  class ReviewServiceImpl
+}
+
+ReviewController ..> ReviewService
+ReviewService <|.. ReviewServiceImpl
+ReviewServiceImpl ..> Review
+
+' =========================
+' Reply
+' =========================
+package "Reply" {
+  class Reply {
+     - id: Long
+     - content: String
+     - createdAt: Date
+  }
+
+  class ReplyController {
+     + getReplyList(Long): ResponseEntity<List<Reply>>
+     + createReply(Reply): ResponseEntity<Void>
+     + updateReply(Reply): ResponseEntity<Void>
+     + deleteReply(Long): ResponseEntity<Void>
+  }
+
+  interface ReplyService {
+     + getReplyList(Long): List<Reply>
+     + createReply(Reply): void
+     + updateReply(Reply): void
+     + deleteReply(Long): void
+  }
+
+  class ReplyServiceImpl
+}
+
+ReplyController ..> ReplyService
+ReplyService <|.. ReplyServiceImpl
+ReplyServiceImpl ..> Reply
+
+' =========================
+' Domain Relationships
+' =========================
+User "1" -- "0..*" Board : writes
+User "1" -- "0..*" Review : writes
+User "1" -- "0..*" Reply : writes
+
+Musical "1" -- "0..*" Review : has
+Board "1" -- "0..*" Reply : has
+
+class Casting {
+   - musicalId: Long
+   - actorId: Long
+   - role: String
+}
+
+Musical "1" -- "0..*" Casting
+Actor "1" -- "0..*" Casting
+
+@enduml
