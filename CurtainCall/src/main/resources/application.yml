@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: CurtainCall
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.ssafy.curtaincall.*.dto
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+logging:
+  level:
+    jdbc.sqlonly: DEBUG
+    com.ssafy.curtaincall: DEBUG
+    org.mybatis: DEBUG
+
+jwt:
+    secret: ${JWT_SECRET}
+    expiration: 3600000   # 1시간
+

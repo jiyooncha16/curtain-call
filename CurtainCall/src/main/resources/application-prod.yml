@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      base-url: https://gms.ssafy.io/gmsapi/api.openai.com
+      chat:
+        options:
+          model: gpt-4o-mini
+          temperature: 0.8

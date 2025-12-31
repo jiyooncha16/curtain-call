@@ -35,7 +35,8 @@ public class AiServiceImpl implements AiService{
 		//프롬프트 만들기
 		StringBuilder prompt = new StringBuilder();
 
-		prompt.append("아래 태그 목록을 기반으로 이 사용자의 뮤지컬 관람 성향을 해석해 하나의 수식어를 만들어줘.\n");
+		prompt.append("너는 사용자의 뮤지컬 관람 성향을 해석해 하나의 수식어를 만드는 도우미야."
+				+ "아래 태그 목록을 기반으로 이 사용자의 뮤지컬 관람 성향을 해석해 하나의 수식어를 만들어줘.\n");
 		prompt.append("반드시 지켜야 할 규칙 10가지를 말해줄게.\\n");
 		prompt.append("1. 결과는 반드시 '____한 뮤덕' 형식의 한 문장만 출력해.\n");
 		prompt.append("2. 태그 단어(로맨스, 드라마, 코미디 등)를 그대로 사용하거나 단순 결합하지 마.\n");
