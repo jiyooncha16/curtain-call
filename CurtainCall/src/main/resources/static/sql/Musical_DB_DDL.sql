@@ -1,6 +1,7 @@
 # 2025. 11. 25
 # 2025. 12. 20
 # 2025. 12. 25
+# 2026. 01. 02 - postgre 버전 수정 (auto increment -> serial)
 
 # --------------------------------------------------------
 # --------------------------------------------------------
@@ -8,301 +9,185 @@
 
 # 0. 기본 DB 설정
 
-DROP DATABASE IF EXISTS musical_db;
-CREATE DATABASE musical_db;
-USE musical_db;
+-- DROP DATABASE IF EXISTS musical_db;
+-- CREATE DATABASE musical_db;
+-- USE musical_db;
 
 
 # --------------------------------------------------------
 # --------------------------------------------------------
 
-
-# 1. 뮤지컬 musical
-CREATE TABLE `musical` (
-	`musical_id`	INT PRIMARY KEY AUTO_INCREMENT,
-	`title`	VARCHAR(255)	NOT NULL,
-	`start_date`	DATE	NOT NULL,
-	`end_date`	DATE	NOT NULL,
-	-- `description`	TEXT	NOT NULL, 
-	`theater`	VARCHAR(255)	NOT NULL, -- FK
-	`image`	VARCHAR(255)	NOT NULL
+-- ========================================
+-- 1. musical
+-- ========================================
+CREATE TABLE musical (
+    musical_id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    theater VARCHAR(255) NOT NULL,
+    image VARCHAR(255) NOT NULL
 );
 
--- ALTER TABLE musical
--- ADD CONSTRAINT FK_musical_theater
--- FOREIGN KEY (theater)
--- REFERENCES theater(theater);
-
-
-# --------------------------------------------------------
-# --------------------------------------------------------
-
-
-# 2. 해시태그 hashtag
-CREATE TABLE `hashtag` (
-	`tag_id`	INT	PRIMARY KEY AUTO_INCREMENT,
-	`tag`	VARCHAR(255)	NOT NULL
+-- ========================================
+-- 2. hashtag
+-- ========================================
+CREATE TABLE hashtag (
+    tag_id SERIAL PRIMARY KEY,
+    tag VARCHAR(255) NOT NULL
 );
 
-
-# --------------------------------------------------------
-# --------------------------------------------------------
-
-
-# 3. 태그 연결 tag_connection (hashtag - musical)
-
-CREATE TABLE `tag_connection` (
-	`musical_id`	INT	NOT NULL, -- FK
-	`tag_id`	INT	NOT NULL -- FK
-);
-ALTER TABLE `tag_connection` ADD CONSTRAINT `PK_TAG_CONNECTION` PRIMARY KEY (
-	`musical_id`,
-	`tag_id`
-);
-ALTER TABLE `tag_connection` ADD CONSTRAINT `FK_musical_TO_tag_connection_1` FOREIGN KEY (
-	`musical_id`
-)
-REFERENCES `musical` (
-	`musical_id`
+-- ========================================
+-- 3. tag_connection
+-- ========================================
+CREATE TABLE tag_connection (
+    musical_id INTEGER NOT NULL,
+    tag_id INTEGER NOT NULL,
+    PRIMARY KEY (musical_id, tag_id),
+    FOREIGN KEY (musical_id)
+        REFERENCES musical (musical_id),
+    FOREIGN KEY (tag_id)
+        REFERENCES hashtag (tag_id)
+        ON DELETE CASCADE
 );
 
--- 태그가 삭제되면 태그연결 데이터도 삭제
-ALTER TABLE `tag_connection` ADD CONSTRAINT `FK_hashtag_TO_tag_connection_1` FOREIGN KEY (
-	`tag_id`
-)
-REFERENCES `hashtag` (
-	`tag_id`
-)
-ON DELETE CASCADE;
-
-
-# --------------------------------------------------------
-# --------------------------------------------------------
-
-# 4. 배우 actor
-
-CREATE TABLE `actor` (
-	`actor_id`	INT	PRIMARY KEY AUTO_INCREMENT,
-	`name`	VARCHAR(255)	NOT NULL,
-	`birth`	VARCHAR(255),
-	`agency`	VARCHAR(255),
-	`sns`	VARCHAR(255),
-	`image`	VARCHAR(255)	NOT NULL,
-    `work1` TEXT,
-    `work2` TEXT,
-    `work3` TEXT,
-    `work4` TEXT,
-    `work5` TEXT
+-- ========================================
+-- 4. actor
+-- ========================================
+CREATE TABLE actor (
+    actor_id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    birth VARCHAR(255),
+    agency VARCHAR(255),
+    sns VARCHAR(255),
+    image VARCHAR(255) NOT NULL,
+    work1 TEXT,
+    work2 TEXT,
+    work3 TEXT,
+    work4 TEXT,
+    work5 TEXT
 );
 
-
-# --------------------------------------------------------
-# --------------------------------------------------------
-
-
-# 5. 캐스트 cast (actor - musical)
-
-CREATE TABLE `cast` (
-	`cast_id`	INT PRIMARY KEY,
-	`musical_id`	INT	NOT NULL, -- FK
-	`actor_id`	INT	NOT NULL, -- FK
-	`role_name`	VARCHAR(255) NOT NULL
-);
-ALTER TABLE `cast` ADD CONSTRAINT `FK_actor_TO_cast_1` FOREIGN KEY (
-	`actor_id`
-)
-REFERENCES `actor` (
-	`actor_id`
-);
-ALTER TABLE `cast` ADD CONSTRAINT `FK_musical_TO_cast_1` FOREIGN KEY (
-	`musical_id`
-)
-REFERENCES `musical` (
-	`musical_id`
+-- ========================================
+-- 5. musical_cast (기존 cast)
+-- ========================================
+CREATE TABLE musical_cast (
+    cast_id SERIAL PRIMARY KEY,
+    musical_id INTEGER NOT NULL,
+    actor_id INTEGER NOT NULL,
+    role_name VARCHAR(255) NOT NULL,
+    FOREIGN KEY (musical_id)
+        REFERENCES musical (musical_id),
+    FOREIGN KEY (actor_id)
+        REFERENCES actor (actor_id)
 );
 
-
-# --------------------------------------------------------
-# --------------------------------------------------------
-
-# 6. 유저 users -- user은 예약어
-
-CREATE TABLE `users` (
-	`user_id`	INT	PRIMARY KEY AUTO_INCREMENT,
-	`username`	VARCHAR(255)	NOT NULL UNIQUE, # 아이디 !!
-	`password`	VARCHAR(255)	NOT NULL,
-	`name`	VARCHAR(255)	NOT NULL,
-	`email`	VARCHAR(255)	NOT NULL,
-	`phone`	VARCHAR(255)	,
-	`nickname`	VARCHAR(255)	NOT NULL,
-    `user_profile_image` VARCHAR(255) 
+-- ========================================
+-- 6. users
+-- ========================================
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(255),
+    nickname VARCHAR(255) NOT NULL,
+    user_profile_image VARCHAR(255)
 );
 
-
-# --------------------------------------------------------
-# --------------------------------------------------------
-
-
-# 7. 리뷰 review
-
-CREATE TABLE `review` (
-	`review_id`	INT	PRIMARY KEY AUTO_INCREMENT,
-	`musical_id`	INT	NOT NULL, -- FK
-	`content`	TEXT	NULL,
-	`rate`	TINYINT	NULL CHECK (`rate` BETWEEN 1 AND 5),
-	`create_date`	DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`user_id`	INT	NOT NULL -- FK
+-- ========================================
+-- 7. review
+-- ========================================
+CREATE TABLE review (
+    review_id SERIAL PRIMARY KEY,
+    musical_id INTEGER NOT NULL,
+    content TEXT,
+    rate SMALLINT CHECK (rate BETWEEN 1 AND 5),
+    create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    user_id INTEGER NOT NULL,
+    FOREIGN KEY (musical_id)
+        REFERENCES musical (musical_id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (user_id)
+        REFERENCES users (user_id)
+        ON DELETE CASCADE
 );
 
-ALTER TABLE `review` 
-ADD CONSTRAINT `FK_musical_TO_review_1` 
-FOREIGN KEY (`musical_id`)
-REFERENCES `musical` (`musical_id`) 
-ON DELETE CASCADE;
-
-ALTER TABLE review
-ADD CONSTRAINT FK_review_user
-FOREIGN KEY (user_id)
-REFERENCES users(user_id)
-ON DELETE CASCADE;
-
-
-# --------------------------------------------------------
-# --------------------------------------------------------
-
-
-# 8. 게시판 board
-
-CREATE TABLE `board` (
-    `board_id` INT PRIMARY KEY auto_increment,
-    `title` VARCHAR(255),
-    `content` TEXT,
-    `category` ENUM('free', 'deal') NOT NULL DEFAULT('free'),
-    `create_date` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
-    `user_id` INT NOT NULL -- FK
-);
-ALTER TABLE board
-ADD CONSTRAINT FK_board_user
-FOREIGN KEY (user_id)
-REFERENCES users(user_id)
-ON DELETE CASCADE;
-
-
-# --------------------------------------------------------
-# --------------------------------------------------------
-
-
-# 9. 댓글 reply
-
-CREATE TABLE `reply` (
-	`reply_id`	INT	PRIMARY KEY auto_increment,
-	`content`	TEXT NOT NULL,
-	`create_date`	DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`board_id`	INT	NOT NULL, -- FK
-	`user_id`	INT	NOT NULL -- FK
+-- ========================================
+-- 8. board
+-- ========================================
+CREATE TABLE board (
+    board_id SERIAL PRIMARY KEY,
+    title VARCHAR(255),
+    content TEXT,
+    category VARCHAR(10) NOT NULL DEFAULT 'free'
+        CHECK (category IN ('free', 'deal')),
+    create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    user_id INTEGER NOT NULL,
+    FOREIGN KEY (user_id)
+        REFERENCES users (user_id)
+        ON DELETE CASCADE
 );
 
-ALTER TABLE reply 
-ADD CONSTRAINT FK_reply_board
-FOREIGN KEY (board_id) 
-REFERENCES board(board_id) 
-ON DELETE CASCADE;
-
-ALTER TABLE reply
-ADD CONSTRAINT FK_reply_user
-FOREIGN KEY (user_id)
-REFERENCES users(user_id)
-ON DELETE CASCADE;
-
-
-# --------------------------------------------------------
-# --------------------------------------------------------
-
-
-# 10. 좋아요 (리뷰)
-CREATE TABLE `like_review` (
-	`user_id`	INT	NOT NULL, -- FK
-	`review_id`	INT	NOT NULL -- FK
-);
-ALTER TABLE `like_review` ADD CONSTRAINT `PK_LIKE_REVIEW` PRIMARY KEY (
-	`user_id`,
-	`review_id`
+-- ========================================
+-- 9. reply
+-- ========================================
+CREATE TABLE reply (
+    reply_id SERIAL PRIMARY KEY,
+    content TEXT NOT NULL,
+    create_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    board_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    FOREIGN KEY (board_id)
+        REFERENCES board (board_id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (user_id)
+        REFERENCES users (user_id)
+        ON DELETE CASCADE
 );
 
-
-# --------------------------------------------------------
-# --------------------------------------------------------
-
-
-# 11. 좋아요 (뮤지컬)
-CREATE TABLE `like_musical` (
-	`user_id`	INT	NOT NULL, -- FK
-	`musical_id`	INT	NOT NULL -- FK
-);
-ALTER TABLE `like_musical` ADD CONSTRAINT `PK_LIKE_MUSICAL` PRIMARY KEY (
-	`user_id`,
-	`musical_id`
-);
-
-
-# --------------------------------------------------------
-# --------------------------------------------------------
-
-
-# 12. 좋아요 (배우)
-CREATE TABLE `like_actor` (
-	`user_id`	INT	NOT NULL, -- FK
-	`actor_id`	INT	NOT NULL -- FK
-);
-ALTER TABLE `like_actor` ADD CONSTRAINT `PK_LIKE_ACTOR` PRIMARY KEY (
-	`user_id`,
-	`actor_id`
+-- ========================================
+-- 10. like_review
+-- ========================================
+CREATE TABLE like_review (
+    user_id INTEGER NOT NULL,
+    review_id INTEGER NOT NULL,
+    PRIMARY KEY (user_id, review_id),
+    FOREIGN KEY (user_id)
+        REFERENCES users (user_id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (review_id)
+        REFERENCES review (review_id)
+        ON DELETE CASCADE
 );
 
+-- ========================================
+-- 11. like_musical
+-- ========================================
+CREATE TABLE like_musical (
+    user_id INTEGER NOT NULL,
+    musical_id INTEGER NOT NULL,
+    PRIMARY KEY (user_id, musical_id),
+    FOREIGN KEY (user_id)
+        REFERENCES users (user_id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (musical_id)
+        REFERENCES musical (musical_id)
+        ON DELETE CASCADE
+);
 
-# --------------------------------------------------------
-# --------------------------------------------------------
-
-
-# 13. 좋아요 테이블들 외래키 제약조건
-ALTER TABLE `like_review` ADD CONSTRAINT `FK_users_TO_like_review_1` FOREIGN KEY (
-	`user_id`
-)
-REFERENCES `users` (
-	`user_id`
-)ON DELETE CASCADE;
-
-ALTER TABLE `like_review` ADD CONSTRAINT `FK_review_TO_like_review_1` FOREIGN KEY (
-	`review_id`
-)
-REFERENCES `review` (
-	`review_id`
-)ON DELETE CASCADE;
-
-ALTER TABLE `like_musical` ADD CONSTRAINT `FK_users_TO_like_musical_1` FOREIGN KEY (
-	`user_id`
-)
-REFERENCES `users` (
-	`user_id`
-)ON DELETE CASCADE;
-
-ALTER TABLE `like_musical` ADD CONSTRAINT `FK_musical_TO_like_musical_1` FOREIGN KEY (
-	`musical_id`
-)
-REFERENCES `musical` (
-	`musical_id`
-)ON DELETE CASCADE;
-
-ALTER TABLE `like_actor` ADD CONSTRAINT `FK_users_TO_like_actor_1` FOREIGN KEY (
-	`user_id`
-)
-REFERENCES `users` (
-	`user_id`
-)ON DELETE CASCADE;
-
-ALTER TABLE `like_actor` ADD CONSTRAINT `FK_actor_TO_like_actor_1` FOREIGN KEY (
-	`actor_id`
-)
-REFERENCES `actor` (
-	`actor_id`
-)ON DELETE CASCADE;
+-- ========================================
+-- 12. like_actor
+-- ========================================
+CREATE TABLE like_actor (
+    user_id INTEGER NOT NULL,
+    actor_id INTEGER NOT NULL,
+    PRIMARY KEY (user_id, actor_id),
+    FOREIGN KEY (user_id)
+        REFERENCES users (user_id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (actor_id)
+        REFERENCES actor (actor_id)
+        ON DELETE CASCADE
+);
