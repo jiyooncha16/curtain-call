@@ -134,6 +134,7 @@ import { onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
 import ActorRoleGroup from '@/components/actor/ActorRoleGroup.vue';
+import { loadKakaoMap } from '@/utils/loadKakaoMap'
 
 const route = useRoute()
 const id = route.params.id
@@ -159,6 +160,7 @@ const theaterPhone = ref('')
 const theaterUrl = ref('')
 let map = null
 let ps = null
+let kakaoInstance = null
 
 // 뮤지컬 정보 로드
 onMounted(async () => {
@@ -207,34 +209,77 @@ function resetRating() {
 
 
 // ----------------- theater 값이 생기면 카카오맵 실행
-watch(theater, (newTheater) => {
+// watch(theater, (newTheater) => {
+//   if (!newTheater) return
+
+//   console.log('theater 변경 감지:', newTheater)
+
+//   // 지도 최초 생성 (1번만)
+//   if (!map) {
+//     map = new kakao.maps.Map(
+//       document.getElementById('kakao-map'),
+//       {
+//         center: new kakao.maps.LatLng(37.566826, 126.9786567),
+//         level: 3
+//       }
+//     )
+//     ps = new kakao.maps.services.Places()
+//   }
+
+//   ps.keywordSearch(newTheater, (data, status) => {
+//     if (status !== kakao.maps.services.Status.OK) return
+
+//     const place = data[0]
+
+//     new kakao.maps.Marker({
+//       map,
+//       position: new kakao.maps.LatLng(place.y, place.x)
+//     })
+
+//     map.setCenter(new kakao.maps.LatLng(place.y, place.x))
+
+//     theaterAddress.value =
+//       place.road_address_name || place.address_name
+//     theaterPhone.value = place.phone
+//     theaterUrl.value = place.place_url
+//   })
+// })
+watch(theater, async (newTheater) => {
   if (!newTheater) return
 
   console.log('theater 변경 감지:', newTheater)
 
+  // kakao SDK 로드
+  if (!kakaoInstance) {
+    kakaoInstance = await loadKakaoMap()
+  }
+
   // 지도 최초 생성 (1번만)
   if (!map) {
-    map = new kakao.maps.Map(
+    map = new kakaoInstance.maps.Map(
       document.getElementById('kakao-map'),
       {
-        center: new kakao.maps.LatLng(37.566826, 126.9786567),
-        level: 3
+        center: new kakaoInstance.maps.LatLng(37.566826, 126.9786567),
+        level: 3,
       }
     )
-    ps = new kakao.maps.services.Places()
+
+    ps = new kakaoInstance.maps.services.Places()
   }
 
   ps.keywordSearch(newTheater, (data, status) => {
-    if (status !== kakao.maps.services.Status.OK) return
+    if (status !== kakaoInstance.maps.services.Status.OK) return
 
     const place = data[0]
 
-    new kakao.maps.Marker({
+    new kakaoInstance.maps.Marker({
       map,
-      position: new kakao.maps.LatLng(place.y, place.x)
+      position: new kakaoInstance.maps.LatLng(place.y, place.x),
     })
 
-    map.setCenter(new kakao.maps.LatLng(place.y, place.x))
+    map.setCenter(
+      new kakaoInstance.maps.LatLng(place.y, place.x)
+    )
 
     theaterAddress.value =
       place.road_address_name || place.address_name
@@ -242,6 +287,7 @@ watch(theater, (newTheater) => {
     theaterUrl.value = place.place_url
   })
 })
+
 
 // 평점 계산
 

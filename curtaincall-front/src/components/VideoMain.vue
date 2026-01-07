@@ -69,22 +69,24 @@ const props = defineProps ({
   keyword : String,
 })
 const videoList = ref([])
-const youtubeSearch = function(keyword) {
 
-    axios.get("https://www.googleapis.com/youtube/v3/search", {
-      params:{
-        key: import.meta.env.VITE_YOUTUBE_API_KEY, // 키는 필수
-        part : `snippet`, // api 검색하려면 필수
-        q : keyword, // 키워드 변수
-        type : `video`, // 명시하지 않으면 채널, 플레이리스트도 검색됨
-        maxResults : 10 // 기본 5, 최대 50
-      }
+const youtubeSearch = async (keyword) => {
+  const url = `https://www.googleapis.com/youtube/v3/search?` +
+    new URLSearchParams({
+      key: import.meta.env.VITE_YOUTUBE_API_KEY,
+      part: 'snippet',
+      q: keyword,
+      type: 'video',
+      maxResults: 10,
     })
-    .then((response)=> {
-      console.log(response.data)
-      videoList.value = response.data.items // 응답을 videoList에 담음
-    })
+
+  const res = await fetch(url)
+  const data = await res.json()
+
+  console.log(data)
+  videoList.value = data.items
 }
+
 
 onMounted(() => {
   youtubeSearch(props.keyword)
