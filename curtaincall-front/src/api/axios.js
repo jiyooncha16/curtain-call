@@ -13,6 +13,9 @@ const api = axios.create({
 //import api from '@/api/axios'
 // api.get('/api/user/me') 
 
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL
+axios.defaults.withCredentials = true
+
 api.interceptors.request.use((config) => {
   const auth = useAuthStore()
 console.log('token in interceptor:', auth.token)

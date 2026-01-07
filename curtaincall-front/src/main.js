@@ -12,7 +12,7 @@ import { Vue3KakaoMaps } from 'vue3-kakao-maps' // ⭐ named import
 const app = createApp(App)
 
 app.use(Vue3KakaoMaps, {
-    appkey: import.meta.env.VITE_KAKAO_JS_KEY,
+    appkey: import.meta.env.VITE_KAKAO_JS_API_KEY,
     libraries: ['services']
 })
 // useKakao(import.meta.env.VITE_KAKAO_API_KEY); // 카카오맵 API
