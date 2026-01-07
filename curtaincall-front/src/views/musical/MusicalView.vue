@@ -142,6 +142,29 @@ const displayList = computed(() => {
 
 
 /* ===== API ===== */
+
+// 날짜 함수
+function todayString() {
+  const d = new Date()
+  const yyyy = d.getFullYear()
+  const mm = String(d.getMonth() + 1).padStart(2, '0')
+  const dd = String(d.getDate()).padStart(2, '0')
+  return `${yyyy}-${mm}-${dd}`
+}
+
+function tomorrowString() {
+  const d = new Date()
+  d.setDate(d.getDate() + 1)
+  const yyyy = d.getFullYear()
+  const mm = String(d.getMonth() + 1).padStart(2, '0')
+  const dd = String(d.getDate()).padStart(2, '0')
+  return `${yyyy}-${mm}-${dd}`
+}
+
+const dateStr = todayString()
+const tomStr = tomorrowString()
+
+/*
 const today = new Date()
 const dateStr =
   today.getFullYear() + '-' +
@@ -153,7 +176,7 @@ const tomStr =
   tomorrow.getFullYear() + '-' +
   (tomorrow.getMonth() + 1) + '-' +
   tomorrow.getDate()
-
+*/
 
 onMounted(async () => {
   try {

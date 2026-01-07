@@ -121,6 +121,16 @@ const me = ref({
   favoriteActors: []
 })
 
+// 날짜 함수
+function todayString() {
+  const d = new Date()
+  const yyyy = d.getFullYear()
+  const mm = String(d.getMonth() + 1).padStart(2, '0')
+  const dd = String(d.getDate()).padStart(2, '0')
+  return `${yyyy}-${mm}-${dd}`
+}
+const today = todayString()
+
 onMounted(async ()=> {
   try {
     const hotRes = await axios.get('/api/musicals/search', {
@@ -134,7 +144,7 @@ onMounted(async ()=> {
 
     const onStageRes = await axios.get('/api/musicals/search', {
       params: {
-        date: "2025-12-18", 
+        date: today, 
         order:"desc", 
         page: 0, 
         size: 10 }
